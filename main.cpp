@@ -62,7 +62,7 @@ public:
     ///
     /// Set the title of our window.
     ///
-    window_->SetTitle("Ultralight Sample 3 - Resize Me!");
+    window_->SetTitle("AZS");
 
     ///
     /// Tell our app to use 'window' as our main window.
