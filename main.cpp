@@ -57,7 +57,7 @@ public:
     /// kWindowFlags_Resizable.
     ///
     window_ = Window::Create(app_->main_monitor(), WINDOW_WIDTH, WINDOW_HEIGHT,
-      false, kWindowFlags_Titled | kWindowFlags_Resizable);
+      false, kWindowFlags_Titled | kWindowFlags_Resizable | kWindowFlags_Maximizable);
 
     ///
     /// Set the title of our window.
