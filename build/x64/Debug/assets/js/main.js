@@ -124,6 +124,8 @@ function ShowMiniMenu(obj){
     
 }
 function HideMenu(obj){
+    console.log("HID MENU");
+    obj=obj.querySelector(".items");
     obj.style.left='-100%';
     obj.style.animationName='menuslider_rev';
     obj.style.animationDuration='0.5s';
