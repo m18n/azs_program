@@ -11,15 +11,7 @@
 
 <body>
     <div class="container">
-        <div class="menu">
-            <div class="items">
-                <div class="item">Продаж товару</div>
-                <div class="item">Перегляд продаж</div>
-                <div class="item">ПРК</div>
-                <div class="item">Додатково</div>
-                <div class="item">Реж.Закритя</div>
-            </div>
-        </div>
+        
         <div class="content">
             <div class="dispensing_unit"  ondblclick="RegimeResizeUnit(this);"  onmousemove="MoveMouse(event,this);" onmouseup="ResizeStopUnit(event,this);" onmousedown="ResizeStartUnit(event,this);">
                 
@@ -103,9 +95,24 @@
             </div>
             
         </div>
+        <div class="menu">
+            <div class="min_menu" id="min_menu" onmouseenter="ShowMenu(this);">
+               <span>2020-04-12 12:22</span> 
+            </div>
+            <div class="slider">
+            <div class="items"  onmouseleave="HideMenu(this);" >
+                <div class="item">Продаж товару</div>
+                <div class="item">Перегляд продаж</div>
+                <div class="item">ПРК</div>
+                <div class="item">Додатково</div>
+                <div class="item">Реж.Закритя</div>
+            </div>
+        </div>
+        </div>
     </div>
     <script src="js/main.js"></script>
     <script src="js/logic.js"></script>
+    <script src="js/core.js"></script>
 </body>
 
 </html>
