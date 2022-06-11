@@ -128,6 +128,9 @@ user-select: none;
     bottom: 10px;
     left: 10px;
 }
+.disable {
+    display: none !important;
+}
 .mark{
     display: flex;
     flex-direction: column;

@@ -127,6 +127,10 @@ function ShowMiniMenu(obj){
     
 }
 function HideMenu(obj){
+    let listmark=$(obj).find(".mark");
+    for(let i=0;i<listmark.length;i++){
+        $(listmark[i]).addClass("disable");
+    }
     console.log("HID MENU");
     obj.style.overflowX='hidden';
     obj.style.overflowY='hidden';
