@@ -105,6 +105,10 @@ function ResizeStopUnit(event,obj){
     
     console.log("REGIME END: "+obj.Regim);
 }
+function ItemVisible(items){
+    items.parentNode.style.overflowX='visible';
+    items.parentNode.style.overflowY='visible';
+}
 function ShowMenu(obj){
     console.log("SHOW MENU");
     obj.style.animationName='border_rev';
@@ -116,9 +120,8 @@ function ShowMenu(obj){
     items.style.animationName='menuslider';
     items.style.animationDuration='1s';
     items.style.animationDirection='normal';
-   
-    items.parentNode.style.overflowX='visible';
-    items.parentNode.style.overflowY='visible';
+    setTimeout(ItemVisible, 1000,items);
+    
 
 }
 function ShowMiniMenu(obj){
@@ -132,8 +135,10 @@ function HideMenu(obj){
         $(listmark[i]).addClass("disable");
     }
     console.log("HID MENU");
-    obj.style.overflowX='hidden';
-    obj.style.overflowY='hidden';
+    
+   
+    //obj.style.overflowX='hidden';
+    //obj.style.overflowY='hidden';
     obj=obj.querySelector(".items");
     obj.style.left='-100%';
     obj.style.animationName='menuslider_rev';
@@ -144,6 +149,7 @@ function HideMenu(obj){
     items.style.animationName='border';
     items.style.animationDuration='0.8s';
     items.style.animationDirection='normal';
-   
+    $(obj).parent().css("overflow-x","hidden");
+    $(obj).parent().css("overflow-y","hidden");
 
 }

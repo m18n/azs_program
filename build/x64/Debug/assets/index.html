@@ -25,8 +25,8 @@
                 <div class="unit_content">
                     <div class="calculator">
                         <div class="c_left">
-                            <input type="number" id="many" onchange="CalGasoline(this);">
-                            <input type="number" id="liter">
+                            <input type="number" class="input many" id="many" onchange="CalGasolineMany(this);" value="0.00">
+                            <input type="number" class="input liter" id="liter" onchange="CalGasolineLiter(this);"value="0.00">
                             <input type="number">
                             
                             
@@ -65,8 +65,8 @@
                 <div class="unit_content">
                     <div class="calculator">
                         <div class="c_left">
-                            <input type="number" id="many" onchange="CalGasoline(this);">
-                            <input type="number" id="liter">
+                            <input type="number" class="input many" id="many" onchange="CalGasolineMany(this);" value="0.00">
+                            <input type="number" class="input liter" id="liter" onchange="CalGasolineLiter(this);"value="0.00">
                             <input type="number">
                             
                             
@@ -95,37 +95,40 @@
             </div>
             
         </div>
-        <div class="menu">
-            <div class="min_menu" id="min_menu"  onmouseenter="ShowMenu(this);">
-               <span>2020-04-12 12:22</span> 
-            </div>
-            <div class="slider" onmouseleave="HideMenu(this);">
-            <div class="items"   >
-                <div class="item c_product">Продаж товару</div>
-                <div class="item c_product">Перегляд продаж</div>
-                <div class="item c_prk">ПРК</div>
-                <div class="item c_info">Додатково
-                    <div class="mark disable">
-                        <div class="item item_under c_info">Всі Вікна</div>
-                        <div class="item item_under c_info">Перезапуск програми</div>
-                        <div class="item item_under c_info">Перезапуск Пк</div>
-                        <div class="item item_under c_info">Виключити Пк</div>
-                        <div class="item item_under c_info">Відміна</div>
-                        <div class="item item_under c_info">Сервіс</div>
+        <div class="menu" onmouseleave="HideMenu(this);">
+            <div class="region" >
+                <div class="min_menu" id="min_menu"  onmouseenter="ShowMenu(this);">
+                    <span>2020-04-12 12:22</span> 
+                </div>
+            
+                <div class="slider" >
+                    <div class="items"   >
+                        <div class="item c_product">Продаж товару</div>
+                        <div class="item c_product">Перегляд продаж</div>
+                        <div class="item c_prk">ПРК</div>
+                        <div class="item c_info">Додатково
+                            <div class="mark disable">
+                                <div class="item item_under c_info">Всі Вікна</div>
+                                <div class="item item_under c_info">Перезапуск програми</div>
+                                <div class="item item_under c_info">Перезапуск Пк</div>
+                                <div class="item item_under c_info">Виключити Пк</div>
+                                <div class="item item_under c_info">Відміна</div>
+                                <div class="item item_under c_info">Сервіс</div>
+                            </div>
+                        </div>
+                        <div class="item c_close">Реж.Закритя
+                            <div class="mark disable">
+                                <div class="item item_under c_close">Всі Вікна</div>
+                                <div class="item item_under c_close">Перезапуск програми</div>
+                                <div class="item item_under c_close">Перезапуск Пк</div>
+                                <div class="item item_under c_close">Виключити Пк</div>
+                                <div class="item item_under c_close">Відміна</div>
+                                <div class="item item_under c_close">Сервіс</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="item c_close">Реж.Закритя
-                    <div class="mark disable">
-                        <div class="item item_under c_close">Всі Вікна</div>
-                        <div class="item item_under c_close">Перезапуск програми</div>
-                        <div class="item item_under c_close">Перезапуск Пк</div>
-                        <div class="item item_under c_close">Виключити Пк</div>
-                        <div class="item item_under c_close">Відміна</div>
-                        <div class="item item_under c_close">Сервіс</div>
-                    </div>
-                </div>
             </div>
-        </div>
         </div>
     </div>
     <script src="js/main.js"></script>
