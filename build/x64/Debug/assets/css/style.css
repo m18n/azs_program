@@ -128,6 +128,17 @@ user-select: none;
     bottom: 10px;
     left: 10px;
 }
+.mark{
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    width: 100%;
+    left: 0%;
+    top:0%;
+    transform: translateY(-100%);
+}
+
 @keyframes menuslider {
     0% {left: -100%;}
     100% {left: 0%;}
@@ -159,17 +170,17 @@ user-select: none;
 
 .slider{
     position:absolute;
-    top:-15px;
+    transform: translateY(-75%);
     left:200px;
     overflow-x: hidden;
     overflow-y: hidden;
     width: 900px;
-    height: 65px;
+    height: 85px;
 
 }
 .items{
     position:absolute;
-    top:15px;
+    transform: translateY(75%);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -184,6 +195,7 @@ user-select: none;
 }
 
 .item{
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;

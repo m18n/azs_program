@@ -83,7 +83,7 @@ function ResizeStartUnit(event,obj){
         obj.startsizey=obj.clientHeight;
         obj.style.cursor="all-scroll";        
     }else if(obj.Regim==Regim.State){
-        setTimeout(RegimMove, 1000,event,obj); 
+        setTimeout(RegimMove, 3000,event,obj); 
     }else if(obj.Regim==Regim.Move){
        
         obj.style.borderColor="grey";
@@ -104,4 +104,36 @@ function ResizeStopUnit(event,obj){
     }
     
     console.log("REGIME END: "+obj.Regim);
+}
+function ShowMenu(obj){
+    console.log("SHOW MENU");
+    obj.style.animationName='border_rev';
+    obj.style.animationDuration='1s';
+    obj.style.animationDirection='normal';
+    obj.style.borderRadius='0px';
+    let items=obj.parentNode.querySelector(".items");
+    items.style.left='0px';
+    items.style.animationName='menuslider';
+    items.style.animationDuration='1s';
+    items.style.animationDirection='normal';
+
+}
+function ShowMiniMenu(obj){
+    console.log("SHOW MINI MENU");
+    let items=obj.parentNode.querySelector(".min_menu");
+    
+}
+function HideMenu(obj){
+    console.log("HID MENU");
+    obj=obj.querySelector(".items");
+    obj.style.left='-100%';
+    obj.style.animationName='menuslider_rev';
+    obj.style.animationDuration='0.5s';
+    obj.style.animationDirection='normal';
+    let items=obj.parentNode.parentNode.querySelector("#min_menu");
+    items.style.borderRadius='15px';
+    items.style.animationName='border';
+    items.style.animationDuration='0.5s';
+    items.style.animationDirection='normal';
+   
 }

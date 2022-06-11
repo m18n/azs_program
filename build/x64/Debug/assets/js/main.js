@@ -116,6 +116,9 @@ function ShowMenu(obj){
     items.style.animationName='menuslider';
     items.style.animationDuration='1s';
     items.style.animationDirection='normal';
+   
+    items.parentNode.style.overflowX='visible';
+    items.parentNode.style.overflowY='visible';
 
 }
 function ShowMiniMenu(obj){
@@ -125,15 +128,18 @@ function ShowMiniMenu(obj){
 }
 function HideMenu(obj){
     console.log("HID MENU");
+    obj.style.overflowX='hidden';
+    obj.style.overflowY='hidden';
     obj=obj.querySelector(".items");
     obj.style.left='-100%';
     obj.style.animationName='menuslider_rev';
-    obj.style.animationDuration='0.5s';
+    obj.style.animationDuration='0.8s';
     obj.style.animationDirection='normal';
     let items=obj.parentNode.parentNode.querySelector("#min_menu");
     items.style.borderRadius='15px';
     items.style.animationName='border';
-    items.style.animationDuration='0.5s';
+    items.style.animationDuration='0.8s';
     items.style.animationDirection='normal';
    
+
 }
