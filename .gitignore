@@ -4,7 +4,13 @@ build/linux/x64/Release/*
 !build/linux/x64/Release/assets/
 
 build/windows/*
+
+!build/windows/Debug
+build/windows/Debug/*
 !build/windows/Debug/assets/
+
+!build/windows/Release
+build/windows/Release/*
 !build/windows/Release/assets/
 
 .vs
