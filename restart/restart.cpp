@@ -83,7 +83,7 @@ void StartProgram(){
 
 
 void ShowPid(PID* pid){
- std::wcout<<"PID: "<<pid->pid<<" PWD: "<<pid->pwd<<" NAME: "<<pid->nameprogram<<" PWD DIR: "<<pid->pwddir<<"\n";
+ std::cout<<"PID: "<<pid->pid<<" PWD: "<<pid->pwd<<" NAME: "<<pid->nameprogram<<" PWD DIR: "<<pid->pwddir<<"\n";
 }
 #ifdef __linux__ 
 std::vector<PID> GetAllProc(){
@@ -107,7 +107,7 @@ std::vector<PID> GetAllProc(){
     
     return std::move(pids);
 }
-std::string GetPwdProc(const char* path) {
+std::string GetPwdProc(std::string path) {
 
     std::ifstream f;
     std::string read;
@@ -121,7 +121,7 @@ std::string GetPwdProc(const char* path) {
 }
 #endif
 std::vector<PID> FindProc(){
-    wchar_t mypwd[300];
+    char mypwd[300];
     
      std::vector<PID> find;
 #ifdef _WIN32
