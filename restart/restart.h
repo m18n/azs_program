@@ -15,6 +15,7 @@ struct PID{
     std::string nameprogram;
     std::string pwd;
 };
+std::vector<PID> GetAllProc();
 void ShowPid(PID* pid);
 std::string GetStringG(char* arr,int startindex,int size);
 void ReverChar(const char* arr,char* out);

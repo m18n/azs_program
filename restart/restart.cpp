@@ -91,12 +91,9 @@ std::string GetPwdProc(const char* path){
 void ShowPid(PID* pid){
  std::cout<<"PID: "<<pid->pid<<" PWD: "<<pid->pwd<<" NAME: "<<pid->nameprogram<<" PWD DIR: "<<pid->pwddir<<"\n";
 }
-std::vector<PID> FindProc(){
-    char mypwd[300];
-    getcwd(mypwd,300);
+std::vector<PID> GetAllProc(){
     DIR *dir; struct dirent *diread;
     vector<PID> pids;
-     std::vector<PID> find;
     if ((dir = opendir("/proc")) != nullptr) {
         while ((diread = readdir(dir)) != nullptr) {
             PID pid;
@@ -109,9 +106,18 @@ std::vector<PID> FindProc(){
         closedir (dir);
     } else {
         perror ("opendir");
-        return find;
+        return pids;
     }
-
+    
+    return std::move(pids);
+}
+std::vector<PID> FindProc(){
+    char mypwd[300];
+    getcwd(mypwd,300);
+     std::vector<PID> find;
+    
+    std::vector<PID>pids=GetAllProc();
+   
     for(int i=0;i<pids.size();i++){
        
         std::string path="/proc/"+std::to_string(pids[i].pid)+"/cmdline";
