@@ -7,7 +7,7 @@ else()
 link_directories("desktop/bin/linux")
 endif()
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp funjs.cpp views.cpp coreviews.cpp)
 target_link_libraries(${PROJECT_NAME} UltralightCore AppCore Ultralight WebCore)
 if (APPLE)
   # Enable High-DPI on macOS through our custom Info.plist template
