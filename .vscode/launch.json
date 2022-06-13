@@ -43,17 +43,19 @@
                 }
             ]
         },
+
+        //linux restart
         {
-            "name": "WINDOWS DEBUG CMAKE",
+            "name": "LINUX RESTART DEBUG CMAKE",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/windows/Debug/AZS.exe",
+            "program": "${workspaceFolder}/build/linux/x64/Debug/RESTART",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "preLaunchTask": "coll_debug_windows",
+            "preLaunchTask": "coll_debug_linux",
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -64,16 +66,16 @@
             ]
         },
         {
-            "name": "WINDOWS RELEASE CMAKE",
+            "name": "LINUX RESTART RELEASE CMAKE",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/windows/Release/AZS.exe",
+            "program": "${workspaceFolder}/build/linux/x64/Release/RESTART",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "preLaunchTask": "coll_release_windows",
+            "preLaunchTask": "coll_release_linux",
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -82,6 +84,62 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        //windows
+        {
+            "name": "WINDOWS DEBUG CMAKE",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/windows/Debug/AZS.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "coll_debug_windows",
+            
+          
+        },
+        {
+            "name": "WINDOWS RELEASE CMAKE",
+            "type":"cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/windows/Release/AZS.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "coll_release_windows",
+            
+        },
+        //windows RESTART PROGRAM
+        {
+            "name": "WINDOWS RESTART DEBUG CMAKE",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/windows/Debug/RESTART.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "coll_debug_windows",
+            
+          
+        },
+        {
+            "name": "WINDOWS RESTART RELEASE CMAKE",
+            "type":"cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/windows/Release/RESTART.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "coll_release_windows",
+            
         }
     ]
 }

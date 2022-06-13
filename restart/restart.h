@@ -17,9 +17,9 @@ using std::cout; using std::cin;
 using std::endl; using std::vector;
 struct PID{
     int pid;
-    std::string pwddir;
-    std::string nameprogram;
-    std::string pwd;
+    std::wstring pwddir;
+    std::wstring nameprogram;
+    std::wstring pwd;
 };
 #ifdef __linux__ 
 std::string GetPwdProc(const char* path);

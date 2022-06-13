@@ -83,7 +83,7 @@ void StartProgram(){
 
 
 void ShowPid(PID* pid){
- std::cout<<"PID: "<<pid->pid<<" PWD: "<<pid->pwd<<" NAME: "<<pid->nameprogram<<" PWD DIR: "<<pid->pwddir<<"\n";
+ std::wcout<<"PID: "<<pid->pid<<" PWD: "<<pid->pwd<<" NAME: "<<pid->nameprogram<<" PWD DIR: "<<pid->pwddir<<"\n";
 }
 #ifdef __linux__ 
 std::vector<PID> GetAllProc(){
@@ -135,7 +135,7 @@ std::vector<PID> FindProc(){
      {
          while (Process32Next(snapshot, &entry) == TRUE)
          {
-             if (stricmp(entry.szExeFile, "AZS.exe") == 0)
+             if (wcscmp(entry.szExeFile, L"AZS.exe") == 0)
              {
                  PID pid;
                  pid.pid = entry.th32ProcessID;
