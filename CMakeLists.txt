@@ -23,3 +23,4 @@ if (MSVC)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}"/desktop/bin/linux" $<TARGET_FILE_DIR:${PROJECT_NAME}>)  
 endif()
+add_executable(RESTART restart/restart.cpp)
