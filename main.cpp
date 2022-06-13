@@ -8,7 +8,7 @@ int main() {
 
 
     auto window = Window::Create(app->main_monitor(), WINDOW_WIDTH, WINDOW_HEIGHT, false,
-        kWindowFlags_Titled | kWindowFlags_Resizable);
+        kWindowFlags_Titled | kWindowFlags_Resizable | kWindowFlags_Maximizable);
     app->set_window(window);
     VServClient vs;
     vs.SetWin(window);
