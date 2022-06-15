@@ -125,31 +125,31 @@ std::vector<PID> FindProc(){
     
      std::vector<PID> find;
 #ifdef _WIN32
-     GetModuleFileNameW(NULL, mypwd, MAX_PATH);
-     PROCESSENTRY32 entry;
-     entry.dwSize = sizeof(PROCESSENTRY32);
+    //  GetModuleFileNameW(NULL, mypwd, MAX_PATH);
+    //  PROCESSENTRY32 entry;
+    //  entry.dwSize = sizeof(PROCESSENTRY32);
 
-     HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+    //  HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 
-     if (Process32First(snapshot, &entry) == TRUE)
-     {
-         while (Process32Next(snapshot, &entry) == TRUE)
-         {
-             if (wcscmp(entry.szExeFile, L"AZS.exe") == 0)
-             {
-                 PID pid;
-                 pid.pid = entry.th32ProcessID;
-                 MODULEENTRY32 ModEntry = { 0 };
-                 ModEntry.dwSize = sizeof(ModEntry);
-                 Module32First(snapshot, &ModEntry);
-                 pid.pwd = ModEntry.szExePath;
-                 find.push_back(pid);
-                 break;
-             }
-         }
-     }
+    //  if (Process32First(snapshot, &entry) == TRUE)
+    //  {
+    //      while (Process32Next(snapshot, &entry) == TRUE)
+    //      {
+    //          if (wcscmp(entry.szExeFile, L"AZS.exe") == 0)
+    //          {
+    //              PID pid;
+    //              pid.pid = entry.th32ProcessID;
+    //              MODULEENTRY32 ModEntry = { 0 };
+    //              ModEntry.dwSize = sizeof(ModEntry);
+    //              Module32First(snapshot, &ModEntry);
+    //              pid.pwd = ModEntry.szExePath;
+    //              find.push_back(pid);
+    //              break;
+    //          }
+    //      }
+    //  }
 
-     CloseHandle(snapshot);
+    //  CloseHandle(snapshot);
 #else
      getcwd(mypwd, 300);
      std::vector<PID>pids = GetAllProc();

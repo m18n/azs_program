@@ -6,7 +6,7 @@ using namespace ultralight;
 int main() {
     std::cout << "STARt\n";
     auto app = App::Create();
-    auto window = Window::Create(app->main_monitor(),WINDOW_WIDTH,WINDOW_HEIGHT, true,
+    auto window = Window::Create(app->main_monitor(),WINDOW_WIDTH,WINDOW_HEIGHT,false,
         kWindowFlags_Titled | kWindowFlags_Resizable | kWindowFlags_Maximizable);
     app->set_window(window);
     window->is_fullscreen();
