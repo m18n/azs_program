@@ -27,6 +27,13 @@ void  IFunctionJS::RegistrFunctionJs(std::string namefunction, JSObjectCallAsFun
         js.push_back(df);
     }
 }
+ std::string IFunctionJS::ArgumentToStr(JSContextRef ctx ,JSValueRef arg,JSValueRef* exception){
+     JSStringRef arg1=JSValueToStringCopy(ctx,arg,exception);
+    JSString str=arg1;
+    String str2=str;
+    std::string res=str2.utf8().data();
+    return res;
+ }
 void  IFunctionJS::CallFunctionJs(std::string namefunction, std::string val)
 {
     JSRetainPtr<JSStringRef> str = adopt(

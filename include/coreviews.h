@@ -20,6 +20,7 @@ public:
     void RegistrFunctionJs(std::string namefunction, JSObjectCallAsFunctionCallback fun);
     void CallFunctionJs(std::string namefunction, std::string val);
     void CallFunctionJs(std::string namefunction, double val);
+    std::string ArgumentToStr(JSContextRef ctx ,JSValueRef arg,JSValueRef* exception);
     void SetCtx(JSContextRef ctx) {
         this->ctx = ctx;
         for (int i = 0; i < js.size(); i++) {

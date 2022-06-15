@@ -12,6 +12,8 @@ void VServClient::SetWin(RefPtr<Window> win) {
 	ov->view()->LoadURL("file:///index.html");
 	ov->view()->set_view_listener(this);
 	ov->view()->set_load_listener(this);
+   
+
 	win->set_listener(this);
 }
 void VServClient::OnDOMReady(View* caller,
