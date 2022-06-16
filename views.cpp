@@ -16,6 +16,9 @@ void VServClient::SetWin(RefPtr<Window> win) {
 
 	win->set_listener(this);
 }
+void VServClient::LoadSite(std::string name){
+	ov->view()->LoadURL(("file:///"+name).c_str());
+}
 void VServClient::OnDOMReady(View* caller,
 	uint64_t frame_id,
 	bool is_main_frame,

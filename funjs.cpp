@@ -14,7 +14,9 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
     bool check=CheckPassword(password);
     if(check){
         std::cout<<"OKEY ADMIN PASS\n";
+        funjs::viewsc->LoadSite("admin.html");
     }else{
+        funjs::viewsc->CallFunctionJs("ErrorAdminPass","");
         std::cout<<"ERROR ADMIN PASS\n";
     }
     return JSValueMakeNull(ctx);

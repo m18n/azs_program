@@ -4,11 +4,24 @@
     margin: 0px;
 }
 .t_f{
-    text-align: center;
-    margin-top: 20px;
+   margin-left: calc(50% - 55px); 
+   transform: translateX(-50%);
 }
 .t_namediv{
     
+}
+.heads{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+}
+.back{
+    
+    width: 35px;
+    height: 30px;
+    margin-left: 20px;
 }
 .services{
     display: flex;
