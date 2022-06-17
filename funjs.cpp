@@ -1,28 +1,53 @@
-#include"include/funjs.h"
-VServClient* funjs::viewsc = NULL;
+#include "include/funjs.h"
+VServClient *funjs::viewsc = NULL;
 JSValueRef RestartProgram(JSContextRef ctx, JSObjectRef function,
-  JSObjectRef thisObject, size_t argumentCount, 
-  const JSValueRef arguments[], JSValueRef* exception) {
-      system("./RESTART");
-  return JSValueMakeNull(ctx);
+                          JSObjectRef thisObject, size_t argumentCount,
+                          const JSValueRef arguments[], JSValueRef *exception)
+{
+    system("./RESTART");
+    return JSValueMakeNull(ctx);
 }
 JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
-  JSObjectRef thisObject, size_t argumentCount, 
-  const JSValueRef arguments[], JSValueRef* exception){
-    std::string password=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
-    std::cout<<"PASSWORD:"<<password<<"\n";
-    bool check=CheckPassword(password);
-    if(check){
-        std::cout<<"OKEY ADMIN PASS\n";
+                     JSObjectRef thisObject, size_t argumentCount,
+                     const JSValueRef arguments[], JSValueRef *exception)
+{
+    std::string password = funjs::viewsc->ArgumentToStr(ctx, arguments[0], exception);
+    std::cout << "PASSWORD:" << password << "\n";
+    
+    bool check = funjs::viewsc->GetAZS()->CheckPassword(password);
+    if (check)
+    {
+        std::cout << "OKEY ADMIN PASS\n";
         funjs::viewsc->LoadSite("admin.html");
-    }else{
-        funjs::viewsc->CallFunctionJs("ErrorAdminPass","");
-        std::cout<<"ERROR ADMIN PASS\n";
+    }
+    else
+    {
+        funjs::viewsc->CallFunctionJs("ErrorAdminPass", "");
+        std::cout << "ERROR ADMIN PASS\n";
     }
     return JSValueMakeNull(ctx);
 }
-void funjs::RegistrFunVServClient(VServClient* vs) {
+JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,
+                      JSObjectRef thisObject, size_t argumentCount,
+                      const JSValueRef arguments[], JSValueRef *exception)
+{
+    std::string strwidth=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+    std::string strheigth=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
+    int width=atoi(strwidth.c_str());
+    int heigth=atoi(strheigth.c_str());
+
+}
+JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception)
+{
+
+}
+void funjs::RegistrFunVServClient(VServClient *vs)
+{
     viewsc = vs;
-    vs->RegistrFunctionJs("RestartProgram",RestartProgram);
-    vs->RegistrFunctionJs("AuthAdmin",AuthAdmin);
+    vs->RegistrFunctionJs("RestartProgram", RestartProgram);
+    vs->RegistrFunctionJs("AuthAdmin", AuthAdmin);
+    vs->RegistrFunctionJs("SaveResize", SaveMove);
+    vs->RegistrFunctionJs("SaveMove", SaveResize);
 }

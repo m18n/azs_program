@@ -1,5 +1,7 @@
 #pragma once
+#include"coreazs.h"
 #include"coreviews.h" 
+
 class VServClient :public WindowListener, public ViewListener, public LoadListener, public IFunctionJS {
 public:
 
@@ -18,10 +20,17 @@ public:
 		this->title = title;
 		win->SetTitle(title.c_str());
 	}
+	void SetAZS(AZS* azs){
+		this->azs=azs;
+	}
+	AZS* GetAZS(){
+		return azs;
+	}
 	~VServClient();
 
 private:
 	std::string title;
 	RefPtr<Window> win;
 	RefPtr<Overlay> ov;
+	AZS* azs;
 };

@@ -11,6 +11,9 @@ function RegimeResizeUnit(obj){
     }else if(obj.Regim==Regim.ResizeState){
         obj.Regim=Regim.State;
         obj.style.borderColor="grey";
+        SaveResize(obj.offsetWidth,obj.offsetHeight);
+        const domRect = obj.getBoundingClientRect();
+        console.log(domRect);
     }
 }
 function MoveMouse(event,obj){
@@ -101,6 +104,8 @@ function ResizeStopUnit(event,obj){
         obj.Regim=Regim.State;
         obj.style.borderColor="grey";
         StopMoveObj(event,obj);
+        let cord = obj.getBoundingClientRect();
+        SaveMove(cord.left,cord.top);
     }
     
     console.log("REGIME END: "+obj.Regim);

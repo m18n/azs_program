@@ -11,6 +11,12 @@ using namespace ultralight;
 struct functionjs {
     std::string namefunction;
     JSObjectCallAsFunctionCallback fun;
+
+};
+struct site{
+    void(*LoadSite)();
+    std::string namesite;
+    std::vector<functionjs>funs;
 };
 class IFunctionJS {
 public:

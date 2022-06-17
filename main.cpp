@@ -1,9 +1,11 @@
+#include"coreazs.h"
 #include"include/funjs.h"
 
 using namespace ultralight;
 #define WINDOW_WIDTH    1150
 #define WINDOW_HEIGHT   700
 int main() {
+    AZS azs;
     std::cout << "STARt\n";
     auto app = App::Create();
     auto window = Window::Create(app->main_monitor(),WINDOW_WIDTH,WINDOW_HEIGHT,false,
@@ -12,6 +14,7 @@ int main() {
     window->is_fullscreen();
     
     VServClient vs;
+    vs.SetAZS(&azs);
     vs.SetWin(window);
     funjs::RegistrFunVServClient(&vs);
     vs.SetTitle("AZS\n");
