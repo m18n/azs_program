@@ -20,6 +20,9 @@ public:
 		this->title = title;
 		win->SetTitle(title.c_str());
 	}
+	void AddSite(site* s){
+		this->sites.push_back(s);
+	}
 	void SetAZS(AZS* azs){
 		this->azs=azs;
 	}

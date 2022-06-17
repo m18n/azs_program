@@ -16,7 +16,8 @@ int main() {
     VServClient vs;
     vs.SetAZS(&azs);
     vs.SetWin(window);
-    funjs::RegistrFunVServClient(&vs);
+    site index;
+    funjs::RegistrSiteIndex(&vs,&index);
     vs.SetTitle("AZS\n");
     app->Run();
 

@@ -43,11 +43,17 @@ JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
 {
 
 }
-void funjs::RegistrFunVServClient(VServClient *vs)
+void funjs::LoadSiteIndex(){
+   std::cout<<"LOAD INDEX\n";
+}
+void funjs::RegistrSiteIndex(VServClient *vs,site* s)
 {
     viewsc = vs;
-    vs->RegistrFunctionJs("RestartProgram", RestartProgram);
-    vs->RegistrFunctionJs("AuthAdmin", AuthAdmin);
-    vs->RegistrFunctionJs("SaveResize", SaveMove);
-    vs->RegistrFunctionJs("SaveMove", SaveResize);
+    s->namesite="index.html";
+    s->LoadSite=funjs::LoadSiteIndex;
+    vs->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
+    vs->RegistrFunctionJs(s,"AuthAdmin", AuthAdmin);
+    vs->RegistrFunctionJs(s,"SaveResize", SaveMove);
+    vs->RegistrFunctionJs(s,"SaveMove", SaveResize);
+    vs->AddSite(s);
 }

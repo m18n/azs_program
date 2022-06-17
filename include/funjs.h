@@ -15,5 +15,6 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
   const JSValueRef arguments[], JSValueRef* exception);
 namespace funjs {
     extern VServClient* viewsc;
-    void RegistrFunVServClient(VServClient* vs);
+    void RegistrSiteIndex(VServClient *vs,site* s);
+    void LoadSiteIndex();
 }

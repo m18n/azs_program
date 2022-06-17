@@ -25,9 +25,8 @@ void VServClient::OnDOMReady(View* caller,
 	const String& url)
 {
 	Ref<JSContext> context = caller->LockJSContext();
-	SetCtx(context.get());
 	std::string strurl=url.utf8().data()+8;
-
+	SetCtx(context.get(),strurl);
 	std::cout<<"URL: "<<url.utf8().data()<<"\n";
 }
 void VServClient::OnClose() {}

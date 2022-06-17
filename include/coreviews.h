@@ -14,7 +14,7 @@ struct functionjs {
 
 };
 struct site{
-    void(*LoadSite)();
+    void(*LoadSite)()=NULL;
     std::string namesite;
     std::vector<functionjs>funs;
 };
@@ -23,21 +23,34 @@ public:
     IFunctionJS() {
 
     }
-    void RegistrFunctionJs(std::string namefunction, JSObjectCallAsFunctionCallback fun);
+    void RegistrFunctionJs(site* s,std::string namefunction, JSObjectCallAsFunctionCallback fun);
     void CallFunctionJs(std::string namefunction, std::string val);
     void CallFunctionJs(std::string namefunction, double val);
     std::string ArgumentToStr(JSContextRef ctx ,JSValueRef arg,JSValueRef* exception);
-    void SetCtx(JSContextRef ctx) {
+    void SetCtx(JSContextRef ctx,std::string newsite) {
+        this->localsite=newsite;
         this->ctx = ctx;
-        for (int i = 0; i < js.size(); i++) {
-            RegistrFunctionJs(js[i].namefunction, js[i].fun);
+        int index=-1;
+        for (int i = 0; i < sites.size(); i++) {
+            if(sites[i]->namesite==newsite){
+                sites[i]->LoadSite();
+                index=i;
+                break;
+            }
         }
+        if(index!=-1){
+            for(int i=0;i<sites[index]->funs.size();i++){
+                RegistrFunctionJs(sites[index],sites[index]->funs[i].namefunction,sites[index]->funs[i].fun);
+            }
+        }
+        
     }
     JSContextRef GetCtx() {
         return ctx;
     }
 protected:
-    std::vector<functionjs>js;
+    std::string localsite;
+    std::vector<site*>sites;
 private:
     JSContextRef ctx = NULL;
 };
