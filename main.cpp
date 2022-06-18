@@ -18,6 +18,7 @@ void InitSites(){
     admin.LoadSite=funjs::LoadSiteAdmin;
     funjs::RegistrAdminFunction(&service);
     funjs::RegistrMenuFunction(&index);
+    funjs::RegistrMenuFunction(&admin);
     funjs::RegistrAdminFunction(&admin);
     sites.push_back(index);
     sites.push_back(service);
