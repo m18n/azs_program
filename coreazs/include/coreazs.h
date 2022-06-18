@@ -27,7 +27,10 @@ public:
     virtual void Synhron();
     void InitModule(SQLite::Database *db, std::string table, int id);
     virtual void Show();
-
+    int GetId(){
+        return id;
+    }
+    
 protected:
     SQLite::Database *db;
     bool init;
@@ -46,10 +49,19 @@ public:
     void Resize(int width, int heigth);
     void Move(int x, int y);
     void GetAllParam(int* width,int* heigth,int* x,int* y);
+    
     ~Dispens_Unit(){
 
     };
-
+    std::string GetParamDispens_Unit(){
+        std::string param;
+        param+="id:"+std::to_string(id)+"|";
+        param+="width:"+std::to_string(width)+"|";
+        param+="heigth:"+std::to_string(heigth)+"|";
+        param+="x:"+std::to_string(x)+"|";
+        param+="y:"+std::to_string(y)+"|";
+        return param;
+    }
 private:
     int width;
     int heigth;
@@ -61,16 +73,32 @@ private:
 class CORE_API AZS
 {
 public:
-    AZS() : AZSdb("azs.sqlite")
+    AZS() : AZSdb("azs.sqlite",SQLite::OPEN_READWRITE)
     {
         units=Dispens_Unit::StaticGetAllUnit(&AZSdb);
     }
 
     ~AZS()
     {
+        std::cout<<"END AZS\n";
     }
-    bool CheckPassword(std::string password);
+    Dispens_Unit* GetUnit(int index){
+        return &units[index];
+    }
+     Dispens_Unit* GetUnitbyId(int id){
+         for(int i=0;i<units.size();i++){
+             if(units[i].GetId()==id){
+                 return &units[i];
+             }
+         }
+        return NULL;
+    }
+    int GetSizeUnit(){
+        return units.size();
+    }
 
+    bool CheckPassword(std::string password);
+    
 private:
     int id = 1;
     std::vector<Dispens_Unit> units;

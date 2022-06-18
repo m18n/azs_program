@@ -23,6 +23,12 @@ public:
 	void AddSite(site* s){
 		this->sites.push_back(s);
 	}
+	void AddSites(std::vector<site>&v){
+		this->sites.resize(v.size());
+		for(int i=0;i<sites.size();i++){
+			sites[i]=&v[i];
+		}
+	}
 	void SetAZS(AZS* azs){
 		this->azs=azs;
 	}

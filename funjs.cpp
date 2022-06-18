@@ -31,29 +31,68 @@ JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,
                       JSObjectRef thisObject, size_t argumentCount,
                       const JSValueRef arguments[], JSValueRef *exception)
 {
-    std::string strwidth=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
-    std::string strheigth=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
+    std::string strid=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+    std::string strwidth=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
+    std::string strheigth=funjs::viewsc->ArgumentToStr(ctx,arguments[2],exception);
+    int id=atoi(strid.c_str());
     int width=atoi(strwidth.c_str());
     int heigth=atoi(strheigth.c_str());
-
+    AZS* azs=funjs::viewsc->GetAZS();
+    Dispens_Unit* disp=azs->GetUnitbyId(id);
+    disp->Resize(width,heigth);
+    std::cout<<"ID:"<<id<<"WIDTH: "<<width<<" HEIGTH: "<<heigth<<"\n";
 }
 JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
                     JSObjectRef thisObject, size_t argumentCount,
                     const JSValueRef arguments[], JSValueRef *exception)
 {
-
+    std::string strid=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+    std::string strx=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
+    std::string stry=funjs::viewsc->ArgumentToStr(ctx,arguments[2],exception);
+    int id=atoi(strid.c_str());
+    int x=atoi(strx.c_str());
+    int y=atoi(stry.c_str());
+    AZS* azs=funjs::viewsc->GetAZS();
+    Dispens_Unit* disp=azs->GetUnitbyId(id);
+    disp->Move(x,y);
+    std::cout<<"ID:"<<id<<"X: "<<x<<" Y: "<<y<<"\n";
 }
+   JSValueRef LOG(JSContextRef ctx, JSObjectRef function,
+  JSObjectRef thisObject, size_t argumentCount, 
+  const JSValueRef arguments[], JSValueRef* exception){
+      std::string mess=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+      std::cout<<"MESSAGE: "<<mess<<"\n";
+  }
 void funjs::LoadSiteIndex(){
    std::cout<<"LOAD INDEX\n";
+   AZS* azs=funjs::viewsc->GetAZS();
+   int size=azs->GetSizeUnit();
+   for(int i=0;i<size;i++){
+       Dispens_Unit* disp=azs->GetUnit(i);
+       std::string js=disp->GetParamDispens_Unit();
+       funjs::viewsc->CallFunctionJs("LoadUnit",js);
+   }
 }
-void funjs::RegistrSiteIndex(VServClient *vs,site* s)
+void funjs::LoadSiteAdmin(){
+ std::cout<<"LOAD ADMIN\n";
+   LoadSiteIndex();
+}
+ void funjs::SetView(VServClient* view){
+     viewsc=view;
+ }
+void funjs::RegistrMenuFunction(site* s){
+    RegistrStandartFunction(s);
+    viewsc->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
+    
+}
+void funjs::RegistrAdminFunction(site* s)
 {
-    viewsc = vs;
-    s->namesite="index.html";
-    s->LoadSite=funjs::LoadSiteIndex;
-    vs->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
-    vs->RegistrFunctionJs(s,"AuthAdmin", AuthAdmin);
-    vs->RegistrFunctionJs(s,"SaveResize", SaveMove);
-    vs->RegistrFunctionJs(s,"SaveMove", SaveResize);
-    vs->AddSite(s);
+    RegistrStandartFunction(s);
+    viewsc->RegistrFunctionJs(s,"AuthAdmin", AuthAdmin);
+    viewsc->RegistrFunctionJs(s,"SaveResize", SaveResize);
+    viewsc->RegistrFunctionJs(s,"SaveMove", SaveMove);
+}
+void funjs::RegistrStandartFunction(site* s){
+    
+    viewsc->RegistrFunctionJs(s,"LOG",LOG);
 }

@@ -3,7 +3,7 @@ VServClient::VServClient() {
 
 }
 VServClient::~VServClient() {
-
+	std::cout<<"END VSERV\n";
 }
 void VServClient::SetWin(RefPtr<Window> win) {
 	this->win = win;

@@ -4,6 +4,26 @@
 using namespace ultralight;
 #define WINDOW_WIDTH    1150
 #define WINDOW_HEIGHT   700
+std::vector<site>sites;
+VServClient vs;
+void InitSites(){
+    funjs::SetView(&vs);
+    site index;
+    index.namesite="index.html";
+    index.LoadSite=funjs::LoadSiteIndex;
+    site service;
+    service.namesite="services.html";
+    site admin;
+    admin.namesite="admin.html";
+    admin.LoadSite=funjs::LoadSiteAdmin;
+    funjs::RegistrAdminFunction(&service);
+    funjs::RegistrMenuFunction(&index);
+    funjs::RegistrAdminFunction(&admin);
+    sites.push_back(index);
+    sites.push_back(service);
+    sites.push_back(admin);
+    vs.AddSites(sites);
+}
 int main() {
     AZS azs;
     std::cout << "STARt\n";
@@ -13,13 +33,12 @@ int main() {
     app->set_window(window);
     window->is_fullscreen();
     
-    VServClient vs;
+    InitSites();
     vs.SetAZS(&azs);
     vs.SetWin(window);
-    site index;
-    funjs::RegistrSiteIndex(&vs,&index);
+    
     vs.SetTitle("AZS\n");
     app->Run();
-
+    vs.~VServClient();
 	return 0;
 }

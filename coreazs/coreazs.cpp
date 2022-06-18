@@ -66,9 +66,19 @@ void Dispens_Unit::Resize(int width, int heigth)
 {
     if (init)
     {
-        SQLite::Statement query(*db, "");
+        this->width=width;
+        this->heigth=heigth;
+        SQLite::Statement query(*db,"UPDATE "+table+" SET width = "+std::to_string(width)+",heigth = "+std::to_string(heigth)+" WHERE id = "+std::to_string(id)+";");
+        query.exec();
     }
 }
 void Dispens_Unit::Move(int x, int y)
 {
+    if (init)
+    {
+        this->x=x;
+        this->y=y;
+        SQLite::Statement query(*db,"UPDATE "+table+" SET x = "+std::to_string(x)+",y = "+std::to_string(y)+" WHERE id = "+std::to_string(id)+";");
+        query.exec();
+    }
 }

@@ -1,4 +1,14 @@
 const Regim = { Resize: 0, Move: 1,ResizeState:2,State:3};
+function CreateUnit(){
+    var unit={
+        'id':0,
+        'width':0,
+        'heigth':0,
+        'x':0,
+        'y':0,
+    }
+    return unit;
+}
 function RegimeResizeUnit(obj){
     
     if(obj.Regim==undefined){
@@ -11,7 +21,8 @@ function RegimeResizeUnit(obj){
     }else if(obj.Regim==Regim.ResizeState){
         obj.Regim=Regim.State;
         obj.style.borderColor="grey";
-        SaveResize(obj.offsetWidth,obj.offsetHeight);
+        LOG("OBJ ID:"+obj.iddata);
+        SaveResize(obj.iddata,obj.offsetWidth,obj.offsetHeight);
         const domRect = obj.getBoundingClientRect();
         console.log(domRect);
     }
@@ -100,12 +111,18 @@ function ResizeStopUnit(event,obj){
     console.log("REGIME START: "+obj.Regim);
     if(obj.Regim==Regim.Resize){
         obj.Regim=Regim.ResizeState;
-    }else{
+    }else if(obj.Regim==Regim.Move){
+        let cord = obj.getBoundingClientRect();
+        
+            LOG("SAVE MOVE");
+            SaveMove(obj.iddata,cord.left,cord.top);
+        
         obj.Regim=Regim.State;
         obj.style.borderColor="grey";
         StopMoveObj(event,obj);
-        let cord = obj.getBoundingClientRect();
-        SaveMove(cord.left,cord.top);
+        
+        
+        
     }
     
     console.log("REGIME END: "+obj.Regim);
@@ -124,4 +141,37 @@ function CalGasolineLiter(input){
     let many=input.parentNode.querySelector('#many');
     console.log("LITER VALUE: "+liter.value+" PRICE: "+price.value);
     many.value=(input.value*price.value).toFixed(2);
+}
+
+function GetVar(data){
+    let variable=data.split('|');
+    var arr=[];
+    for(let i=0;i<variable.length;i++){
+        let vare=variable[i].split(':');
+        
+        var v={
+            'name':vare[0],
+            'value':vare[1],
+        };
+        arr.push(v);
+    }
+    return arr;
+}
+
+function LoadUnit(unit){
+    let df=GetVar(unit);
+    let obj=$("#unit_shab").clone();
+    obj.attr("id",df[0].value);
+    obj.removeClass("none");
+    //LOG("LEFT: "+df[3].value+" TOP: "+df[4].value);
+    obj.css("width",df[1].value+"px");
+    obj.css("height",df[2].value+"px");
+    obj.css("left",df[3].value+"px");
+    obj.css("top",df[4].value+"px");
+    
+
+    console.log("VALUE: "+df[0].value);
+    obj.appendTo(".content");
+    let domelem=obj.get(0);
+    domelem.iddata=df[0].value;
 }

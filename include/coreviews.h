@@ -33,7 +33,7 @@ public:
         int index=-1;
         for (int i = 0; i < sites.size(); i++) {
             if(sites[i]->namesite==newsite){
-                sites[i]->LoadSite();
+                
                 index=i;
                 break;
             }
@@ -42,6 +42,8 @@ public:
             for(int i=0;i<sites[index]->funs.size();i++){
                 RegistrFunctionJs(sites[index],sites[index]->funs[i].namefunction,sites[index]->funs[i].fun);
             }
+            if(sites[index]->LoadSite!=NULL)
+                    sites[index]->LoadSite();
         }
         
     }
