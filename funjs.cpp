@@ -41,6 +41,7 @@ JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,
     Dispens_Unit* disp=azs->GetUnitbyId(id);
     disp->Resize(width,heigth);
     std::cout<<"ID:"<<id<<"WIDTH: "<<width<<" HEIGTH: "<<heigth<<"\n";
+    return JSValueMakeNull(ctx);
 }
 JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
                     JSObjectRef thisObject, size_t argumentCount,
@@ -56,12 +57,14 @@ JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
     Dispens_Unit* disp=azs->GetUnitbyId(id);
     disp->Move(x,y);
     std::cout<<"ID:"<<id<<"X: "<<x<<" Y: "<<y<<"\n";
+    return JSValueMakeNull(ctx);
 }
    JSValueRef LOG(JSContextRef ctx, JSObjectRef function,
   JSObjectRef thisObject, size_t argumentCount, 
   const JSValueRef arguments[], JSValueRef* exception){
       std::string mess=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
       std::cout<<"MESSAGE: "<<mess<<"\n";
+      return JSValueMakeNull(ctx);
   }
 void funjs::LoadSiteIndex(){
    std::cout<<"LOAD INDEX\n";

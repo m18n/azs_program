@@ -4,8 +4,8 @@
     margin: 0px;
 }
 .t_f{
-    
-    margin-left: 40%;
+   margin-left: calc(50% - 55px); 
+   transform: translateX(-50%);
 }
 .t_namediv{
     
@@ -15,10 +15,12 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-
+    
 }
 .back{
     
+    width: 35px;
+    height: 30px;
     margin-left: 20px;
 }
 .services{

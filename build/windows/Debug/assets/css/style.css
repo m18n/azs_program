@@ -5,6 +5,9 @@
 *{
     box-sizing: border-box;
 }
+.none{
+    display: none !important;
+}
 .move{
     position:absolute;
     top:0%;
@@ -163,4 +166,7 @@ a{
 }
 .c_close{
     background-color: #d42f2f;
+}
+.t_white{
+    color: white;
 }

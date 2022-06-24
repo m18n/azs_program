@@ -91,14 +91,9 @@ input{
     top:16%;
 }
 .control_button{
-    color:black;
     width: 70%;
     min-height: 20px;
     height:100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(0, 225, 0);
 }
 .mini{
     width: 15%;
