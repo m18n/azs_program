@@ -4,7 +4,12 @@ JSValueRef RestartProgram(JSContextRef ctx, JSObjectRef function,
                           JSObjectRef thisObject, size_t argumentCount,
                           const JSValueRef arguments[], JSValueRef *exception)
 {
+   #ifdef _WIN32
+    system("RESTART.exe");
+#else
     system("./RESTART");
+#endif
+   
     return JSValueMakeNull(ctx);
 }
 JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,

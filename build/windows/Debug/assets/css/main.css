@@ -7,10 +7,11 @@
     justify-content: space-between;
     border-radius: 4px;
     width: 300px;
+    font-size: 1em;
     position:absolute;
     background-color: #171717;
     padding: 10px;
-    height: 212px;
+    height: 300px;
     box-shadow: 2px 3px 5px rgb(0,0,0.3);
 }
 .dispensing_unit input{
@@ -37,29 +38,72 @@
     font-size: 20px;
 }
 .calculator{
-    position: relative;
-    z-index: 1;
+   
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
-    height: 55%;
+   height: 55%;
+}
+.calculator input{
+    height: 33%;
+    
 }
 .calculator *{
     height: 100%;
     width: 100%;
 }
-.c_left{
+.row_1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 80%;
+}
+.row_2{
+    position: relative;
+    display: flex;
+    flex-direction:row;
+    height: 20%;
+    width: 50%;
+    top:5%;
+}
+.input_des{
+    width: 45%;
+}
+.out_des{
+    width: 45%;
+}
+.clava{
+    z-index: 1;
     display: flex;
     flex-direction: column;
+    height: 130%;
+    width: 45%;
 }
-.c_rigth{
+.c_row{
     display: flex;
-    flex-direction:column;
-    margin-left: 30px;
-  
+    flex-direction: row;
+    
+}
+.c_col{
+    display: flex;
+    background-color: rgb(189, 189, 255);
+    justify-content: center;
+    align-items: center;
+    border:solid 1px grey;
+}
+.c_col:hover{
+    background-color: rgb(78, 78, 197);
+    cursor: pointer;
+}
+.many::placeholder{
+    color:red;
 }
 .many{
     color:red;
+}
+.liter::placeholder{
+    color:blue;
 }
 .liter{
     color:blue;
@@ -68,33 +112,69 @@ input{
     background-color: white;
     
 }
-.input:focus{
+/* .input:focus{
+    background-color: yellow;
+} */
+.focus{
     background-color: yellow;
 }
-
 .pay{
+    
     z-index: 1;
     display: block;
-    position: relative;
-    top:10%;
-    height: 15%;
+    
+    width: 100%;
+    height: 100%;
     max-height: 80px;
     font-size: 120%;
+}
+.start_des{
+    position: relative;
+    height: 25%;
+    width: 100%;
+    background-color:rgb(255, 49, 49);
+    top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.start_des:hover{
+    background-color:rgb(221, 0, 0);
+    cursor: pointer;
+}
+.des_val{
+    color:grey;
+}
+.des_val::placeholder{
+    color: grey;
 }
 .control{
     z-index: 1;
     position: relative;
     display: flex;
     flex-direction: row;
+    
     width: 100%;
-    height: 15%;
-    top:16%;
+    height: 12.5%;
+    
+    top:8%;
 }
-.control_button{
-    width: 70%;
+
+.stop_des{
+    
+    background-color: green;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 76%;
     min-height: 20px;
     height:100%;
+    border:solid 1px grey;
 }
 .mini{
-    width: 15%;
+    width: 12%;
+    border:solid 1px grey;
 }

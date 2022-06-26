@@ -7,6 +7,9 @@
 #include <cstdio>
 #include <windows.h>
 #include <tlhelp32.h>
+#include<string>
+#include<string.h>
+
 #else
 #include <sys/types.h>
 #include <signal.h>

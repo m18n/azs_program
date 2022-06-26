@@ -26,34 +26,87 @@
                 </div>
                 <div class="unit_content">
                     <div class="calculator">
-                        <div class="c_left">
-                            <input type="number" class="input many" id="many" onchange="CalGasolineMany(this);" value="0.00">
-                            <input type="number" class="input liter" id="liter" onchange="CalGasolineLiter(this);"value="0.00">
-                            <input type="number">
-                            
-                            
-                        </div>
-                        <div class="c_rigth">
-                            <input type="number">
-                            <input type="number">
+                        <div class="row_1">
+                            <div class="input_des">
+                                <input type="number" class="input many" id="many" onchange="CalGasolineMany(this);" onclick="OpenClavaRed(this);" placeholder="0,00" >
+                                <input type="number" class="input liter" id="liter" onchange="CalGasolineLiter(this);" onclick="OpenClavaBlue(this);" placeholder="0,00" >
+                                <input type="number">
+                            </div>
+                            <div class="clava none" id="cl_blue" style="color: blue;" >
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);" >1</div>
+                                    <div class="c_col" onclick="OnCal(this);">2</div>
+                                    <div class="c_col" onclick="OnCal(this);">3</div>
+                                </div>
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);">4</div>
+                                    <div class="c_col" onclick="OnCal(this);">5</div>
+                                    <div class="c_col" onclick="OnCal(this);">6</div>
+                                </div>
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);">7</div>
+                                    <div class="c_col" onclick="OnCal(this);">8</div>
+                                    <div class="c_col" onclick="OnCal(this);">9</div>
+                                </div>
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);">$</div>
+                                    <div class="c_col" onclick="OnCal(this);">0</div>
+                                    <div class="c_col" onclick="OnCal(this);">.</div>
+                                </div>
+                            </div>
+                            <div class="clava none" id="cl_red" style="color: red;">
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);">1</div>
+                                    <div class="c_col" onclick="OnCal(this);">2</div>
+                                    <div class="c_col" onclick="OnCal(this);">3</div>
+                                </div>
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);">4</div>
+                                    <div class="c_col" onclick="OnCal(this);">5</div>
+                                    <div class="c_col" onclick="OnCal(this);">6</div>
+                                </div>
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);">7</div>
+                                    <div class="c_col" onclick="OnCal(this);">8</div>
+                                    <div class="c_col" onclick="OnCal(this);">9</div>
+                                </div>
+                                <div class="c_row">
+                                    <div class="c_col" onclick="OnCal(this);">$</div>
+                                    <div class="c_col" onclick="OnCal(this);">0</div>
+                                    <div class="c_col" onclick="OnCal(this);">.</div>
+                                </div>
+                            </div>
+                            <div class="out_des" id="out_des">
+                                <input type="number" value="0,00" placeholder="0,00" class="des_val" >
+                            <input type="number" value="0,00" placeholder="0,00" class="des_val" >
                             <input type="number" name="price" id="price" value="28.50">
+                            </div>
+                        </div>
+                        <div class="row_2">
+                            <select name="" id="" class="pay">
+                                <option value="">Готівка</option>
+                                <option value="">Талон</option>
+                                <option value="">Відомість</option>
+                                <option value="">Банк1</option>
+                                <option value="">Пал.картка</option>
+                            </select>
+                            <!-- <input type="number" value="0.00" class="des_val" onclick="OpenClava(this);">
+                            <input type="number" value="0.00" class="des_val" onclick="OpenClava(this);">
+                            <input type="number" name="price" id="price" value="28.50"> -->
                         </div>
                     
                     </div>
-                    <select name="" id="" class="pay">
-                        <option value="">Готівка</option>
-                        <option value="">Талон</option>
-                        <option value="">Відомість</option>
-                        <option value="">Банк1</option>
-                        <option value="">Пал.картка</option>
-                    </select>
+                    
+                    <div class="start_des" onclick="StartDes(this);">
+                        <h2>ПУСК</h2>
+                    </div>
                     <div class="control">
                         <div class="mini"></div>
-                        <button class="control_button">Остонов</button> 
+                        <h3 class="stop_des">ОСТАНОВ</h3>
+                      
                         <div class="mini"></div>
                     </div>
                 </div>
-                
             </div>
             
         <div class="menu" onmouseleave="HideMenu(this);">
