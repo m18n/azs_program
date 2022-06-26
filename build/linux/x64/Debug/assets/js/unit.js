@@ -175,3 +175,131 @@ function LoadUnit(unit){
     let domelem=obj.get(0);
     domelem.iddata=df[0].value;
 }
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
+let c_number=-1;
+function OnCal(th){
+   
+    if(c_number>2){
+        c_number=1;
+    }
+    
+    console.log("C_NUMBER: "+c_number);
+    let val=$(th).text();
+   
+    let par=$(th).parent().parent();
+    let id=par.attr('id');
+    if(val=='.'){
+        
+       
+        if(c_number!=-1){
+            val="";
+            c_number=-1;
+            return;
+        }else{
+            val+="00";
+        }
+    }
+    let cal=par.parent().children(".input_des");
+    if(id ==="cl_red"){
+        
+        console.log("RED");
+        let valmany=cal.children("#many").val();
+        
+        console.log("DO VALMANY: "+valmany);
+        let newval;
+        let index=-1;
+        for(let i=0;i<valmany.length;i++){
+            if(valmany[i]=="."){
+                index=i;
+                
+                break;
+            }
+        }
+        if(c_number==-1){
+            if(index!=-1){//search
+                
+                newval=valmany.slice(0,index)+val;
+                console.log("POSLE VALMANY: "+newval);
+                if(val!=".00")
+                    newval+=valmany.slice(index);
+                // console.log("POSLE VALMANY: "+newval);
+            }else{//none search
+                newval=valmany+val;
+            }
+        }else{
+            console.log("C_ VAL: "+val+" INDEx: "+index);
+            newval=valmany;
+           
+            newval=newval.replaceAt(index+c_number,val);
+            c_number++;
+        }
+        console.log("POSLE VALMANY: "+newval);
+        cal.children("#many").val(newval);
+        CalGasolineMany(cal.children("#many").get(0));
+    }else{
+       
+        console.log("BLUE");
+        let valliter=cal.children("#liter").val();
+        console.log("DO VALLITER: "+valliter);
+        let newval;
+        let index=-1;
+        for(let i=0;i<valliter.length;i++){
+            if(valliter[i]=="."){
+                index=i;
+                
+                break;
+            }
+        }
+        if(c_number==-1){
+            if(index!=-1){
+                newval=valliter.slice(0,index)+val;
+                console.log("POSLE VALMANY: "+newval);
+                if(val!=".00")
+                    newval+=valliter.slice(index);
+            }else{
+                newval=valliter+val;
+            }
+        }else{
+            console.log("C_ VAL: "+val);
+            newval=valliter;
+            newval=newval.replaceAt(index+c_number,val);
+            c_number++;
+        }
+        console.log("POSLE VALLITER: "+newval);
+        cal.children("#liter").val(newval);
+        CalGasolineLiter(cal.children("#liter").get(0));
+    }
+   if(val==".00"){
+       c_number=1;
+   }
+   
+  };
+function checkBack(event){
+    console.log("EVENT: "+event);
+}
+function OpenClavaRed(el){
+    let cal=$(el).parent().parent();
+    cal.children(".input_des").children("#many").addClass("focus");
+    cal.children(".input_des").children("#liter").removeClass("focus");
+    cal.children("#cl_blue").addClass("none");
+    cal.children("#out_des").addClass("none");
+    cal.children("#cl_red").removeClass("none");
+    // $("#cl_blue").addClass("none");
+    // $("#out_des").addClass("none");
+    // $("#cl_red").removeClass("none");
+}
+function OpenClavaBlue(el){
+    let cal=$(el).parent().parent();
+    cal.children(".input_des").children("#many").removeClass("focus");
+    cal.children(".input_des").children("#liter").addClass("focus");
+    cal.children("#cl_red").addClass("none");
+    cal.children("#out_des").addClass("none");
+    cal.children("#cl_blue").removeClass("none");
+   
+}
+function StartDes(th){
+    $(th).parent().find(".clava").addClass("none");
+    $(th).parent().find(".out_des").removeClass("none");
+}
