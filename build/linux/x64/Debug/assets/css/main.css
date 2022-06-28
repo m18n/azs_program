@@ -73,6 +73,7 @@
 .out_des{
     width: 45%;
 }
+
 .clava{
     z-index: 1;
     display: flex;
@@ -118,6 +119,9 @@ input{
 .focus{
     background-color: yellow;
 }
+.curent{
+    background-color: grey !important;
+}
 .pay{
     
     z-index: 1;
@@ -127,6 +131,26 @@ input{
     height: 100%;
     max-height: 80px;
     font-size: 120%;
+}
+.option{
+    z-index: 3;
+   
+    color:black;    
+    height: 100%;
+}
+.item_opt{
+   cursor: pointer;
+    display: flex;
+    border:solid 1px grey;
+    align-items: center;
+    justify-content: center;
+    
+}
+.item_g{
+
+}
+.item_o{
+
 }
 .start_des{
     position: relative;

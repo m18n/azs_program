@@ -172,30 +172,36 @@ function LoadUnit(unit){
 
     console.log("VALUE: "+df[0].value);
     obj.appendTo(".content");
+    obj.find(".item_g").on("click",OpenGlav);
+    obj.find(".item_o").on("click",OpenOpt);
     let domelem=obj.get(0);
     domelem.iddata=df[0].value;
 }
 String.prototype.replaceAt = function(index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
-let c_number=-1;
+
 function OnCal(th){
-   
-    if(c_number>2){
-        c_number=1;
+    let ph=$(th).parent().parent().get(0);
+    if(ph.c_number==undefined){
+        ph.c_number=-1;
+    }
+    if(ph.c_number>2){
+        ph.c_number=1;
     }
     
-    console.log("C_NUMBER: "+c_number);
+    console.log("C_NUMBER: "+ph.c_number);
     let val=$(th).text();
    
     let par=$(th).parent().parent();
+    
     let id=par.attr('id');
     if(val=='.'){
         
        
-        if(c_number!=-1){
+        if(ph.c_number!=-1){
             val="";
-            c_number=-1;
+            ph.c_number=-1;
             return;
         }else{
             val+="00";
@@ -217,7 +223,7 @@ function OnCal(th){
                 break;
             }
         }
-        if(c_number==-1){
+        if(ph.c_number==-1){
             if(index!=-1){//search
                 
                 newval=valmany.slice(0,index)+val;
@@ -232,8 +238,8 @@ function OnCal(th){
             console.log("C_ VAL: "+val+" INDEx: "+index);
             newval=valmany;
            
-            newval=newval.replaceAt(index+c_number,val);
-            c_number++;
+            newval=newval.replaceAt(index+ph.c_number,val);
+            ph.c_number++;
         }
         console.log("POSLE VALMANY: "+newval);
         cal.children("#many").val(newval);
@@ -252,7 +258,7 @@ function OnCal(th){
                 break;
             }
         }
-        if(c_number==-1){
+        if(ph.c_number==-1){
             if(index!=-1){
                 newval=valliter.slice(0,index)+val;
                 console.log("POSLE VALMANY: "+newval);
@@ -264,15 +270,15 @@ function OnCal(th){
         }else{
             console.log("C_ VAL: "+val);
             newval=valliter;
-            newval=newval.replaceAt(index+c_number,val);
-            c_number++;
+            newval=newval.replaceAt(index+ph.c_number,val);
+            ph.c_number++;
         }
         console.log("POSLE VALLITER: "+newval);
         cal.children("#liter").val(newval);
         CalGasolineLiter(cal.children("#liter").get(0));
     }
    if(val==".00"){
-       c_number=1;
+    ph.c_number=1;
    }
    
   };
