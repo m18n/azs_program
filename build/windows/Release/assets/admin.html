@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZS</title>
+    <title>ADMIN AZS</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/main.css">
-  
+    <link rel="stylesheet" href="css/admin.css">
 </head>
 
 <body>
     <div class="container">
         
         <div class="content">
-            <div class="dispensing_unit none" id="unit_shab">
+            <div class="dispensing_unit none" id="unit_shab" ondblclick="RegimeResizeUnit(this);"  onmousemove="MoveMouse(event,this);" onmouseup="ResizeStopUnit(event,this);" onmousedown="ResizeStartUnit(event,this);">
                 
                 <div class="unit_menu">
                     <div class="gasoline">
@@ -83,21 +83,13 @@
                             </div>
                         </div>
                         <div class="row_2">
-                            <!-- <select name="" id="" class="pay">
+                            <select name="" id="" class="pay">
                                 <option value="">Готівка</option>
                                 <option value="">Талон</option>
                                 <option value="">Відомість</option>
                                 <option value="">Банк1</option>
                                 <option value="">Пал.картка</option>
-                            </select> -->
-                            <div class="option">
-                                <div class="item_opt item_g"  style="background-color: rgb(14, 212, 14);" >Готівка</div>
-                                <div class="item_opt item_o none"  style="background-color: rgb(14, 212, 14);">Готівка</div>
-                                <div class="item_opt item_o none" style="background-color: rgb(84, 84, 240);">Талон</div>
-                                <div class="item_opt item_o none" style="background-color: yellow;">Відомість</div>
-                                <div class="item_opt item_o none" style="background-color: rgb(224, 224, 255);">Банк1</div>
-                                <div class="item_opt item_o none" style="background-color: rgb(255, 187, 0);">Пал.картка</div>
-                            </div>
+                            </select>
                             <!-- <input type="number" value="0.00" class="des_val" onclick="OpenClava(this);">
                             <input type="number" value="0.00" class="des_val" onclick="OpenClava(this);">
                             <input type="number" name="price" id="price" value="28.50"> -->
@@ -115,9 +107,8 @@
                         <div class="mini"></div>
                     </div>
                 </div>
-                
             </div>
-           
+            
         <div class="menu" onmouseleave="HideMenu(this);">
             <div class="region" >
                 <div class="min_menu" id="min_menu"  onmouseenter="ShowMenu(this);">
@@ -146,7 +137,7 @@
                                 <div class="item item_under c_close">Перезапуск Пк</div>
                                 <div class="item item_under c_close">Виключити Пк</div>
                                 <div class="item item_under c_close">Відміна</div>
-                                <a href="services.html"> <div class="item item_under c_close">Сервіс</div></a>
+                                <a href="servicesadmin.html"> <div class="item item_under c_close">Сервіс</div></a>
                             </div>
                         </div>
                     </div>
@@ -158,7 +149,6 @@
     <script src="js/unit.js"></script>
     <script src="js/core.js"></script>   
     <script src="js/menu.js"></script>
-   
 </body>
 
 </html>
