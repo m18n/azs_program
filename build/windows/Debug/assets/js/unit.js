@@ -180,130 +180,98 @@ function LoadUnit(unit){
 String.prototype.replaceAt = function(index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
+function OnNext(th){
+    console.log("$$$");
+    let row1=$(th).parent().parent().parent();
+    let liter=$(row1).find(".liter").get(0);
 
+    CalGasolineLiter(liter);
+}
 function OnCal(th){
-    let ph=$(th).parent().parent().get(0);
-    if(ph.c_number==undefined){
-        ph.c_number=-1;
-    }
-    if(ph.c_number>2){
-        ph.c_number=1;
-    }
-    
-    console.log("C_NUMBER: "+ph.c_number);
-    let val=$(th).text();
-   
-    let par=$(th).parent().parent();
-    
-    let id=par.attr('id');
-    if(val=='.'){
-        
-       
-        if(ph.c_number!=-1){
-            val="";
-            ph.c_number=-1;
-            return;
-        }else{
-            val+="00";
-        }
-    }
-    let cal=par.parent().children(".input_des");
-    if(id ==="cl_red"){
-        
-        console.log("RED");
-        let valmany=cal.children("#many").val();
-        
-        console.log("DO VALMANY: "+valmany);
-        let newval;
-        let index=-1;
-        for(let i=0;i<valmany.length;i++){
-            if(valmany[i]=="."){
-                index=i;
-                
-                break;
-            }
-        }
-        if(ph.c_number==-1){
-            if(index!=-1){//search
-                
-                newval=valmany.slice(0,index)+val;
-                console.log("POSLE VALMANY: "+newval);
-                if(val!=".00")
-                    newval+=valmany.slice(index);
-                // console.log("POSLE VALMANY: "+newval);
-            }else{//none search
-                newval=valmany+val;
-            }
-        }else{
-            console.log("C_ VAL: "+val+" INDEx: "+index);
-            newval=valmany;
-           
-            newval=newval.replaceAt(index+ph.c_number,val);
-            ph.c_number++;
-        }
-        console.log("POSLE VALMANY: "+newval);
-        cal.children("#many").val(newval);
-        CalGasolineMany(cal.children("#many").get(0));
+    let row1=$(th).parent().parent().parent();
+    let inputfocus=null;
+    let b=false;
+    let inputnotfocus=null;
+    let calculator=$(th).parent().parent();
+    if(calculator.attr('id')=='cl_red'){
+        inputfocus=$(row1).find(".many");
+        inputnotfocus=$(row1).find(".liter");
     }else{
-       
-        console.log("BLUE");
-        let valliter=cal.children("#liter").val();
-        console.log("DO VALLITER: "+valliter);
-        let newval;
-        let index=-1;
-        for(let i=0;i<valliter.length;i++){
-            if(valliter[i]=="."){
-                index=i;
-                
-                break;
-            }
-        }
-        if(ph.c_number==-1){
-            if(index!=-1){
-                newval=valliter.slice(0,index)+val;
-                console.log("POSLE VALMANY: "+newval);
-                if(val!=".00")
-                    newval+=valliter.slice(index);
-            }else{
-                newval=valliter+val;
-            }
-        }else{
-            console.log("C_ VAL: "+val);
-            newval=valliter;
-            newval=newval.replaceAt(index+ph.c_number,val);
-            ph.c_number++;
-        }
-        console.log("POSLE VALLITER: "+newval);
-        cal.children("#liter").val(newval);
-        CalGasolineLiter(cal.children("#liter").get(0));
+        b=true;
+        inputfocus=$(row1).find(".liter");
+        inputnotfocus=$(row1).find(".many");
+        console.log("LITER");
     }
-   if(val==".00"){
-    ph.c_number=1;
-   }
-   
+    if(calculator.get(0).oncal==false){
+       
+        inputfocus.val(".00");
+        inputnotfocus.val("0.00");
+        calculator.get(0).oncal=true;
+        calculator.get(0).regimdrob=-1;
+       
+    }
+    let mynumber=$(th).text();
+    let valueinput=inputfocus.val();
+  
+    if(mynumber=='.'){
+        calculator.get(0).regimdrob=0;
+        return;
+    }
+    let index=valueinput.indexOf(".");
+    let r=calculator.get(0).regimdrob;
+    if(r==-1){
+        let newstr=valueinput.slice(0,index)+mynumber+".00";
+        inputfocus.val(newstr);
+        
+    }else{
+        if(r<2){
+            valueinput= valueinput.replaceAt(index+1+r,mynumber);
+            console.log("REEGIM "+valueinput);
+            inputfocus.val(valueinput);
+            calculator.get(0).regimdrob+=1;
+        }
+    }
+    if(b==false){
+        CalGasolineMany(inputfocus.get(0));
+    }else{
+        CalGasolineLiter(inputfocus.get(0));
+    }
   };
 function checkBack(event){
     console.log("EVENT: "+event);
 }
 function OpenClavaRed(el){
     let cal=$(el).parent().parent();
-    cal.children(".input_des").children("#many").addClass("focus");
-    cal.children(".input_des").children("#liter").removeClass("focus");
+    let many=cal.children(".input_des").children("#many");
+    let liter=cal.children(".input_des").children("#liter");
+    many.addClass("focus");
+    liter.removeClass("focus");
+    many.val(null);
+    
+    liter.val(null);
     cal.children("#cl_blue").addClass("none");
     cal.children("#out_des").addClass("none");
-    cal.children("#cl_red").removeClass("none");
+    let cl_red=cal.children("#cl_red");
+    cl_red.removeClass("none");
+    cl_red.get(0).oncal=false;
     // $("#cl_blue").addClass("none");
     // $("#out_des").addClass("none");
     // $("#cl_red").removeClass("none");
 }
 function OpenClavaBlue(el){
     let cal=$(el).parent().parent();
-    cal.children(".input_des").children("#many").removeClass("focus");
-    cal.children(".input_des").children("#liter").addClass("focus");
+    let many=cal.children(".input_des").children("#many");
+    let liter= cal.children(".input_des").children("#liter");
+    many.removeClass("focus");
+    liter.addClass("focus");
+    many.val(null);
+    
+    liter.val(null);
     cal.children("#cl_red").addClass("none");
     cal.children("#out_des").addClass("none");
-    cal.children("#cl_blue").removeClass("none");
-   
+    let cl_blue=cal.children("#cl_blue");
+    cl_blue.removeClass("none");
+    cl_blue.get(0).oncal=false;
 }
 function StartDes(th){
     $(th).parent().find(".clava").addClass("none");
