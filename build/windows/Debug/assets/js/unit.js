@@ -127,14 +127,22 @@ function ResizeStopUnit(event,obj){
     
     console.log("REGIME END: "+obj.Regim);
 }
+
+function Enter(input){
+    console.log("ENTER");
+    CalGasolineLiter(input);
+}
 function CalGasolineMany(input){
+   
     //let price=document.getElementById("price").value;
     let price=input.parentNode.parentNode.querySelector("#price");
     let liter=input.parentNode.querySelector('#liter');
     console.log("LITER VALUE: "+liter.value+" PRICE: "+price.value);
-    liter.value=(input.value/price.value).toFixed(2);
+    liter.value=((input.value/price.value)-0.005).toFixed(2);
+    
 }
 function CalGasolineLiter(input){
+    
     //let price=document.getElementById("price").value;
     let price=input.parentNode.parentNode.querySelector("#price");
     let liter=input.parentNode.querySelector('#liter');
@@ -274,6 +282,17 @@ function OpenClavaBlue(el){
     cl_blue.get(0).oncal=false;
 }
 function StartDes(th){
-    $(th).parent().find(".clava").addClass("none");
-    $(th).parent().find(".out_des").removeClass("none");
+    let content= $(th).parent().parent();
+    content.find(".clava").addClass("none");
+    content.find(".out_des").removeClass("none");
+    let info_ges=content.find(".info_ges");
+    info_ges.text("РОБОТА");
+    info_ges.css("background-color","#dbdb18");
+}
+
+function StopDes(th){
+    let content= $(th).parent().parent();
+    let info_ges=content.find(".info_ges");
+    info_ges.text("ОСТАНОВ");
+    info_ges.css("background-color","green");
 }
