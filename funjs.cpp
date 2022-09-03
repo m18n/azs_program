@@ -19,17 +19,17 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
     std::string password = funjs::viewsc->ArgumentToStr(ctx, arguments[0], exception);
     std::cout << "PASSWORD:" << password << "\n";
     
-    bool check = funjs::viewsc->GetAZS()->CheckPassword(password);
-    if (check)
-    {
-        std::cout << "OKEY ADMIN PASS\n";
-        funjs::viewsc->LoadSite("admin.html");
-    }
-    else
-    {
-        funjs::viewsc->CallFunctionJs("ErrorAdminPass", "");
-        std::cout << "ERROR ADMIN PASS\n";
-    }
+    //bool check = funjs::viewsc->GetAZS()->CheckPassword(password);
+    // if (check)
+    // {
+    //     std::cout << "OKEY ADMIN PASS\n";
+    //     funjs::viewsc->LoadSite("admin.html");
+    // }
+    // else
+    // {
+    //     funjs::viewsc->CallFunctionJs("ErrorAdminPass", "");
+    //     std::cout << "ERROR ADMIN PASS\n";
+    // }
     return JSValueMakeNull(ctx);
 }
 JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,
@@ -42,9 +42,9 @@ JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,
     int id=atoi(strid.c_str());
     int width=atoi(strwidth.c_str());
     int heigth=atoi(strheigth.c_str());
-    AZS* azs=funjs::viewsc->GetAZS();
-    Dispens_Unit* disp=azs->GetUnitbyId(id);
-    disp->Resize(width,heigth);
+    // AZS* azs=funjs::viewsc->GetAZS();
+    // Dispens_Unit* disp=azs->GetUnitbyId(id);
+    //disp->Resize(width,heigth);
     std::cout<<"ID:"<<id<<"WIDTH: "<<width<<" HEIGTH: "<<heigth<<"\n";
     return JSValueMakeNull(ctx);
 }
@@ -58,9 +58,9 @@ JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
     int id=atoi(strid.c_str());
     int x=atoi(strx.c_str());
     int y=atoi(stry.c_str());
-    AZS* azs=funjs::viewsc->GetAZS();
-    Dispens_Unit* disp=azs->GetUnitbyId(id);
-    disp->Move(x,y);
+    // AZS* azs=funjs::viewsc->GetAZS();
+    // Dispens_Unit* disp=azs->GetUnitbyId(id);
+    //disp->Move(x,y);
     std::cout<<"ID:"<<id<<"X: "<<x<<" Y: "<<y<<"\n";
     return JSValueMakeNull(ctx);
 }
@@ -73,13 +73,13 @@ JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
   }
 void funjs::LoadSiteIndex(){
    std::cout<<"LOAD INDEX\n";
-   AZS* azs=funjs::viewsc->GetAZS();
-   int size=azs->GetSizeUnit();
-   for(int i=0;i<size;i++){
-       Dispens_Unit* disp=azs->GetUnit(i);
-       std::string js=disp->GetParamDispens_Unit();
-       funjs::viewsc->CallFunctionJs("LoadUnit",js);
-   }
+//    AZS* azs=funjs::viewsc->GetAZS();
+//    int size=azs->GetSizeUnit();
+//    for(int i=0;i<size;i++){
+//        Dispens_Unit* disp=azs->GetUnit(i);
+//        std::string js=disp->GetParamDispens_Unit();
+//        funjs::viewsc->CallFunctionJs("LoadUnit",js);
+//    }
 }
 void funjs::LoadSiteAdmin(){
  std::cout<<"LOAD ADMIN\n";

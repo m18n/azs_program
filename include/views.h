@@ -29,17 +29,17 @@ public:
 			sites[i]=&v[i];
 		}
 	}
-	void SetAZS(AZS* azs){
-		this->azs=azs;
-	}
-	AZS* GetAZS(){
-		return azs;
-	}
+	// void SetAZS(AZS* azs){
+	// 	this->azs=azs;
+	// }
+	// AZS* GetAZS(){
+	// 	return azs;
+	// }
 	~VServClient();
 
 private:
 	std::string title;
 	RefPtr<Window> win;
 	RefPtr<Overlay> ov;
-	AZS* azs;
+	//AZS* azs;
 };

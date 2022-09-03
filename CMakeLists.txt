@@ -9,6 +9,7 @@ link_directories("desktop/bin/linux")
 endif()
 add_subdirectory(coreazs)
 add_executable(${PROJECT_NAME} main.cpp funjs.cpp views.cpp coreviews.cpp)
+
 target_link_libraries(${PROJECT_NAME} UltralightCore AppCore Ultralight WebCore COREAZS)
 if (APPLE)
   # Enable High-DPI on macOS through our custom Info.plist template

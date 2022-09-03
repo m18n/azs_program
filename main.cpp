@@ -26,8 +26,10 @@ void InitSites(){
     vs.AddSites(sites);
 }
 int main() {
-    AZS azs;
+    //AZS azs;
     std::cout << "STARt\n";
+    network_t network;
+    ConnectNetwork(&network,1111);
     auto app = App::Create();
     auto window = Window::Create(app->main_monitor(),WINDOW_WIDTH,WINDOW_HEIGHT,false,
         kWindowFlags_Titled | kWindowFlags_Resizable | kWindowFlags_Maximizable);
@@ -35,7 +37,7 @@ int main() {
     window->is_fullscreen();
     
     InitSites();
-    vs.SetAZS(&azs);
+    //vs.SetAZS(&azs);
     vs.SetWin(window);
     
     vs.SetTitle("AZS\n");
