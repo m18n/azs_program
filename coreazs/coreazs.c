@@ -5,6 +5,84 @@ void CreateNetwork(network_t* network){
         printf("ERROR\n");
         exit(1);
     }
+    network->idquery=0;
+}
+void UpdatePacket(network_t*network){
+    while(1){
+        char buff[1024];
+        recv(network->conn,buff,1024,NULL);
+        printf("CHECK\n");
+    }
+}
+void InitPacket(packet_t* pack,int id,char*(*GetStrPacket)(struct packet* pack,int* size)){
+    pack->id=id;
+    pack->GetStrPacket=GetStrPacket;
+}
+char* GetChats(packet_t* pack,int* size){
+    getchat_t* chat=(getchat_t*)pack;
+    *size=15;
+    char* test=malloc(*size);
+    char max[100];
+    sprintf(max, "%d",chat->max);
+    strcpy(test,"max ");
+    strcpy(&test[4],max);
+    return test;
+}
+void CreateGetChat(getchat_t* chat){
+    InitPacket(&chat->pack,1,GetChats);
+    chat->max=0;
+    chat->min=0;
+}
+void InitGetChat(getchat_t* chat,int max,int min){
+    InitPacket(&chat->pack,1,GetChats);
+    chat->max=max;
+    chat->min=min;
+}
+void send_query(network_t* network,packet_t* pack,void(*Res)(void*data)){
+    network->idquery++;
+    int sizepacket=0;
+    char* arrpack=pack->GetStrPacket(pack,&sizepacket);
+    //
+    char packidstr[100];
+    sprintf(packidstr, "%d", pack->id);
+    int lengthidpack=strlen(packidstr);
+    //
+    char sizepacketstr[100];
+    sprintf(sizepacketstr, "%d", sizepacket);
+    int lengthsizepacket=strlen(sizepacketstr);
+    //
+    char idquerystr[100];
+    sprintf(idquerystr, "%d", network->idquery);
+    int lengthqueryid=strlen(idquerystr);
+    //
+    int size=1+lengthidpack+1+lengthsizepacket+1+lengthqueryid+1+sizepacket;
+    char* data=malloc(size);
+    int index=1;
+    data[0]='#';
+    memcpy(&data[index],packidstr,lengthidpack);
+    index+=lengthidpack;
+    data[index]='|';
+    index++;
+    memcpy(&data[index],sizepacketstr,lengthsizepacket);
+    index+=lengthsizepacket;
+    data[index]='|';
+    index++;
+    memcpy(&data[index],idquerystr,lengthqueryid);
+    index+=lengthqueryid;
+    data[index]='|';
+    index++;
+    memcpy(&data[index],arrpack,sizepacket);
+    index+=sizepacket;
+   
+    printf("DATA: %s\n",data);
+    free(arrpack);
+    send(network->conn,data,size,NULL);
+}
+char* Test(int* size){
+    *size=4;
+    char* test=malloc(4);
+    strcpy(test,"tes");
+    return test;
 }
 void ConnectNetwork(network_t* network,int port){
     CreateNetwork(network);
@@ -17,6 +95,13 @@ void ConnectNetwork(network_t* network,int port){
         return;
     }
     printf("Connect\n");
+    // getchat_t chat;
+    // InitGetChat(&chat,10,20);
+    // send_query(network,&chat,NULL);
+   int length=send(network->conn,"\r#$^|2|10|7|1234",17,NULL);
+   printf("LENGTH: %d",length);
+   length=send(network->conn,"\r#$^|2|10|6|12345",18,NULL);
+   printf("LENGTH: %d",length);
 }
 
 // bool AZS::CheckPassword(std::string password)

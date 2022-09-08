@@ -10,6 +10,7 @@ set(CMAKE_THREAD_LIBS_INIT "-lpthread")
     set(CMAKE_USE_WIN32_THREADS_INIT 0)
     set(CMAKE_USE_PTHREADS_INIT 1)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
+
 add_library(${PROJECT_NAME} SHARED coreazs.c src/sqlite3.c)
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} wsock32 ws2_32)

@@ -13,6 +13,9 @@
 #include"sqlite/sqlite3.h"
 #include<WinSock2.h>
 #include<stdio.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct network{
     WSADATA wsaData;
@@ -20,10 +23,28 @@ typedef struct network{
     SOCKADDR_IN addr;
     SOCKET conn;
     int sizeofaddr;
+    int idquery;
 }network_t;
+typedef struct packet{
+    int id;
+    char*(*GetStrPacket)(struct packet* pack,int* size);
+}packet_t;
+void InitPacket(packet_t* pack,int id,char*(*GetStrPacket)(struct packet* pack,int* size));
+typedef struct getchat{
+    struct packet pack;
+    int min;
+    int max;
+}getchat_t;
+void CreateGetChat(getchat_t* chat);
+char* GetChats(packet_t* pack,int* size);
+void InitGetChat(getchat_t* chat,int max,int min);
+void send_query(network_t* network,packet_t* pack,void(*Res)(void*data));
 MATHLIBRARY_API void CreateNetwork(network_t* network);
 MATHLIBRARY_API void ConnectNetwork(network_t* network,int port);
-
+void UpdatePacket(network_t*network);
+#ifdef __cplusplus
+}
+#endif
 // class CORE_API Unit
 // {
 // public:
