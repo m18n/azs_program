@@ -99,7 +99,7 @@ void ConnectNetwork(network_t* network,int port){
     // InitGetChat(&chat,10,20);
     // send_query(network,&chat,NULL);
    int length=send(network->conn,"\r#$^|2|10|7|1234",17,NULL);
-   printf("LENGTH: %d",length);
+   printf("DTLENGTH: %d",length);
    length=send(network->conn,"\r#$^|2|10|6|12345",18,NULL);
    printf("LENGTH: %d",length);
 }
