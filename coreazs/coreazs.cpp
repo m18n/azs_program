@@ -23,21 +23,21 @@ DataBase::~DataBase(){
         delete con;
         
     }
-tb_node::tb_node(DataBase* db){
-        this->db=db;
+tb_node::tb_node(DataBase*db){
+       
         id_node=0;
     }
-tb_node::tb_node(DataBase* db,int id_node){
-        this->db=db;
+tb_node::tb_node(DataBase*db,int id_node){
+ 
         
 }
 tb_node::~tb_node(){
 
 }
-Tovar::Tovar(DataBase* db):tb_node(db){
+Tovar::Tovar(DataBase*db):tb_node(db){
         table="tovar";
     }
-Tovar::Tovar(DataBase* db,int id_tovar):tb_node(db,id_tovar){
+Tovar::Tovar(DataBase*db,int id_tovar):tb_node(db,id_tovar){
         
         table="tovar";
         Init(id_tovar);
@@ -56,5 +56,8 @@ void Tovar::DownloadParameters() {
         }
     }
 void Tovar::UploadParameters(){
-
+    std::cout<<"TEST\n";
     }
+Tovar::~Tovar(){
+    
+}

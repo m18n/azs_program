@@ -12,5 +12,8 @@ set(CMAKE_THREAD_LIBS_INIT "-lpthread")
 set(FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR ConnecterC++)
 set(LIBMYSQL ${FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR}/lib64/vs14)
 find_library(MYSQL_LIBRARY mysqlcppconn HINTS ${LIBMYSQL})
+
 add_library(${PROJECT_NAME} SHARED coreazs.cpp)
-target_link_libraries(${PROJECT_NAME} ${MYSQL_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${MYSQL_LIBRARY})
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+# COMMAND ${CMAKE_COMMAND} -E copy_directory ConnecterC++/lib64 $<TARGET_FILE_DIR:${PROJECT_NAME}>)  

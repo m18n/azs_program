@@ -16,7 +16,6 @@ link_directories("desktop/bin/linux")
 endif()
 add_subdirectory(coreazs)
 add_executable(${PROJECT_NAME} main.cpp funjs.cpp views.cpp coreviews.cpp)
-
 target_link_libraries(${PROJECT_NAME} UltralightCore AppCore Ultralight WebCore COREAZS)
 if (APPLE)
   # Enable High-DPI on macOS through our custom Info.plist template
@@ -28,6 +27,8 @@ if (MSVC)
   set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/ENTRY:mainCRTStartup")
   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}"/desktop/bin/windows" $<TARGET_FILE_DIR:${PROJECT_NAME}>)  
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}"/coreazs/ConnecterC++/lib64" $<TARGET_FILE_DIR:${PROJECT_NAME}>)  
   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:COREAZS> $<TARGET_FILE_DIR:${PROJECT_NAME}>) 
  else()

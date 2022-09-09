@@ -2,9 +2,10 @@
 #ifdef _WIN32
 
 #ifdef CORE_EXPORTS
-#define CORE_API __declspec(dllexport)
-#else
 #define CORE_API __declspec(dllimport)
+
+#else
+#define CORE_API __declspec(dllexport)
 #endif
 #else
 #define CORE_API
@@ -20,7 +21,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-class CORE_API  DataBase{
+class  CORE_API DataBase{
 private:
     sql::Driver *driver;
     sql::Connection *con;
@@ -37,7 +38,7 @@ public:
 class CORE_API tb_node{
 public:
     tb_node(DataBase* db);
-    tb_node(DataBase* db,int id_node);
+    tb_node(DataBase*db,int id_node);
     virtual void Init(int id_node)=0;
     virtual void DownloadParameters()=0;
     virtual void UploadParameters()=0;
@@ -52,9 +53,10 @@ class CORE_API Tovar:public tb_node{
 public:
     Tovar(DataBase* db);
     Tovar(DataBase* db,int id_tovar);
-    void  Init(int id_node) override;
-    void DownloadParameters() override;
-    void UploadParameters()override;
+    virtual void  Init(int id_node) override;
+    virtual void DownloadParameters() override;
+    virtual void UploadParameters()override;
+    ~Tovar();
 private:
     
     std::string name_prog;
