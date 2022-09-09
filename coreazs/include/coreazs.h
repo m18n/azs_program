@@ -1,101 +1,68 @@
 #pragma once
 #ifdef _WIN32
 
-#ifdef MATHLIBRARY_EXPORTS
-#define MATHLIBRARY_API __declspec(dllexport)
+#ifdef CORE_EXPORTS
+#define CORE_API __declspec(dllexport)
 #else
-#define MATHLIBRARY_API __declspec(dllimport)
+#define CORE_API __declspec(dllimport)
 #endif
 #else
 #define CORE_API
 #endif
-#define VERSION 1
-#include"sqlite/sqlite3.h"
-#include<WinSock2.h>
-#include<stdio.h>
+
+#include <mysql_connection.h>
+#include <cppconn/driver.h>
+
+#include <cppconn/exception.h>
+#include <cppconn/statement.h>
+#include <cppconn/resultset.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+class CORE_API  DataBase{
+private:
+    sql::Driver *driver;
+    sql::Connection *con;
+    std::string database;
+    sql::Statement* stmt;
+    bool init;
+public:
+    DataBase();
+    void Connection(std::string ip,std::string name,std::string password,std::string database);
+    bool IsInit();
+    sql::ResultSet* SendSql(std::string sql);
+    ~DataBase();
+};
+class CORE_API tb_node{
+public:
+    tb_node(DataBase* db);
+    tb_node(DataBase* db,int id_node);
+    virtual void Init(int id_node)=0;
+    virtual void DownloadParameters()=0;
+    virtual void UploadParameters()=0;
+    ~tb_node();
+protected:
+    std::string table;
+    DataBase* db;
+    int id_node;
 
-typedef struct network{
-    WSADATA wsaData;
-    WORD dllverison;
-    SOCKADDR_IN addr;
-    SOCKET conn;
-    int sizeofaddr;
-    int idquery;
-}network_t;
-typedef struct packet{
-    int id;
-    char*(*GetStrPacket)(struct packet* pack,int* size);
-}packet_t;
-void InitPacket(packet_t* pack,int id,char*(*GetStrPacket)(struct packet* pack,int* size));
-typedef struct getchat{
-    struct packet pack;
-    int min;
-    int max;
-}getchat_t;
-void CreateGetChat(getchat_t* chat);
-char* GetChats(packet_t* pack,int* size);
-void InitGetChat(getchat_t* chat,int max,int min);
-void send_query(network_t* network,packet_t* pack,void(*Res)(void*data));
-MATHLIBRARY_API void CreateNetwork(network_t* network);
-MATHLIBRARY_API void ConnectNetwork(network_t* network,int port);
-void UpdatePacket(network_t*network);
+};
+class CORE_API Tovar:public tb_node{
+public:
+    Tovar(DataBase* db);
+    Tovar(DataBase* db,int id_tovar);
+    void  Init(int id_node) override;
+    void DownloadParameters() override;
+    void UploadParameters()override;
+private:
+    
+    std::string name_prog;
+    std::string name_p;
+    std::string name_p_f;
+    int nd_code;
+    int wog_code;
+};
 #ifdef __cplusplus
 }
 #endif
-// class CORE_API Unit
-// {
-// public:
-//       Unit();
-//      virtual void Synhron();
-//      void InitModule(sqlite3 *db, std::string table, int id);
-//      virtual void Show();
-//     int GetId();
-//     ~Unit();
-// protected:
-//     sqlite3 *db;
-//     bool init;
-//     std::string table;
-//     int id;
-// };
-// class CORE_API Dispens_Unit : public Unit
-// {
-// public:
-//      Dispens_Unit();
-//      void Synhron();
-//     static  std::vector<Dispens_Unit> StaticGetAllUnit(sqlite3 *db);
-//     void Show();
-//     void Resize(int width, int heigth);
-//     void Move(int x, int y);
-//     void GetAllParam(int* width,int* heigth,int* x,int* y);
-    
-//     ~Dispens_Unit();
-//     std::string GetParamDispens_Unit();
-// private:
-//     int width;
-//     int heigth;
-//     int x;
-//     int y;
-    
-// };
-
-// class CORE_API AZS
-// {
-// public:
-//     AZS();
-
-//     ~AZS();
-//     Dispens_Unit* GetUnit(int index);
-//     Dispens_Unit* GetUnitbyId(int id);
-//     int GetSizeUnit();
-
-//     bool CheckPassword(std::string password);
-    
-// private:
-//     int id = 1;
-//     std::vector<Dispens_Unit> units;
-//     sqlite3* AZSdb;
-// };
-    

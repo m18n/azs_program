@@ -81,6 +81,10 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "winsock2.h": "c",
-        "coreazs.h": "c"
+        "coreazs.h": "c",
+        "bitset": "cpp",
+        "mutex": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
     }
 }

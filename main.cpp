@@ -28,8 +28,10 @@ void InitSites(){
 int main() {
     //AZS azs;
     std::cout << "STARt\n";
-    network_t network;
-    ConnectNetwork(&network,1111);
+    DataBase db;
+    db.Connection("tcp://192.168.0.103:3307", "user", "0958532122m","azs");
+    Tovar tv(&db,1);
+
     auto app = App::Create();
     auto window = Window::Create(app->main_monitor(),WINDOW_WIDTH,WINDOW_HEIGHT,false,
         kWindowFlags_Titled | kWindowFlags_Resizable | kWindowFlags_Maximizable);
