@@ -28,10 +28,17 @@ void InitSites(){
 int main() {
     //AZS azs;
     std::cout << "STARt\n";
+    try {
     DataBase db;
     db.Connection("tcp://192.168.0.103:3307", "user", "0958532122m","azs");
     Tovar tv(&db,1);
-
+    } catch (sql::SQLException &e) {
+    cout << "# ERR: SQLException in " << __FILE__;
+    cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+    cout << "# ERR: " << e.what();
+    cout << " (MySQL error code: " << e.getErrorCode();
+    cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+    }
     auto app = App::Create();
     auto window = Window::Create(app->main_monitor(),WINDOW_WIDTH,WINDOW_HEIGHT,false,
         kWindowFlags_Titled | kWindowFlags_Resizable | kWindowFlags_Maximizable);

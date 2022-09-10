@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.4)
 project(AZS)
+set (CMAKE_BUILD_TYPE Debug)
 if (MSVC)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")

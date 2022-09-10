@@ -1,15 +1,17 @@
 #include "coreazs.h"
 DataBase::DataBase(){
         init=false;
-        driver = get_driver_instance();
+       
     }
 void DataBase::Connection(std::string ip,std::string name,std::string password,std::string database){
+      
+        driver = get_driver_instance();
         con = driver->connect(ip, name,password);
         init=true;
         con->setSchema(database);
         this->database=database;
         stmt=con->createStatement();
-
+    
     }
 bool DataBase::IsInit(){
         return init;
