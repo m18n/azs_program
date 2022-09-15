@@ -10,10 +10,10 @@ endif()
 #     set(CMAKE_USE_PTHREADS_INIT 1)
 #     set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR ConnecterC++)
-set(LIBMYSQL ${FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR}/lib64/vs14)
-find_library(MYSQL_LIBRARY mysqlcppconn HINTS ${LIBMYSQL})
+set(LIBMYSQL ${FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR}/lib/vs14)
+find_library(MYSQL_LIBRARY mysqlclient HINTS ${LIBMYSQL})
 
-add_library(${PROJECT_NAME} SHARED coreazs.cpp)
+add_library(${PROJECT_NAME} SHARED coreazs.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${MYSQL_LIBRARY})
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 # COMMAND ${CMAKE_COMMAND} -E copy_directory ConnecterC++/lib64 $<TARGET_FILE_DIR:${PROJECT_NAME}>)  

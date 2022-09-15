@@ -30,6 +30,7 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
     //     funjs::viewsc->CallFunctionJs("ErrorAdminPass", "");
     //     std::cout << "ERROR ADMIN PASS\n";
     // }
+    funjs::viewsc->LoadSite("admin.html");
     return JSValueMakeNull(ctx);
 }
 JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,

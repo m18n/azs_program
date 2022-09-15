@@ -8,7 +8,6 @@ endif()
 include_directories("desktop/include")
 include_directories("coreazs/include")
 include_directories(coreazs/ConnecterC++/include)
-include_directories(coreazs/ConnecterC++/include/jdbc)
 
 if (MSVC)
 link_directories("desktop/lib")
@@ -29,7 +28,7 @@ if (MSVC)
   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}"/desktop/bin/windows" $<TARGET_FILE_DIR:${PROJECT_NAME}>)  
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}"/coreazs/ConnecterC++/lib64" $<TARGET_FILE_DIR:${PROJECT_NAME}>)  
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}"/coreazs/ConnecterC++/lib" $<TARGET_FILE_DIR:${PROJECT_NAME}>)  
   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:COREAZS> $<TARGET_FILE_DIR:${PROJECT_NAME}>) 
  else()

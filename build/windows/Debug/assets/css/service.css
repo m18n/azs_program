@@ -2,13 +2,14 @@
     color:white;
     padding: 0px;
     margin: 0px;
+
 }
 .t_f{
    margin-left: calc(50% - 55px); 
    transform: translateX(-50%);
 }
 .t_namediv{
-    
+    text-align: center;
 }
 .heads{
     margin-top: 20px;
@@ -26,7 +27,8 @@
 .services{
     display: flex;
     margin-left: 20px;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 .admin{
     display: flex;
@@ -39,6 +41,20 @@
     cursor: pointer;
 }
 .admin:hover{
+    background-color: #292929;
+}
+.contenier{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: black;
+    height: 100px;
+    width: 250px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+.contenier:hover{
     background-color: #292929;
 }
 .fon{
