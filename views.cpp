@@ -1,8 +1,16 @@
 #include"include/views.h"
 VServClient::VServClient() {
-
+	create_database(&db);
+	database_connect(&db);
+	init_db_table(&tb_tovar,&db,"tovar");
+	tovars=NULL;
 }
 VServClient::~VServClient() {
+	if(tovars!=NULL){
+		free(tovars);
+		tovars=NULL;
+	}
+	destroy_database(&db);
 	std::cout<<"END VSERV\n";
 }
 void VServClient::SetWin(RefPtr<Window> win) {
@@ -16,7 +24,8 @@ void VServClient::SetWin(RefPtr<Window> win) {
 
 	win->set_listener(this);
 }
-void VServClient::LoadSite(std::string name){
+void VServClient::LoadSite(std::string name,std::string argument){
+	this->argument=argument;
 	ov->view()->LoadURL(("file:///"+name).c_str());
 }
 void VServClient::OnDOMReady(View* caller,
@@ -24,6 +33,7 @@ void VServClient::OnDOMReady(View* caller,
 	bool is_main_frame,
 	const String& url)
 {
+
 	Ref<JSContext> context = caller->LockJSContext();
 	std::string strurl=url.utf8().data()+8;
 	SetCtx(context.get(),strurl);

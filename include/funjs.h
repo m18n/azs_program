@@ -16,6 +16,9 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
    JSValueRef LOG(JSContextRef ctx, JSObjectRef function,
   JSObjectRef thisObject, size_t argumentCount, 
   const JSValueRef arguments[], JSValueRef* exception);
+  JSValueRef LoadSite(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception);
 namespace funjs {
     extern VServClient* viewsc;
     void SetView(VServClient* view);
@@ -24,5 +27,5 @@ namespace funjs {
     void RegistrMenuFunction(site* s);
     void LoadSiteIndex();
     void LoadSiteAdmin();
-
+    void LoadSiteTypeGas();
 }

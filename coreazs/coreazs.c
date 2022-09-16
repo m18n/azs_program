@@ -31,11 +31,16 @@ void database_connect(database_t* db){
   }
   database_query(db,"USE azs;");
 }
+void db_node_row_to_param(db_node_t* node,char** row){
 
+}
 void db_node_downlaod_param(db_node_t* node){
     
 }
 void db_node_upload_param(db_node_t* node){
+
+}
+void db_node_show(db_node_t* node){
 
 }
 void create_db_node(db_node_t* node){
@@ -43,10 +48,71 @@ void create_db_node(db_node_t* node){
     node->db=NULL;
     node->download_param=db_node_downlaod_param;
     node->upload_param=db_node_upload_param;
+    node->row_to_param=db_node_row_to_param;
+    node->show=db_node_show;
+}
+void destroy_database(database_t* db){
+    if(db->con!=NULL){
+        mysql_close(db->con);
+        db->con=NULL;
+    }
 }
 void init_db_node(db_node_t* node,database_t* db){
     create_db_node(node);
     node->db=db;
+}
+CORE_API int db_table_get_count(db_table_t* table){
+    char buffersql[1000];
+    int length=0;
+    strcpy(buffersql,"SELECT COUNT(*) FROM ");
+    length=strlen(buffersql);
+    strcpy(&buffersql[length],table->nametable);
+    MYSQL* res=database_query(table->db,buffersql);
+     MYSQL_ROW row=mysql_fetch_row(res);
+    int count=atoi(row[0]);
+    mysql_free_result(res);
+    return count;
+}
+db_node_t* db_table_get_all(db_table_t* table,db_node_t* node,int sizenode,int* sizenodes){
+    int row_size=db_table_get_count(table);
+    *sizenodes=row_size;
+    
+    char* nodes=malloc(sizenode*row_size);
+    char* start=nodes;
+    char buffersql[1000];
+    int length=0;
+    strcpy(buffersql,"SELECT * FROM ");
+    length=strlen(buffersql);
+    strcpy(&buffersql[length],table->nametable);
+    MYSQL* res=database_query(table->db,buffersql);
+    
+    int numcolum=mysql_num_fields(res);
+    int index=0;
+    for(int i=0;i<row_size;i++){
+        MYSQL_ROW row=mysql_fetch_row(res);
+        memcpy(nodes,node,sizenode);
+        db_node_t* n=nodes;
+        n->row_to_param(n,row);
+        nodes+=sizenode;
+    }
+    nodes=start;
+    mysql_free_result(res);
+    return (db_node_t*)start;
+}
+void create_db_table(db_table_t* table){
+    table->db=NULL;
+ 
+}
+void init_db_table(db_table_t* table,database_t* db,const char nametable[50]){
+    create_db_table(table);
+    table->db=db;
+    strcpy(table->nametable,nametable);    
+}
+void tovar_node_row_to_param(tovar_node_t* node,char** row){
+    strcpy(node->name,row[5]);
+    strcpy(node->name_p,row[10]);
+    strcpy(node->name_p_f,row[11]);
+    node->node.id=atoi(row[2]);
 }
 void tovar_node_downlaod_param(tovar_node_t* node){
     
@@ -59,9 +125,7 @@ void tovar_node_downlaod_param(tovar_node_t* node){
         strcpy(&buffer[length],buffint);
         MYSQL_RES* res=database_query(node->node.db,buffer);
         MYSQL_ROW row=mysql_fetch_row(res);
-        strcpy(node->name,row[5]);
-        strcpy(node->name_p,row[10]);
-        strcpy(node->name_p_f,row[11]);
+        tovar_node_row_to_param(node,row);
         mysql_free_result(res);   
    }else{
         printf("ERROR NOT ID\n");
@@ -74,16 +138,23 @@ void tovar_node_upload_param(tovar_node_t* node){
     printf("ERROR NOT ID\n");
    }
 }
+void tovar_node_show(tovar_node_t* node){
+    printf("TOVAR: ID: %d NAME: %s NAME_P: %s NAME_P_F: %s ND_CODE: %d WOG_CODE: %d\n",node->node.id,node->name,node->name_p,node->name_p_f,node->nd_code,node->wog_code);
+}
 void create_tovar_node(tovar_node_t* node){
     create_db_node(&node->node);
     node->nd_code=0;
     node->wog_code=0;
     node->node.download_param=tovar_node_downlaod_param;
     node->node.upload_param=tovar_node_upload_param;
+    node->node.row_to_param=tovar_node_row_to_param;
+    node->node.show=tovar_node_show;
 }
 void init_tovar_node(tovar_node_t* node,database_t* db){
     create_tovar_node(node);
     init_db_node(&node->node,db);
     node->node.download_param=tovar_node_downlaod_param;
     node->node.upload_param=tovar_node_upload_param;
+    node->node.row_to_param=tovar_node_row_to_param;
+     node->node.show=tovar_node_show;
 }

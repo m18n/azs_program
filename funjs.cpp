@@ -30,7 +30,7 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
     //     funjs::viewsc->CallFunctionJs("ErrorAdminPass", "");
     //     std::cout << "ERROR ADMIN PASS\n";
     // }
-    funjs::viewsc->LoadSite("admin.html");
+    funjs::viewsc->LoadSite("admin.html","");
     return JSValueMakeNull(ctx);
 }
 JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,
@@ -72,6 +72,15 @@ JSValueRef SaveMove(JSContextRef ctx, JSObjectRef function,
       std::cout<<"MESSAGE: "<<mess<<"\n";
       return JSValueMakeNull(ctx);
   }
+JSValueRef LoadSite(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception)
+{
+    std::string file=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+    std::string argument=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
+    funjs::viewsc->LoadSite(file,argument);
+return JSValueMakeNull(ctx);
+}
 void funjs::LoadSiteIndex(){
    std::cout<<"LOAD INDEX\n";
 //    AZS* azs=funjs::viewsc->GetAZS();
@@ -86,6 +95,23 @@ void funjs::LoadSiteAdmin(){
  std::cout<<"LOAD ADMIN\n";
    LoadSiteIndex();
 }
+void funjs::LoadSiteTypeGas(){
+    std::cout<<"LOAD TYPE GAS\n";
+    
+    if(viewsc->GetArgument()=="gas"){
+        tovar_node_t tovar;
+        init_tovar_node(&tovar,&viewsc->db);
+        int size=0;
+        tovar_node_t* tovars=(tovar_node_t*)db_table_get_all(&viewsc->tb_tovar,(db_node_t*)&tovar,sizeof(tovar_node_t),&size);
+        for(int i=0;i<size;i++){
+            tovars[i].node.show(&tovars[i].node);
+        }
+        if(viewsc->tovars!=NULL)
+            free(viewsc->tovars);
+        viewsc->tovars=tovars;
+    }
+}
+
  void funjs::SetView(VServClient* view){
      viewsc=view;
  }
@@ -94,12 +120,14 @@ void funjs::RegistrMenuFunction(site* s){
     viewsc->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
     
 }
+
 void funjs::RegistrAdminFunction(site* s)
 {
     RegistrStandartFunction(s);
     viewsc->RegistrFunctionJs(s,"AuthAdmin", AuthAdmin);
     viewsc->RegistrFunctionJs(s,"SaveResize", SaveResize);
     viewsc->RegistrFunctionJs(s,"SaveMove", SaveMove);
+    viewsc->RegistrFunctionJs(s,"LoadSite",LoadSite);
 }
 void funjs::RegistrStandartFunction(site* s){
     

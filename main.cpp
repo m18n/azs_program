@@ -11,27 +11,37 @@ void InitSites(){
     site index;
     index.namesite="index.html";
     index.LoadSite=funjs::LoadSiteIndex;
+    funjs::RegistrMenuFunction(&index);
     site service;
     service.namesite="services.html";
+    funjs::RegistrAdminFunction(&service);
     site admin;
     admin.namesite="admin.html";
     admin.LoadSite=funjs::LoadSiteAdmin;
-    funjs::RegistrAdminFunction(&service);
-    funjs::RegistrMenuFunction(&index);
-    funjs::RegistrMenuFunction(&admin);
+     funjs::RegistrMenuFunction(&admin);
     funjs::RegistrAdminFunction(&admin);
+    site confnode;
+    confnode.namesite="confnode.html";
+    confnode.LoadSite=funjs::LoadSiteTypeGas;
+    funjs::RegistrAdminFunction(&confnode);
+    site configure;
+    configure.namesite="configurationazs.html";
+    funjs::RegistrAdminFunction(&configure);
+    sites.push_back(configure);
     sites.push_back(index);
     sites.push_back(service);
     sites.push_back(admin);
+    sites.push_back(confnode);
     vs.AddSites(sites);
 }
 int main() {
     //AZS azs;
     std::cout << "STARt\n";
     GetDT();
-    database_t db;
-    create_database(&db);
-    database_connect(&db);
+    
+	
+   
+    
     // tovar_node_t tovar;
     // init_tovar_node(&tovar,&db);
     // tovar.node.id=10003;
@@ -49,6 +59,6 @@ int main() {
     
     vs.SetTitle("AZS\n");
     app->Run();
-    vs.~VServClient();
+    
 	return 0;
 }
