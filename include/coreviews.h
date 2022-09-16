@@ -14,9 +14,11 @@ struct functionjs {
 
 };
 struct site{
-    void(*LoadSite)()=NULL;
-    std::string namesite;
+    void(*LoadSite)(std::vector<std::string>*data)=NULL;
+    std::string namefile;
+    std::string url;
     std::vector<functionjs>funs;
+
 };
 class IFunctionJS {
 public:
@@ -32,27 +34,36 @@ public:
         this->ctx = ctx;
         int index=-1;
         for (int i = 0; i < sites.size(); i++) {
-            if(sites[i]->namesite==newsite){
+            if(sites[i].namefile==newsite){
                 
                 index=i;
                 break;
             }
         }
         if(index!=-1){
-            for(int i=0;i<sites[index]->funs.size();i++){
-                RegistrFunctionJs(sites[index],sites[index]->funs[i].namefunction,sites[index]->funs[i].fun);
+            for(int i=0;i<sites[index].funs.size();i++){
+                RegistrFunctionJs(&sites[index],sites[index].funs[i].namefunction,sites[index].funs[i].fun);
             }
-            if(sites[index]->LoadSite!=NULL)
-                    sites[index]->LoadSite();
+            if(sites[index].LoadSite!=NULL){
+                    local=&sites[index];
+                    sites[index].LoadSite(NULL);
+            }
         }
         
+    }
+    site* GetLocal(){
+        return local;
     }
     JSContextRef GetCtx() {
         return ctx;
     }
+    std::vector<site>* GetAllSite(){
+        return &sites;
+    }
 protected:
     std::string localsite;
-    std::vector<site*>sites;
+    site* local;
+    std::vector<site>sites;
 private:
     JSContextRef ctx = NULL;
 };

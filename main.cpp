@@ -4,35 +4,16 @@
 using namespace ultralight;
 #define WINDOW_WIDTH    1150
 #define WINDOW_HEIGHT   700
-std::vector<site>sites;
 VServClient vs;
+
 void InitSites(){
     funjs::SetView(&vs);
-    site index;
-    index.namesite="index.html";
-    index.LoadSite=funjs::LoadSiteIndex;
-    funjs::RegistrMenuFunction(&index);
-    site service;
-    service.namesite="services.html";
-    funjs::RegistrAdminFunction(&service);
-    site admin;
-    admin.namesite="admin.html";
-    admin.LoadSite=funjs::LoadSiteAdmin;
-     funjs::RegistrMenuFunction(&admin);
-    funjs::RegistrAdminFunction(&admin);
-    site confnode;
-    confnode.namesite="confnode.html";
-    confnode.LoadSite=funjs::LoadSiteTypeGas;
-    funjs::RegistrAdminFunction(&confnode);
-    site configure;
-    configure.namesite="configurationazs.html";
-    funjs::RegistrAdminFunction(&configure);
-    sites.push_back(configure);
-    sites.push_back(index);
-    sites.push_back(service);
-    sites.push_back(admin);
-    sites.push_back(confnode);
-    vs.AddSites(sites);
+    vs.AddSite("/index","index.html",funjs::LoadSiteIndex);
+    vs.AddSite("/service","services.html",NULL);
+    vs.AddSite("/admin","admin.html",funjs::LoadSiteAdmin);
+    vs.AddSite("/admin/configure","configurationazs.html",NULL);    
+    vs.AddSite("/admin/configure/confnode","confnode.html",funjs::LoadSiteTypeGas);
+    funjs::RegistrAllSites();
 }
 int main() {
     //AZS azs;

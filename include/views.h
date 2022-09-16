@@ -1,7 +1,6 @@
 #pragma once
 #include"coreazs.h"
 #include"coreviews.h" 
-
 class VServClient :public WindowListener, public ViewListener, public LoadListener, public IFunctionJS {
 public:
 
@@ -20,15 +19,15 @@ public:
 		this->title = title;
 		win->SetTitle(title.c_str());
 	}
-	void AddSite(site* s){
+	void AddSite(std::string url,std::string namefile,void(*LoadSite)(std::vector<string>*data)){
+		site s;
+		s.namefile=namefile;
+		s.url=url;
+		s.LoadSite=LoadSite;
 		this->sites.push_back(s);
 	}
-	void AddSites(std::vector<site>&v){
-		this->sites.resize(v.size());
-		for(int i=0;i<sites.size();i++){
-			sites[i]=&v[i];
-		}
-	}
+	
+	
 	std::string GetArgument(){
 		return argument;
 	}

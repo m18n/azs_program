@@ -81,8 +81,12 @@ JSValueRef LoadSite(JSContextRef ctx, JSObjectRef function,
     funjs::viewsc->LoadSite(file,argument);
 return JSValueMakeNull(ctx);
 }
-void funjs::LoadSiteIndex(){
-   std::cout<<"LOAD INDEX\n";
+void funjs::LoadBaseSite(){
+   // RegistrAllFunction(viewsc->GetLocal());
+}
+void funjs::LoadSiteIndex(std::vector<std::string>*data){
+    LoadBaseSite();
+    std::cout<<"LOAD INDEX\n";
 //    AZS* azs=funjs::viewsc->GetAZS();
 //    int size=azs->GetSizeUnit();
 //    for(int i=0;i<size;i++){
@@ -91,11 +95,13 @@ void funjs::LoadSiteIndex(){
 //        funjs::viewsc->CallFunctionJs("LoadUnit",js);
 //    }
 }
-void funjs::LoadSiteAdmin(){
+void funjs::LoadSiteAdmin(std::vector<std::string>*data){
+    
  std::cout<<"LOAD ADMIN\n";
-   LoadSiteIndex();
+   LoadSiteIndex(data);
 }
-void funjs::LoadSiteTypeGas(){
+void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
+    LoadBaseSite();
     std::cout<<"LOAD TYPE GAS\n";
     
     if(viewsc->GetArgument()=="gas"){
@@ -109,6 +115,7 @@ void funjs::LoadSiteTypeGas(){
         if(viewsc->tovars!=NULL)
             free(viewsc->tovars);
         viewsc->tovars=tovars;
+    
     }
 }
 
@@ -132,4 +139,18 @@ void funjs::RegistrAdminFunction(site* s)
 void funjs::RegistrStandartFunction(site* s){
     
     viewsc->RegistrFunctionJs(s,"LOG",LOG);
+}
+void funjs::RegistrAllFunction(site*s){
+    RegistrStandartFunction(s);
+    viewsc->RegistrFunctionJs(s,"AuthAdmin", AuthAdmin);
+    viewsc->RegistrFunctionJs(s,"SaveResize", SaveResize);
+    viewsc->RegistrFunctionJs(s,"SaveMove", SaveMove);
+    viewsc->RegistrFunctionJs(s,"LoadSite",LoadSite);
+    viewsc->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
+}
+void funjs::RegistrAllSites(){
+    std::vector<site>* sites=viewsc->GetAllSite();
+    for(int i=0;i<sites->size();i++){
+        RegistrAllFunction(&(*sites)[i]);
+    }
 }

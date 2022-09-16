@@ -25,7 +25,10 @@ namespace funjs {
     void RegistrStandartFunction(site* s);
     void RegistrAdminFunction(site* s);
     void RegistrMenuFunction(site* s);
-    void LoadSiteIndex();
-    void LoadSiteAdmin();
-    void LoadSiteTypeGas();
+    void RegistrAllFunction(site*s);
+    void RegistrAllSites();
+    void LoadBaseSite();
+    void LoadSiteIndex(std::vector<std::string>*data);
+    void LoadSiteAdmin(std::vector<std::string>*data);
+    void LoadSiteTypeGas(std::vector<std::string>*data);
 }
