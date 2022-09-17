@@ -41,11 +41,13 @@ typedef struct CORE_API db_node{
     void(*download_param)(struct db_node* node);
     void(*upload_param)(struct db_node* node);
     void(*show)(struct db_node* node);
+    char*(*get_string)(struct db_node* node);
 }db_node_t;
 void CORE_API db_node_row_to_param(db_node_t* node,char** row);
 void CORE_API db_node_downlaod_param(db_node_t* node);
 void CORE_API db_node_upload_param(db_node_t* node);
 void CORE_API db_node_show(db_node_t* node);
+CORE_API char*  db_node_get_string(db_node_t* node);
 void CORE_API create_db_node(db_node_t* node);
 void CORE_API init_db_node(db_node_t* node,database_t* db);
 typedef struct CORE_API db_table{
@@ -69,6 +71,8 @@ void CORE_API tovar_node_show(tovar_node_t* node);
 void CORE_API tovar_node_row_to_param(tovar_node_t* node,char** row);
 void CORE_API tovar_node_downlaod_param(tovar_node_t* node);
 void CORE_API tovar_node_upload_param(tovar_node_t* node);
+CORE_API char*  tovar_node_get_string(tovar_node_t* node);
+
 void CORE_API create_tovar_node(tovar_node_t* node);
 void CORE_API init_tovar_node(tovar_node_t* node,database_t* db);
 

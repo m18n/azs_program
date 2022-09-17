@@ -12,7 +12,12 @@ function GetVar(data){
     }
     return arr;
 }
-function LoadUnits(str){
-    // id:name:link|
-    
+function LoadConteiner(str){
+    // id:value|name:value|link:value|
+    let unis=GetVar(str);
+    let obj=$("#shab").clone();
+    obj.removeClass("none");
+    $(obj).find(".h").text(unis[1].value);
+    obj.appendTo(".services");
+   
 }

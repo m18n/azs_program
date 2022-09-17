@@ -110,11 +110,15 @@ void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
     int size=0;
     tovar_node_t* tovars=(tovar_node_t*)db_table_get_all(&viewsc->tb_tovar,(db_node_t*)&tovar,sizeof(tovar_node_t),&size);
     for(int i=0;i<size;i++){
-        tovars[i].node.show(&tovars[i].node);
+        char* str=tovars[i].node.get_string(&tovars[i].node);
+        printf("STRING: %s\n",str);
+        funjs::viewsc->CallFunctionJs("LoadConteiner",str);
+        free(str);
     }
     if(viewsc->tovars!=NULL)
         free(viewsc->tovars);
     viewsc->tovars=tovars;
+    
     
     
 }

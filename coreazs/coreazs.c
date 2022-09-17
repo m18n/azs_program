@@ -43,6 +43,9 @@ void db_node_upload_param(db_node_t* node){
 void db_node_show(db_node_t* node){
 
 }
+char* db_node_get_string(db_node_t* node){
+
+}
 void create_db_node(db_node_t* node){
     node->id=0;
     node->db=NULL;
@@ -50,6 +53,7 @@ void create_db_node(db_node_t* node){
     node->upload_param=db_node_upload_param;
     node->row_to_param=db_node_row_to_param;
     node->show=db_node_show;
+    node->get_string=db_node_get_string;
 }
 void destroy_database(database_t* db){
     if(db->con!=NULL){
@@ -141,6 +145,57 @@ void tovar_node_upload_param(tovar_node_t* node){
 void tovar_node_show(tovar_node_t* node){
     printf("TOVAR: ID: %d NAME: %s NAME_P: %s NAME_P_F: %s ND_CODE: %d WOG_CODE: %d\n",node->node.id,node->name,node->name_p,node->name_p_f,node->nd_code,node->wog_code);
 }
+char* tovar_node_get_string(tovar_node_t* node){
+    char id[12];
+    sprintf(id, "%d", node->node.id);
+    char wog_code[12];
+    sprintf(wog_code, "%d", node->wog_code);
+    char nd_code[12];
+    sprintf(nd_code, "%d", node->nd_code);
+    int lenparam=strlen(id)+strlen(node->name)+strlen(node->name_p)+strlen(node->name_p_f)+strlen(wog_code)+strlen(nd_code);
+    int lengtharg=strlen("id:")+1+strlen("name:")+1+strlen("name_p:")+1+strlen("name_p_f:")+1+strlen("wog_code:")+1+strlen("nd_code:")+1;
+    char* tovarstr=malloc(lenparam+lengtharg+1);
+    int index=0;
+    strcpy(&tovarstr[index],"id:");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],id);
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"|");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"name:");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],node->name);
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"|");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"name_p:");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],node->name_p);
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"|");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"name_p_f:");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],node->name_p_f);
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"|");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"wog_code:");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],wog_code);
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"|");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"nd_code:");
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],nd_code);
+    index=strlen(tovarstr);
+    strcpy(&tovarstr[index],"|");
+    index=strlen(tovarstr);
+    tovarstr[lenparam+lengtharg]='\0';
+    return tovarstr;
+
+}
 void create_tovar_node(tovar_node_t* node){
     create_db_node(&node->node);
     node->nd_code=0;
@@ -149,6 +204,7 @@ void create_tovar_node(tovar_node_t* node){
     node->node.upload_param=tovar_node_upload_param;
     node->node.row_to_param=tovar_node_row_to_param;
     node->node.show=tovar_node_show;
+    node->node.get_string=tovar_node_get_string;
 }
 void init_tovar_node(tovar_node_t* node,database_t* db){
     create_tovar_node(node);
@@ -157,4 +213,5 @@ void init_tovar_node(tovar_node_t* node,database_t* db){
     node->node.upload_param=tovar_node_upload_param;
     node->node.row_to_param=tovar_node_row_to_param;
      node->node.show=tovar_node_show;
+      node->node.get_string=tovar_node_get_string;
 }
