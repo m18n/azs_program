@@ -86,6 +86,17 @@ JSValueRef LoadSite(JSContextRef ctx, JSObjectRef function,
     funjs::viewsc->LoadSite(url,std::move(arrarg));
     return JSValueMakeNull(ctx);
 }
+JSValueRef SaveTovar(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception){
+    std::string tovar=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+    tovar_node_t t;
+    init_tovar_node(&t,&funjs::viewsc->db);
+    char* data=&tovar[0];
+    t.node.string_to_param(&t.node,data,tovar.size());
+    t.node.upload_param(&t.node);
+    return JSValueMakeNull(ctx);
+}
 void funjs::LoadBaseSite(){
    // RegistrAllFunction(viewsc->GetLocal());
 }
@@ -166,6 +177,7 @@ void funjs::RegistrAllFunction(site*s){
     viewsc->RegistrFunctionJs(s,"SaveResize", SaveResize);
     viewsc->RegistrFunctionJs(s,"SaveMove", SaveMove);
     viewsc->RegistrFunctionJs(s,"LoadSite",LoadSite);
+    viewsc->RegistrFunctionJs(s,"SaveTovar",SaveTovar);
     viewsc->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
 }
 void funjs::RegistrAllSites(){

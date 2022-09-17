@@ -19,6 +19,9 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
   JSValueRef LoadSite(JSContextRef ctx, JSObjectRef function,
                     JSObjectRef thisObject, size_t argumentCount,
                     const JSValueRef arguments[], JSValueRef *exception);
+JSValueRef SaveTovar(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception);
 namespace funjs {
     extern VServClient* viewsc;
     void SetView(VServClient* view);
@@ -32,4 +35,5 @@ namespace funjs {
     void LoadSiteAdmin(std::vector<std::string>*data);
     void LoadSiteTypeGas(std::vector<std::string>*data);
     void LoadSiteSettingsTovar(std::vector<std::string>*data);
+    
 }

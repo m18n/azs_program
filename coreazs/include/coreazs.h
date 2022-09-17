@@ -20,6 +20,8 @@
 // #include <cppconn/resultset.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include<stdbool.h>
+#include"parser.h"
 #include"mysql.h"
 #ifdef __cplusplus
 extern "C" {
@@ -30,20 +32,22 @@ typedef struct CORE_API database{
     MYSQL* con;
     
 }database_t;
-CORE_API MYSQL_RES* database_query(database_t* db,const char* query);
+CORE_API MYSQL_RES* database_query(database_t* db,const char* query,bool res);
 void CORE_API create_database(database_t* database);
 void CORE_API database_connect(database_t* db);
 void CORE_API destroy_database(database_t* db);
 typedef struct CORE_API db_node{
     database_t* db;
     int id;
-    void(*row_to_param)(struct db_node* node,char** row);
+    void(*rowdb_to_param)(struct db_node* node,char** row);
+    void(*string_to_param)(struct db_node* node,char* string,int size);
     void(*download_param)(struct db_node* node);
     void(*upload_param)(struct db_node* node);
     void(*show)(struct db_node* node);
     char*(*get_string)(struct db_node* node);
 }db_node_t;
-void CORE_API db_node_row_to_param(db_node_t* node,char** row);
+void CORE_API db_node_rowrowdb_to_param(db_node_t* node,char** row);
+void CORE_API db_node_string_to_param(db_node_t* node,char* string,int size);
 void CORE_API db_node_downlaod_param(db_node_t* node);
 void CORE_API db_node_upload_param(db_node_t* node);
 void CORE_API db_node_show(db_node_t* node);
@@ -68,7 +72,8 @@ typedef struct CORE_API tovar_node{
     
 }tovar_node_t;
 void CORE_API tovar_node_show(tovar_node_t* node);
-void CORE_API tovar_node_row_to_param(tovar_node_t* node,char** row);
+void CORE_API tovar_node_rowdb_to_param(tovar_node_t* node,char** row);
+void CORE_API tovar_node_string_to_param(tovar_node_t* node,char* string,int size);
 void CORE_API tovar_node_downlaod_param(tovar_node_t* node);
 void CORE_API tovar_node_upload_param(tovar_node_t* node);
 CORE_API char*  tovar_node_get_string(tovar_node_t* node);

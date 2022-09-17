@@ -1,5 +1,5 @@
 function GetVar(data){
-    let variable=data.split('|');
+    let variable=data.split('\r');
     var arr=[];
     for(let i=0;i<variable.length;i++){
         let vare=variable[i].split(':');
@@ -26,6 +26,7 @@ function LoadConteiner(str){
 function LoadSettingTovar(str){
     let tovar=GetVar(str);
     let sett=$(".settings_tovar");
+    sett.attr("id",tovar[0].value);
     sett.find("#name").val(tovar[1].value);
     sett.find("#name_p").val(tovar[2].value);
     sett.find("#name_p_f").val(tovar[3].value);
