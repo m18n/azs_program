@@ -31,4 +31,5 @@ namespace funjs {
     void LoadSiteIndex(std::vector<std::string>*data);
     void LoadSiteAdmin(std::vector<std::string>*data);
     void LoadSiteTypeGas(std::vector<std::string>*data);
+    void LoadSiteSettingsTovar(std::vector<std::string>*data);
 }

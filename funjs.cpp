@@ -30,7 +30,7 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
     //     funjs::viewsc->CallFunctionJs("ErrorAdminPass", "");
     //     std::cout << "ERROR ADMIN PASS\n";
     // }
-    funjs::viewsc->LoadSite("/admin","");
+    funjs::viewsc->LoadSite("/admin");
     return JSValueMakeNull(ctx);
 }
 JSValueRef SaveResize(JSContextRef ctx, JSObjectRef function,
@@ -77,9 +77,14 @@ JSValueRef LoadSite(JSContextRef ctx, JSObjectRef function,
                     const JSValueRef arguments[], JSValueRef *exception)
 {
     std::string url=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
-    std::string argument=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
-    funjs::viewsc->LoadSite(url,argument);
-return JSValueMakeNull(ctx);
+    std::vector<std::string>arrarg;
+    arrarg.resize(argumentCount-1);
+    for(int i=1;i<argumentCount;i++){
+        arrarg[i-1]=funjs::viewsc->ArgumentToStr(ctx,arguments[i],exception);
+    }
+    
+    funjs::viewsc->LoadSite(url,std::move(arrarg));
+    return JSValueMakeNull(ctx);
 }
 void funjs::LoadBaseSite(){
    // RegistrAllFunction(viewsc->GetLocal());
@@ -122,7 +127,18 @@ void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
     
     
 }
-
+void funjs::LoadSiteSettingsTovar(std::vector<std::string>*data){
+    std::cout<<"SettingsTovar\n";
+    if(data->size()!=0){
+        tovar_node_t tovar;
+        init_tovar_node(&tovar,&viewsc->db);
+        tovar.node.id=atoi((*data)[0].c_str());
+        tovar.node.download_param(&tovar.node);
+        char* str=tovar.node.get_string(&tovar.node);
+        funjs::viewsc->CallFunctionJs("LoadSettingTovar",str);
+        free(str);
+    }
+}
  void funjs::SetView(VServClient* view){
      viewsc=view;
  }

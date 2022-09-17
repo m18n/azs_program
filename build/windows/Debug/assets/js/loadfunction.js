@@ -19,5 +19,17 @@ function LoadConteiner(str){
     obj.removeClass("none");
     $(obj).find(".h").text(unis[1].value);
     obj.appendTo(".services");
-   
+    obj.attr('onClick', 'LoadSite("/admin/service/configure/tank/settings","'+unis[0].value+'");');
+    
+    
+}
+function LoadSettingTovar(str){
+    let tovar=GetVar(str);
+    let sett=$(".settings_tovar");
+    sett.find("#name").val(tovar[1].value);
+    sett.find("#name_p").val(tovar[2].value);
+    sett.find("#name_p_f").val(tovar[3].value);
+    sett.find("#nd_code").val(tovar[4].value);
+    sett.find("#wog_code").val(tovar[5].value);
+
 }

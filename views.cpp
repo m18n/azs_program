@@ -24,8 +24,20 @@ void VServClient::SetWin(RefPtr<Window> win) {
 
 	win->set_listener(this);
 }
-void VServClient::LoadSite(std::string url,std::string argument){
-	this->argument=argument;
+void VServClient::LoadSite(std::string url){
+	this->lastargument.clear();
+	int index=-1;
+	for(int i=0;i<sites.size();i++){
+		if(sites[i].url==url){
+			index=i;
+			break;
+		}
+	}
+	if(index!=-1)
+		ov->view()->LoadURL(("file:///"+sites[index].namefile).c_str());
+}
+void VServClient::LoadSite(std::string url,std::vector<std::string>arg){
+	this->lastargument=std::move(arg);
 	int index=-1;
 	for(int i=0;i<sites.size();i++){
 		if(sites[i].url==url){

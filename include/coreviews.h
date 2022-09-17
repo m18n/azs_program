@@ -46,11 +46,14 @@ public:
             }
             if(sites[index].LoadSite!=NULL){
                     local=&sites[index];
-                    sites[index].LoadSite(NULL);
+                    sites[index].LoadSite(&lastargument);
             }
         }
         
     }
+    std::vector<std::string>& GetArguments(){
+		return lastargument;
+	}
     site* GetLocal(){
         return local;
     }
@@ -64,6 +67,7 @@ protected:
     std::string localsite;
     site* local;
     std::vector<site>sites;
+    std::vector<std::string>lastargument;
 private:
     JSContextRef ctx = NULL;
 };

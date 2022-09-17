@@ -1,0 +1,27 @@
+.settings_tovar{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin-left: 20px;
+    
+    align-items: center;
+}
+.settings_tovar input{
+    width: 100%;
+    margin-top: 10px;
+    height: 40px;
+    outline: none;
+    border-radius:20px;
+    padding: 10px;
+}
+.settings_tovar button{
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    margin-top: 15px;
+    height: 30px;
+    width: 100px;
+    
+}

@@ -30,6 +30,9 @@ void database_connect(database_t* db){
       exit(1);
   }
   database_query(db,"USE azs;");
+  database_query(db,"SET NAMES 'utf8'");
+  database_query(db,"SET CHARACTER SET utf8");
+  database_query(db,"SET SESSION collation_connection = 'utf8_unicode_ci'");
 }
 void db_node_row_to_param(db_node_t* node,char** row){
 
@@ -113,6 +116,17 @@ void init_db_table(db_table_t* table,database_t* db,const char nametable[50]){
     strcpy(table->nametable,nametable);    
 }
 void tovar_node_row_to_param(tovar_node_t* node,char** row){
+    // int arrsize = MultiByteToWideChar( CP_UTF8 , 0 , row[5] , -1, NULL , 0 );
+
+    // int count = WideCharToMultiByte(CP_UTF8, 0, row[5], wstr.length(), NULL, 0, NULL, NULL);
+    // std::string str(count, 0);
+    // WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &str[0], count, NULL, NULL);
+
+    // arrsize = MultiByteToWideChar( CP_UTF8 , 0 , row[10] , -1, NULL , 0 );
+    // MultiByteToWideChar( CP_UTF8 , 0 ,row[10], -1,node->name_p,arrsize);
+    // arrsize = MultiByteToWideChar( CP_UTF8 , 0 , row[11] , -1, NULL , 0 );
+    // MultiByteToWideChar( CP_UTF8 , 0 ,row[11], -1,node->name_p_f,arrsize);
+    
     strcpy(node->name,row[5]);
     strcpy(node->name_p,row[10]);
     strcpy(node->name_p_f,row[11]);
