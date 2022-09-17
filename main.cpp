@@ -11,8 +11,13 @@ void InitSites(){
     vs.AddSite("/index","index.html",funjs::LoadSiteIndex);
     vs.AddSite("/service","services.html",NULL);
     vs.AddSite("/admin","admin.html",funjs::LoadSiteAdmin);
-    vs.AddSite("/admin/configure","configurationazs.html",NULL);    
-    vs.AddSite("/admin/configure/confnode","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/admin/service","servicesadmin.html",funjs::LoadSiteAdmin);
+    vs.AddSite("/admin/service/configure","configurationazs.html",NULL);    
+    vs.AddSite("/admin/service/configure/tank","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/admin/service/configure/tovar","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/admin/service/configure/colon","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/admin/service/configure/oper","confnode.html",funjs::LoadSiteTypeGas);
+
     funjs::RegistrAllSites();
 }
 int main() {

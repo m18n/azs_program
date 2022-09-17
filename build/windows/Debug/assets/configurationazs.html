@@ -11,28 +11,28 @@
 </head>
 <body>
     <div class="heads">
-        <a href="servicesadmin.html"><img src="img/arr.png" class="back" alt=""></a>
+        <img onclick="LoadSite('/admin/service','');" style="cursor: pointer;" src="img/arr.png" class="back" alt="">
     <h1 class="h t_f">Конфігурація AZS</h1>
 </div>
     <div class="container_r">
         <div class="services">
-            <a href="index.html">
-                <div class="admin" >
-                    <h1 class="h t_namediv">Резервуари</h1>
-                </div>   
-            </a>
+        
+            <div class="admin" onclick="LoadSite('/admin/service/configure/tank','');">
+                <h1 class="h t_namediv">Резервуари</h1>
+            </div>   
+          
            
-            <div class="contenier" onclick="LoadSite('confnode.html','gas');">
+            <div class="contenier" onclick="LoadSite('/admin/service/configure/tovar','');">
                 <h1 class="h t_namediv">Види палива</h1>
             </div>
             
             <a href="#">
-                <div class="contenier"  onclick="LoadSite('confnode.html','colon');">
+                <div class="contenier"  onclick="LoadSite('/admin/service/configure/colon','');">
                     <h1 class="h t_namediv">Колонки</h1>
                 </div>
             </a>
             <a href="#">
-                <div class="contenier" onclick="LoadSite('confnode.html','oper');">
+                <div class="contenier" onclick="LoadSite('/admin/service/configure/oper','');">
                     <h1 class="h t_namediv">Оператори</h1>
                 </div>
             </a>
