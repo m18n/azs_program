@@ -97,6 +97,11 @@ JSValueRef SaveTovar(JSContextRef ctx, JSObjectRef function,
     t.node.upload_param(&t.node);
     return JSValueMakeNull(ctx);
 }
+JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception){
+return JSValueMakeNull(ctx);
+                    }
 void funjs::LoadBaseSite(){
    // RegistrAllFunction(viewsc->GetLocal());
 }
@@ -138,6 +143,9 @@ void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
     
     
 }
+void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
+    std::cout<<"SettingsAZS\n";
+}
 void funjs::LoadSiteSettingsTovar(std::vector<std::string>*data){
     std::cout<<"SettingsTovar\n";
     if(data->size()!=0){
@@ -178,6 +186,7 @@ void funjs::RegistrAllFunction(site*s){
     viewsc->RegistrFunctionJs(s,"SaveMove", SaveMove);
     viewsc->RegistrFunctionJs(s,"LoadSite",LoadSite);
     viewsc->RegistrFunctionJs(s,"SaveTovar",SaveTovar);
+    viewsc->RegistrFunctionJs(s,"SaveAZS",SaveAZS);
     viewsc->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
 }
 void funjs::RegistrAllSites(){

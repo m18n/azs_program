@@ -1,4 +1,6 @@
-.settings_tovar{
+
+
+.settings_azs{
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -7,15 +9,23 @@
     
     align-items: center;
 }
-.settings_tovar input{
-    width: 100%;
+.settings_azs div{
     margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.settings_azs input{
+    width: 100%;
+    margin-left: 20px;
     height: 40px;
     outline: none;
     border-radius:20px;
     padding: 10px;
+    
 }
-.settings_tovar button{
+.settings_azs button{
     border-radius: 8px;
     cursor: pointer;
     outline: none;

@@ -14,12 +14,22 @@
         <img onclick="LoadSite('/admin/service/configure/tank','');" style="cursor: pointer;" src="img/arr.png" class="back" alt="">
         <h1 class="h t_f">Настройки Товару</h1>
     </div>
-    <div class="settings_tovar">
-        <input type="text" placeholder="name" id="name">
-        <input type="text" placeholder="name_p" id="name_p">
-        <input type="text" placeholder="name_p_f" id="name_p_f">
-        <input type="text" placeholder="nd_code" id="nd_code">
-        <input type="text" placeholder="wog_code" id="wog_code">
+    <div class="settings_azs settings_tovar">
+        <div>
+        <span>name: </span><input type="text" placeholder="name" id="name">
+        </div>
+        <div>
+        <span>name_p: </span><input type="text" placeholder="name_p" id="name_p">
+        </div>
+        <div>
+        <span>name_p_f: </span><input type="text" placeholder="name_p_f" id="name_p_f">
+        </div>
+        <div>
+        <span>nd_code: </span><input type="text" placeholder="nd_code" id="nd_code">
+        </div>
+        <div>
+        <span>wog_code: </span><input type="text" placeholder="wog_code" id="wog_code">
+        </div>
         <button onclick="SaveTovare();">Зберегти</button>
     </div>
     <script src="js/jquery-3.6.0.min.js"></script>

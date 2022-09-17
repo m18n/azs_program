@@ -9,3 +9,11 @@ function SaveTovare(){
     let stringsave="id:"+id+"\r"+"name:"+name+"\r"+"name_p:"+name_p+"\r"+"name_p_f:"+name_p_f+"\r"+"nd_code:"+nd_code+"\r"+"wog_code:"+wog_code+"\r";
     SaveTovar(stringsave);
 }
+function SaveAzs(){
+    let sett=$("#sett_azs");
+    let host=sett.find("#host").val();
+    let user=sett.find("#user").val();
+    let password=sett.find("#pass").val();
+    let stringsave="id:1\r"+"host:"+host+"\r"+"user:"+user+"\r"+"password:"+password+"\r";
+    SaveAZS(stringsave);
+}
