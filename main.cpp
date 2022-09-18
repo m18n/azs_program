@@ -24,7 +24,7 @@ void InitSites(){
 }
 int main() {
     //AZS azs;
-    std::cout << "STARt\n";
+    std::cout << "OKEY START\n";
     GetDT();
     
 	
