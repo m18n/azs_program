@@ -1,7 +1,11 @@
 #include"include/views.h"
 VServClient::VServClient() {
+	create_local_database(&loc_db);
+	conf=conf_table_getconfig(&loc_db);
+	printf("CONFIGURE: %s %s %s\n",conf.host,conf.name,conf.password);
 	create_database(&db);
-	database_connect(&db);
+	database_connect(&db,conf.host,conf.name,conf.password);
+	 
 	init_db_table(&tb_tovar,&db,"tovar");
 	tovars=NULL;
 }
@@ -11,6 +15,7 @@ VServClient::~VServClient() {
 		tovars=NULL;
 	}
 	destroy_database(&db);
+	destroy_local_database(&loc_db);
 	std::cout<<"END VSERV\n";
 }
 void VServClient::SetWin(RefPtr<Window> win) {

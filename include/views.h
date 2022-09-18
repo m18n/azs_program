@@ -39,8 +39,10 @@ public:
 	
 	~VServClient();
 	database_t db;
+	local_database_t loc_db;
 	db_table_t tb_tovar;
 	tovar_node_t* tovars;
+	conf_table_t conf;
 private:
 	
 	std::string title;

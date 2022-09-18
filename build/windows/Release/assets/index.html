@@ -19,17 +19,21 @@
                 
                 <div class="unit_menu">
                     <div class="gasoline">
+                        
                         <button>A92</button>
                         <button>95e</button>
+                        <button>80a</button>
+                        <button>98e</button>
+                        <button>дт</button>
                     </div>
-                    <span id="inex_unit">1</span>
+                    <span id="inex_unit">99</span>
                 </div>
                 <div class="unit_content">
                     <div class="calculator">
                         <div class="row_1">
                             <div class="input_des">
-                                <input type="number" class="input many" id="many" onchange="CalGasolineMany(this);" onclick="OpenClavaRed(this);" placeholder="0,00" >
-                                <input type="number" class="input liter" id="liter" onchange="CalGasolineLiter(this);" onclick="OpenClavaBlue(this);" placeholder="0,00" >
+                                <input type="number" class="input many" id="many" onchange="CalGasolineMany(this);"  onclick="OpenClavaRed(this);" placeholder="0.00" >
+                                <input type="number" class="input liter" id="liter" onchange="CalGasolineLiter(this);" onclick="OpenClavaBlue(this);" placeholder="0.00" >
                                 <input type="number">
                             </div>
                             <div class="clava none" id="cl_blue" style="color: blue;" >
@@ -49,7 +53,7 @@
                                     <div class="c_col" onclick="OnCal(this);">9</div>
                                 </div>
                                 <div class="c_row">
-                                    <div class="c_col" onclick="OnCal(this);">$</div>
+                                    <div class="c_col" style="color:grey;">$</div>
                                     <div class="c_col" onclick="OnCal(this);">0</div>
                                     <div class="c_col" onclick="OnCal(this);">.</div>
                                 </div>
@@ -71,7 +75,7 @@
                                     <div class="c_col" onclick="OnCal(this);">9</div>
                                 </div>
                                 <div class="c_row">
-                                    <div class="c_col" onclick="OnCal(this);">$</div>
+                                    <div class="c_col"  onclick="OnNext(this);">$</div>
                                     <div class="c_col" onclick="OnCal(this);">0</div>
                                     <div class="c_col" onclick="OnCal(this);">.</div>
                                 </div>
@@ -104,13 +108,17 @@
                         </div>
                     
                     </div>
-                    
-                    <div class="start_des" onclick="StartDes(this);">
-                        <h2>ПУСК</h2>
+                    <div class="control_ges">
+                        <div class="start_ges" onclick="StartDes(this);">
+                            <h2>ПУСК</h2>
+                        </div>
+                        <div class="stop_ges" onclick="StopDes(this);">
+                            <h2>СТОП</h2>
+                        </div>
                     </div>
                     <div class="control">
                         <div class="mini"></div>
-                        <h3 class="stop_des">ОСТАНОВ</h3>
+                        <h3 class="info_ges">ОСТАНОВ</h3>
                       
                         <div class="mini"></div>
                     </div>
@@ -146,7 +154,7 @@
                                 <div class="item item_under c_close">Перезапуск Пк</div>
                                 <div class="item item_under c_close">Виключити Пк</div>
                                 <div class="item item_under c_close">Відміна</div>
-                                <a href="services.html"> <div class="item item_under c_close">Сервіс</div></a>
+                                <div class="item item_under c_close" onclick="LoadSite('/service','');">Сервіс</div>
                             </div>
                         </div>
                     </div>

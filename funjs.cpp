@@ -89,6 +89,7 @@ JSValueRef LoadSite(JSContextRef ctx, JSObjectRef function,
 JSValueRef SaveTovar(JSContextRef ctx, JSObjectRef function,
                     JSObjectRef thisObject, size_t argumentCount,
                     const JSValueRef arguments[], JSValueRef *exception){
+          
     std::string tovar=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
     tovar_node_t t;
     init_tovar_node(&t,&funjs::viewsc->db);
@@ -100,6 +101,21 @@ JSValueRef SaveTovar(JSContextRef ctx, JSObjectRef function,
 JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
                     JSObjectRef thisObject, size_t argumentCount,
                     const JSValueRef arguments[], JSValueRef *exception){
+        std::string azs=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+        
+        char* azsstr=&azs[0];
+        int sizeres=0;
+        char* temp=funjs::GetValueParam(azsstr,azs.size(),"host",&sizeres);
+        memcpy(funjs::viewsc->conf.host,temp,sizeres);
+        free(temp);
+        temp=funjs::GetValueParam(azsstr,azs.size(),"user",&sizeres);
+        memcpy(funjs::viewsc->conf.name,temp,sizeres);
+        free(temp);
+        temp=funjs::GetValueParam(azsstr,azs.size(),"password",&sizeres);
+        memcpy(funjs::viewsc->conf.password,temp,sizeres);
+        free(temp);
+        conf_table_setconfig(&funjs::viewsc->loc_db,&funjs::viewsc->conf);
+        
 return JSValueMakeNull(ctx);
                     }
 void funjs::LoadBaseSite(){
@@ -145,6 +161,27 @@ void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
 }
 void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
     std::cout<<"SettingsAZS\n";
+    char buffer[400];
+    int index=0;
+    strcpy(&buffer[index],"host:");
+    index=strlen(buffer);
+     strcpy(&buffer[index],funjs::viewsc->conf.host);
+    index=strlen(buffer);
+     strcpy(&buffer[index],"\r");
+    index=strlen(buffer);
+     strcpy(&buffer[index],"user:");
+    index=strlen(buffer);
+    strcpy(&buffer[index],funjs::viewsc->conf.name);
+    index=strlen(buffer);
+    strcpy(&buffer[index],"\r");
+    index=strlen(buffer);
+    strcpy(&buffer[index],"password:");
+    index=strlen(buffer);
+    strcpy(&buffer[index],funjs::viewsc->conf.password);
+    index=strlen(buffer);
+    strcpy(&buffer[index],"\r");
+    index=strlen(buffer);
+    funjs::viewsc->CallFunctionJs("LoadSettingAzs",buffer);
 }
 void funjs::LoadSiteSettingsTovar(std::vector<std::string>*data){
     std::cout<<"SettingsTovar\n";
@@ -194,4 +231,55 @@ void funjs::RegistrAllSites(){
     for(int i=0;i<sites->size();i++){
         RegistrAllFunction(&(*sites)[i]);
     }
+}
+int funjs::SearchStringInArray(char* array,int size,int startindex,const char* search,int count)
+{
+    int len = strlen(search);
+    int c = 0;
+    
+   
+        for (int i = startindex; i < size; i++)
+        {
+            for (int j = i; j < size; j++)
+            {
+                if (array[j] == search[j - i])
+                {
+                    if (j - i == len - 1)
+                    {
+                        c++;
+                        if (c == count)
+                            return i;
+                    }
+                }
+                else
+                {
+                    i += j - i;
+                    break;
+                }
+            }
+        }
+        return -1;
+    
+}
+char* funjs::GetValueParam(char* string,int sizestring,const char* name_param,int*sizeres){
+    char param[100];
+    strcpy(param,name_param);
+    int length=strlen(param);
+    strcpy(&param[length],":");
+    int start=SearchStringInArray(string,sizestring,0,param,1);
+    if(start==-1)
+        return NULL;
+    start=SearchStringInArray(string,sizestring,start,":",1);
+    if(start==-1)
+        return NULL;
+    start++;
+    int end=SearchStringInArray(string,sizestring,start,"\r",1);
+    if(end==-1)
+        return NULL;
+    int sizearr=end-start+1;
+    *sizeres=sizearr;
+    char* arrstr=(char*)malloc(sizearr);
+    memcpy(arrstr,&string[start],sizearr-1);
+    arrstr[sizearr-1]='\0';
+    return arrstr;
 }

@@ -3,8 +3,8 @@
 
 #ifdef CORE_EXPORTS
 
-#define CORE_API __declspec(dllimport)
 
+#define CORE_API __declspec(dllimport)
 #else
 #define CORE_API __declspec(dllexport)
 #endif
@@ -22,11 +22,27 @@
 #include <stdio.h>
 #include<stdbool.h>
 #include"parser.h"
+#include"sqlite/sqlite3.h"
 #include"mysql.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
+typedef struct CORE_API local_database{
+    sqlite3* db;
 
+}local_database_t;
+void CORE_API create_local_database(local_database_t* ld);
+CORE_API sqlite3_stmt* local_database_query(local_database_t* db,const char* query,bool res);
+void CORE_API destroy_local_database(local_database_t* loc);
+typedef struct CORE_API conf_table{
+    int id;
+    char host[300];
+    char name[100];
+    char password[100];
+}conf_table_t;
+CORE_API void create_conf_table(conf_table_t* loc);
+CORE_API conf_table_t conf_table_getconfig(local_database_t* loc);
+CORE_API void conf_table_setconfig(local_database_t* loc,conf_table_t* conf);
 void CORE_API GetDT();
 typedef struct CORE_API database{
     MYSQL* con;
@@ -34,7 +50,7 @@ typedef struct CORE_API database{
 }database_t;
 CORE_API MYSQL_RES* database_query(database_t* db,const char* query,bool res);
 void CORE_API create_database(database_t* database);
-void CORE_API database_connect(database_t* db);
+int CORE_API  database_connect(database_t* db,const char* host,const char* username,const char* password);
 void CORE_API destroy_database(database_t* db);
 typedef struct CORE_API db_node{
     database_t* db;

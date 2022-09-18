@@ -1,4 +1,4 @@
-#include"include/parser.h"
+#include"parser.h"
 int SearchStringInArray(char* array,int size,int startindex,const char* search,int count)
 {
     int len = strlen(search);
@@ -41,7 +41,7 @@ char* GetStringBySign(char* array,int size,int startindex,char sign){
     char* text = NULL;
     if (index != 0) {
         int stringsize = index - startindex;
-        text = malloc(stringsize + 1);
+        text = (char*)malloc(stringsize + 1);
         memcpy(text, array + startindex, size);
         text[size] = '\0';
     }
@@ -64,7 +64,7 @@ char* GetValueParam(char* string,int sizestring,const char* name_param,int*sizer
         return NULL;
     int sizearr=end-start+1;
     *sizeres=sizearr;
-    char* arrstr=malloc(sizearr);
+    char* arrstr=(char*)malloc(sizearr);
     memcpy(arrstr,&string[start],sizearr-1);
     arrstr[sizearr-1]='\0';
     return arrstr;

@@ -1,4 +1,122 @@
 #include "coreazs.h"
+void  create_local_database(local_database_t* ld){
+    int rc = sqlite3_open("config.sqlite", &ld->db);
+    
+    if (rc != SQLITE_OK) {
+        
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(ld->db));
+        sqlite3_close(ld->db);
+        
+        return 1;
+    }
+}
+void create_conf_table(conf_table_t* loc){
+    loc->id=-1;
+    strcpy(loc->host,"");
+    strcpy(loc->name,"");
+    strcpy(loc->password,"");   
+}
+conf_table_t conf_table_getconfig(local_database_t* loc){
+     char sql[300];
+    int index=0;
+    strcpy(&sql[0],"CREATE TABLE IF NOT EXISTS config_db (id INTEGER,host TEXT,name TEXT,password TEXT,PRIMARY KEY(id AUTOINCREMENT));");
+    
+    local_database_query(loc,sql,false);
+    strcpy(sql,"SELECT * FROM config_db");
+    sqlite3_stmt* res=local_database_query(loc,sql,true);
+    conf_table_t conf;
+    create_conf_table(&conf);
+    int rc = sqlite3_step(res);
+   if (rc == SQLITE_ROW) {
+        conf.id=sqlite3_column_int(res,0);
+        strcpy(conf.host,sqlite3_column_text(res,1));
+        strcpy(conf.name,sqlite3_column_text(res,2));
+        strcpy(conf.password,sqlite3_column_text(res,3));
+    }
+    sqlite3_finalize(res);
+    return conf;
+}
+
+void conf_table_setconfig(local_database_t* loc,conf_table_t* conf){
+    char sql[300];
+    if(conf->id==-1){
+        int index=0;
+        strcpy(&sql[0],"INSERT INTO config_db (host,name,password) VALUES ('");     
+        index=strlen(sql);
+        strcpy(&sql[index],conf->host);
+        index=strlen(sql);
+        strcpy(&sql[index],"','");
+        index=strlen(sql);
+        strcpy(&sql[index],conf->name);
+        index=strlen(sql);
+        strcpy(&sql[index],"','");
+        index=strlen(sql);
+        strcpy(&sql[index],conf->password);
+        index=strlen(sql);
+        strcpy(&sql[index],"');");
+        local_database_query(loc,sql,false);
+        *conf=conf_table_getconfig(loc);
+    }else{
+        int index=0;
+        strcpy(&sql[0],"UPDATE config_db SET host='");     
+        index=strlen(sql);
+        strcpy(&sql[index],conf->host);
+        index=strlen(sql);
+        strcpy(&sql[index],"', name='");
+        index=strlen(sql);
+        strcpy(&sql[index],conf->name);
+        index=strlen(sql);
+        strcpy(&sql[index],"', password='");
+        index=strlen(sql);
+        strcpy(&sql[index],conf->password);
+        index=strlen(sql);
+        strcpy(&sql[index],"' WHERE id=");
+         char id[12];
+        sprintf(id, "%d",conf->id);
+        index=strlen(sql);
+        strcpy(&sql[index],id);
+        index=strlen(sql);
+        strcpy(&sql[index],";");
+        local_database_query(loc,sql,false);
+    }
+   
+}
+ sqlite3_stmt* local_database_query(local_database_t* db,const char* query,bool res){
+    int rc=0;
+    if(res){
+        sqlite3_stmt* res;
+        rc = sqlite3_prepare_v2(db->db, query, -1, &res, 0);    
+        
+        if (rc != SQLITE_OK) {
+            
+            fprintf(stderr, "Failed to fetch data: %s\n", sqlite3_errmsg(db->db));
+            sqlite3_close(db->db);
+            
+            return NULL;
+        }
+        return res;
+    }else{
+        char *err_msg = 0;
+        rc = sqlite3_exec(db->db, query, 0, 0, &err_msg);
+    
+        if (rc != SQLITE_OK ) {
+            
+            fprintf(stderr, "SQL error: %s\n", err_msg);
+            
+            sqlite3_free(err_msg);        
+            sqlite3_close(db->db);
+            
+            return 1;
+        } 
+        return NULL;
+    }
+}
+void destroy_local_database(local_database_t* loc){
+    if(loc->db!=NULL){
+    sqlite3_close(loc->db);
+    loc->db=NULL;
+    }
+}
 void GetDT(){
     printf("MySQL client version: %s\n", mysql_get_client_info());
 }
@@ -25,18 +143,19 @@ void create_database(database_t* database){
     }
    
 }
-void database_connect(database_t* db){
-    if (mysql_real_connect(db->con, "192.168.0.103", "misha", "123",
+int database_connect(database_t* db,const char* host,const char* username,const char* password){
+    if (mysql_real_connect(db->con, host,username,password,
           NULL, 0, NULL, 0) == NULL)
   {
       fprintf(stderr, "%s\n", mysql_error(db->con));
       mysql_close(db->con);
-      exit(1);
+      return -1;
   }
   database_query(db,"USE azs;",false);
   database_query(db,"SET NAMES 'utf8'",false);
   database_query(db,"SET CHARACTER SET utf8",false);
   database_query(db,"SET SESSION collation_connection = 'utf8_unicode_ci'",false);
+  return 0;
 }
 void db_node_rowdb_to_param(db_node_t* node,char** row){
 
@@ -76,13 +195,13 @@ void init_db_node(db_node_t* node,database_t* db){
     create_db_node(node);
     node->db=db;
 }
-CORE_API int db_table_get_count(db_table_t* table){
+int db_table_get_count(db_table_t* table){
     char buffersql[1000];
     int length=0;
     strcpy(buffersql,"SELECT COUNT(*) FROM ");
     length=strlen(buffersql);
     strcpy(&buffersql[length],table->nametable);
-    MYSQL* res=database_query(table->db,buffersql,true);
+    MYSQL_RES* res=database_query(table->db,buffersql,true);
      MYSQL_ROW row=mysql_fetch_row(res);
     int count=atoi(row[0]);
     mysql_free_result(res);
@@ -99,7 +218,7 @@ db_node_t* db_table_get_all(db_table_t* table,db_node_t* node,int sizenode,int* 
     strcpy(buffersql,"SELECT * FROM ");
     length=strlen(buffersql);
     strcpy(&buffersql[length],table->nametable);
-    MYSQL* res=database_query(table->db,buffersql,true);
+    MYSQL_RES* res=database_query(table->db,buffersql,true);
     
     int numcolum=mysql_num_fields(res);
     int index=0;
