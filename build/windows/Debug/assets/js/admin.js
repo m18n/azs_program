@@ -11,3 +11,7 @@ function Auth(){
   
     AuthAdmin(pass.value);
 }
+function ErrorAdminPass(){
+    let status=document.getElementById("status");
+    status.innerText="STATUS: ERROR PASSWORD";
+}

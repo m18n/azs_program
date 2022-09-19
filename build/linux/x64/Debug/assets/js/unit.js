@@ -1,4 +1,14 @@
 const Regim = { Resize: 0, Move: 1,ResizeState:2,State:3};
+function CreateUnit(){
+    var unit={
+        'id':0,
+        'width':0,
+        'heigth':0,
+        'x':0,
+        'y':0,
+    }
+    return unit;
+}
 function RegimeResizeUnit(obj){
     
     if(obj.Regim==undefined){
@@ -11,6 +21,10 @@ function RegimeResizeUnit(obj){
     }else if(obj.Regim==Regim.ResizeState){
         obj.Regim=Regim.State;
         obj.style.borderColor="grey";
+        LOG("OBJ ID:"+obj.iddata);
+        SaveResize(obj.iddata,obj.offsetWidth,obj.offsetHeight);
+        const domRect = obj.getBoundingClientRect();
+        console.log(domRect);
     }
 }
 function MoveMouse(event,obj){
@@ -97,10 +111,18 @@ function ResizeStopUnit(event,obj){
     console.log("REGIME START: "+obj.Regim);
     if(obj.Regim==Regim.Resize){
         obj.Regim=Regim.ResizeState;
-    }else{
+    }else if(obj.Regim==Regim.Move){
+        let cord = obj.getBoundingClientRect();
+        
+            LOG("SAVE MOVE");
+            SaveMove(obj.iddata,cord.left,cord.top);
+        
         obj.Regim=Regim.State;
         obj.style.borderColor="grey";
         StopMoveObj(event,obj);
+        
+        
+        
     }
     
     console.log("REGIME END: "+obj.Regim);
@@ -119,4 +141,171 @@ function CalGasolineLiter(input){
     let many=input.parentNode.querySelector('#many');
     console.log("LITER VALUE: "+liter.value+" PRICE: "+price.value);
     many.value=(input.value*price.value).toFixed(2);
+}
+
+function GetVar(data){
+    let variable=data.split('|');
+    var arr=[];
+    for(let i=0;i<variable.length;i++){
+        let vare=variable[i].split(':');
+        
+        var v={
+            'name':vare[0],
+            'value':vare[1],
+        };
+        arr.push(v);
+    }
+    return arr;
+}
+
+function LoadUnit(unit){
+    let df=GetVar(unit);
+    let obj=$("#unit_shab").clone();
+    obj.attr("id",df[0].value);
+    obj.removeClass("none");
+    //LOG("LEFT: "+df[3].value+" TOP: "+df[4].value);
+    obj.css("width",df[1].value+"px");
+    obj.css("height",df[2].value+"px");
+    obj.css("left",df[3].value+"px");
+    obj.css("top",df[4].value+"px");
+    
+
+    console.log("VALUE: "+df[0].value);
+    obj.appendTo(".content");
+    obj.find(".item_g").on("click",OpenGlav);
+    obj.find(".item_o").on("click",OpenOpt);
+    let domelem=obj.get(0);
+    domelem.iddata=df[0].value;
+}
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
+
+function OnCal(th){
+    let ph=$(th).parent().parent().get(0);
+    if(ph.c_number==undefined){
+        ph.c_number=-1;
+    }
+    if(ph.c_number>2){
+        ph.c_number=1;
+    }
+    
+    console.log("C_NUMBER: "+ph.c_number);
+    let val=$(th).text();
+   
+    let par=$(th).parent().parent();
+    
+    let id=par.attr('id');
+    if(val=='.'){
+        
+       
+        if(ph.c_number!=-1){
+            val="";
+            ph.c_number=-1;
+            return;
+        }else{
+            val+="00";
+        }
+    }
+    let cal=par.parent().children(".input_des");
+    if(id ==="cl_red"){
+        
+        console.log("RED");
+        let valmany=cal.children("#many").val();
+        
+        console.log("DO VALMANY: "+valmany);
+        let newval;
+        let index=-1;
+        for(let i=0;i<valmany.length;i++){
+            if(valmany[i]=="."){
+                index=i;
+                
+                break;
+            }
+        }
+        if(ph.c_number==-1){
+            if(index!=-1){//search
+                
+                newval=valmany.slice(0,index)+val;
+                console.log("POSLE VALMANY: "+newval);
+                if(val!=".00")
+                    newval+=valmany.slice(index);
+                // console.log("POSLE VALMANY: "+newval);
+            }else{//none search
+                newval=valmany+val;
+            }
+        }else{
+            console.log("C_ VAL: "+val+" INDEx: "+index);
+            newval=valmany;
+           
+            newval=newval.replaceAt(index+ph.c_number,val);
+            ph.c_number++;
+        }
+        console.log("POSLE VALMANY: "+newval);
+        cal.children("#many").val(newval);
+        CalGasolineMany(cal.children("#many").get(0));
+    }else{
+       
+        console.log("BLUE");
+        let valliter=cal.children("#liter").val();
+        console.log("DO VALLITER: "+valliter);
+        let newval;
+        let index=-1;
+        for(let i=0;i<valliter.length;i++){
+            if(valliter[i]=="."){
+                index=i;
+                
+                break;
+            }
+        }
+        if(ph.c_number==-1){
+            if(index!=-1){
+                newval=valliter.slice(0,index)+val;
+                console.log("POSLE VALMANY: "+newval);
+                if(val!=".00")
+                    newval+=valliter.slice(index);
+            }else{
+                newval=valliter+val;
+            }
+        }else{
+            console.log("C_ VAL: "+val);
+            newval=valliter;
+            newval=newval.replaceAt(index+ph.c_number,val);
+            ph.c_number++;
+        }
+        console.log("POSLE VALLITER: "+newval);
+        cal.children("#liter").val(newval);
+        CalGasolineLiter(cal.children("#liter").get(0));
+    }
+   if(val==".00"){
+    ph.c_number=1;
+   }
+   
+  };
+function checkBack(event){
+    console.log("EVENT: "+event);
+}
+function OpenClavaRed(el){
+    let cal=$(el).parent().parent();
+    cal.children(".input_des").children("#many").addClass("focus");
+    cal.children(".input_des").children("#liter").removeClass("focus");
+    cal.children("#cl_blue").addClass("none");
+    cal.children("#out_des").addClass("none");
+    cal.children("#cl_red").removeClass("none");
+    // $("#cl_blue").addClass("none");
+    // $("#out_des").addClass("none");
+    // $("#cl_red").removeClass("none");
+}
+function OpenClavaBlue(el){
+    let cal=$(el).parent().parent();
+    cal.children(".input_des").children("#many").removeClass("focus");
+    cal.children(".input_des").children("#liter").addClass("focus");
+    cal.children("#cl_red").addClass("none");
+    cal.children("#out_des").addClass("none");
+    cal.children("#cl_blue").removeClass("none");
+   
+}
+function StartDes(th){
+    $(th).parent().find(".clava").addClass("none");
+    $(th).parent().find(".out_des").removeClass("none");
 }

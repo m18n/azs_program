@@ -5,6 +5,9 @@
 *{
     box-sizing: border-box;
 }
+.none{
+    display: none !important;
+}
 .move{
     position:absolute;
     top:0%;

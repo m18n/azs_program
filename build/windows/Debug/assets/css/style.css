@@ -2,8 +2,15 @@
     font-family: rel_font;
     src: url(../fonts/Raleway-Medium.ttf);
 }
+@font-face {
+    font-family: number_font;
+    src: url(../fonts/brassie.ttf);
+}
 *{
     box-sizing: border-box;
+}
+.none{
+    display: none !important;
 }
 .move{
     position:absolute;
@@ -163,4 +170,7 @@ a{
 }
 .c_close{
     background-color: #d42f2f;
+}
+.t_white{
+    color: white;
 }

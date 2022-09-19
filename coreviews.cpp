@@ -1,5 +1,5 @@
 #include"include/coreviews.h"
-void  IFunctionJS::RegistrFunctionJs(std::string namefunction, JSObjectCallAsFunctionCallback fun)
+void  IFunctionJS::RegistrFunctionJs(site* s,std::string namefunction, JSObjectCallAsFunctionCallback fun)
 {
     if (ctx != NULL) {
         JSStringRef name = JSStringCreateWithUTF8CString(namefunction.c_str());
@@ -21,10 +21,11 @@ void  IFunctionJS::RegistrFunctionJs(std::string namefunction, JSObjectCallAsFun
         JSStringRelease(name);
     }
     else {
+        
         functionjs df;
         df.fun = fun;
         df.namefunction = namefunction;
-        js.push_back(df);
+        s->funs.push_back(df);
     }
 }
  std::string IFunctionJS::ArgumentToStr(JSContextRef ctx ,JSValueRef arg,JSValueRef* exception){
