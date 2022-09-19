@@ -16,6 +16,7 @@ void create_conf_table(conf_table_t* loc){
     strcpy(loc->name,"");
     strcpy(loc->password,"");   
 }
+
 conf_table_t conf_table_getconfig(local_database_t* loc){
      char sql[300];
     strcpy(sql,"CREATE TABLE IF NOT EXISTS config_db (id INTEGER,host TEXT,name TEXT,password TEXT,PRIMARY KEY(id AUTOINCREMENT));");
@@ -118,6 +119,7 @@ MYSQL_RES* database_query(database_t* db,const char* query,bool res){
 }
 void create_database(database_t* database){
     database->con=mysql_init(NULL);
+    database->isconnect=false;
      if (database->con == NULL)
     {
 
@@ -127,15 +129,19 @@ void create_database(database_t* database){
    
 }
 int database_connect(database_t* db,const char* host,const char* username,const char* password){
+    destroy_database(db);
+    create_database(db);
     if (mysql_real_connect(db->con, host,username,password,
           NULL, 0, NULL, 0) == NULL)
   {
        
       fprintf(stderr, "%s\n", mysql_error(db->con));
       mysql_close(db->con);
-       db->con=NULL;
+      db->con=NULL;
+      db->isconnect=false;
       return -1;
   }
+  db->isconnect=true;
   database_query(db,"USE azs;",false);
   database_query(db,"SET NAMES 'utf8'",false);
   database_query(db,"SET CHARACTER SET utf8",false);
@@ -171,7 +177,9 @@ void create_db_node(db_node_t* node){
     node->string_to_param=db_node_string_to_param;
 }
 void destroy_database(database_t* db){
+    db->isconnect=false;
     if(db->con!=NULL){
+        db->isconnect=false;
         mysql_close(db->con);
         db->con=NULL;
     }

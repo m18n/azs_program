@@ -115,7 +115,18 @@ JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
         memcpy(funjs::viewsc->conf.password,temp,sizeres);
         free(temp);
         conf_table_setconfig(&funjs::viewsc->loc_db,&funjs::viewsc->conf);
-        
+        funjs::viewsc->CallFunctionJs("ConnectStatus", "PROCESS");
+        int res=database_connect(&funjs::viewsc->db,funjs::viewsc->conf.host,funjs::viewsc->conf.name,funjs::viewsc->conf.password);
+        if(res==0){
+             funjs::viewsc->CallFunctionJs("ConnectStatus", "CONNECT");
+             funjs::viewsc->LoadSite("/serv/service/configure");
+        }else{
+            funjs::viewsc->CallFunctionJs("ConnectStatus", "ERORR CONNECT");
+            int id=funjs::viewsc->conf.id;
+            create_conf_table(&funjs::viewsc->conf);
+            funjs::viewsc->conf.id=id;
+            conf_table_setconfig(&funjs::viewsc->loc_db,&funjs::viewsc->conf);
+        }
 return JSValueMakeNull(ctx);
                     }
 JSValueRef LoginAZS(JSContextRef ctx, JSObjectRef function,
@@ -202,6 +213,11 @@ void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
     strcpy(&buffer[index],"\r");
     index=strlen(buffer);
     funjs::viewsc->CallFunctionJs("LoadSettingAzs",buffer);
+    if(funjs::viewsc->db.isconnect){
+        funjs::viewsc->CallFunctionJs("ConnectStatus", "CONNECT");
+    }else{
+        funjs::viewsc->CallFunctionJs("ConnectStatus", "ERORR CONNECT");
+    }
 }
 void funjs::LoadSiteLogin(std::vector<std::string>*data){
     std::cout<<"LOGIN\n";

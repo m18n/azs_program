@@ -8,7 +8,6 @@ VServClient vs;
 
 void InitSites(){
     funjs::SetView(&vs);
-    vs.AddSite("/index","index.html",funjs::LoadSiteIndex);
     vs.AddSite("/login","login.html",funjs::LoadSiteLogin);
     //vs.AddSite("/service","services.html",NULL);
     vs.AddSite("/serv","serv.html",funjs::LoadSiteAdmin);
