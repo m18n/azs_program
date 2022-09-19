@@ -125,8 +125,10 @@ JSValueRef LoginAZS(JSContextRef ctx, JSObjectRef function,
         std::string password=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
         if(name=="service"){
             if(password=="123"){
-                if(funjs::viewsc->conf.id==-1){
+                if(funjs::viewsc->conf.id==-1||funjs::viewsc->db.con==NULL){
                     funjs::viewsc->LoadSite("/serv/service/configure/azs");
+                }else{
+                    funjs::viewsc->LoadSite("/serv/service/configure");
                 }
             }else{
                 funjs::viewsc->CallFunctionJs("ErrorAUTH", "ERROR PASSWORD");

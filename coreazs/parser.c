@@ -69,3 +69,18 @@ char* GetValueParam(char* string,int sizestring,const char* name_param,int*sizer
     arrstr[sizearr-1]='\0';
     return arrstr;
 }
+void StringAddString(char* string,const char* str){
+    int length=strlen(string);
+    strcpy(&string[length],str);
+}
+void StringAddInt(char* string,int number){
+    int length=strlen(string);
+    char buffint[12];
+    sprintf(buffint, "%d", number);
+    strcpy(&string[length],buffint);
+}
+int GetLengthInt(int number){
+    char buffint[12];
+    sprintf(buffint, "%d", number);
+    return strlen(buffint);
+}

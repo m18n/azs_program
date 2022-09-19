@@ -19,7 +19,7 @@ function LoadConteiner(str){
     obj.removeClass("none");
     $(obj).find(".h").text(unis[1].value);
     obj.appendTo(".services");
-    obj.attr('onClick', 'LoadSite("/admin/service/configure/tank/settings","'+unis[0].value+'");');
+    obj.attr('onClick', 'LoadSite("/serv/service/configure/tank/settings","'+unis[0].value+'");');
     
     
 }
