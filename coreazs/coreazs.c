@@ -16,10 +16,10 @@ void create_conf_table(conf_table_t* loc){
     strcpy(loc->name,"");
     strcpy(loc->password,"");   
 }
+
 conf_table_t conf_table_getconfig(local_database_t* loc){
      char sql[300];
-    int index=0;
-    strcpy(&sql[0],"CREATE TABLE IF NOT EXISTS config_db (id INTEGER,host TEXT,name TEXT,password TEXT,PRIMARY KEY(id AUTOINCREMENT));");
+    strcpy(sql,"CREATE TABLE IF NOT EXISTS config_db (id INTEGER,host TEXT,name TEXT,password TEXT,PRIMARY KEY(id AUTOINCREMENT));");
     
     local_database_query(loc,sql,false);
     strcpy(sql,"SELECT * FROM config_db");
@@ -39,44 +39,27 @@ conf_table_t conf_table_getconfig(local_database_t* loc){
 
 void conf_table_setconfig(local_database_t* loc,conf_table_t* conf){
     char sql[300];
+    sql[0]='\0';
     if(conf->id==-1){
-        int index=0;
-        strcpy(&sql[0],"INSERT INTO config_db (host,name,password) VALUES ('");     
-        index=strlen(sql);
-        strcpy(&sql[index],conf->host);
-        index=strlen(sql);
-        strcpy(&sql[index],"','");
-        index=strlen(sql);
-        strcpy(&sql[index],conf->name);
-        index=strlen(sql);
-        strcpy(&sql[index],"','");
-        index=strlen(sql);
-        strcpy(&sql[index],conf->password);
-        index=strlen(sql);
-        strcpy(&sql[index],"');");
+        StringAddString(sql,"INSERT INTO config_db (host,name,password) VALUES ('");
+        StringAddString(sql,conf->host);
+        StringAddString(sql,"','");
+        StringAddString(sql,conf->name);
+        StringAddString(sql,"','");
+        StringAddString(sql,conf->password);
+        StringAddString(sql,"');");
         local_database_query(loc,sql,false);
         *conf=conf_table_getconfig(loc);
     }else{
-        int index=0;
-        strcpy(&sql[0],"UPDATE config_db SET host='");     
-        index=strlen(sql);
-        strcpy(&sql[index],conf->host);
-        index=strlen(sql);
-        strcpy(&sql[index],"', name='");
-        index=strlen(sql);
-        strcpy(&sql[index],conf->name);
-        index=strlen(sql);
-        strcpy(&sql[index],"', password='");
-        index=strlen(sql);
-        strcpy(&sql[index],conf->password);
-        index=strlen(sql);
-        strcpy(&sql[index],"' WHERE id=");
-         char id[12];
-        sprintf(id, "%d",conf->id);
-        index=strlen(sql);
-        strcpy(&sql[index],id);
-        index=strlen(sql);
-        strcpy(&sql[index],";");
+        StringAddString(sql,"UPDATE config_db SET host='");
+        StringAddString(sql,conf->host);
+        StringAddString(sql,"', name='");
+        StringAddString(sql,conf->name);
+        StringAddString(sql,"', password='");
+        StringAddString(sql,conf->password);
+        StringAddString(sql,"' WHERE id=");
+        StringAddInt(sql,conf->id);
+        StringAddString(sql,";");
         local_database_query(loc,sql,false);
     }
    
@@ -136,21 +119,29 @@ MYSQL_RES* database_query(database_t* db,const char* query,bool res){
 }
 void create_database(database_t* database){
     database->con=mysql_init(NULL);
+    database->isconnect=false;
      if (database->con == NULL)
     {
+
         fprintf(stderr, "%s\n", mysql_error(database->con));
         exit(1);
     }
    
 }
 int database_connect(database_t* db,const char* host,const char* username,const char* password){
+    destroy_database(db);
+    create_database(db);
     if (mysql_real_connect(db->con, host,username,password,
           NULL, 0, NULL, 0) == NULL)
   {
+       
       fprintf(stderr, "%s\n", mysql_error(db->con));
       mysql_close(db->con);
+      db->con=NULL;
+      db->isconnect=false;
       return -1;
   }
+  db->isconnect=true;
   database_query(db,"USE azs;",false);
   database_query(db,"SET NAMES 'utf8'",false);
   database_query(db,"SET CHARACTER SET utf8",false);
@@ -186,7 +177,9 @@ void create_db_node(db_node_t* node){
     node->string_to_param=db_node_string_to_param;
 }
 void destroy_database(database_t* db){
+    db->isconnect=false;
     if(db->con!=NULL){
+        db->isconnect=false;
         mysql_close(db->con);
         db->con=NULL;
     }
@@ -197,12 +190,12 @@ void init_db_node(db_node_t* node,database_t* db){
 }
 int db_table_get_count(db_table_t* table){
     char buffersql[1000];
+    buffersql[0]='\0';
     int length=0;
-    strcpy(buffersql,"SELECT COUNT(*) FROM ");
-    length=strlen(buffersql);
-    strcpy(&buffersql[length],table->nametable);
+    StringAddString(buffersql,"SELECT COUNT(*) FROM ");
+    StringAddString(buffersql,table->nametable);
     MYSQL_RES* res=database_query(table->db,buffersql,true);
-     MYSQL_ROW row=mysql_fetch_row(res);
+    MYSQL_ROW row=mysql_fetch_row(res);
     int count=atoi(row[0]);
     mysql_free_result(res);
     return count;
@@ -214,10 +207,10 @@ db_node_t* db_table_get_all(db_table_t* table,db_node_t* node,int sizenode,int* 
     char* nodes=malloc(sizenode*row_size);
     char* start=nodes;
     char buffersql[1000];
+    buffersql[0]='\0';
     int length=0;
-    strcpy(buffersql,"SELECT * FROM ");
-    length=strlen(buffersql);
-    strcpy(&buffersql[length],table->nametable);
+    StringAddString(buffersql,"SELECT * FROM ");
+    StringAddString(buffersql,table->nametable);
     MYSQL_RES* res=database_query(table->db,buffersql,true);
     
     int numcolum=mysql_num_fields(res);
@@ -255,10 +248,7 @@ void tovar_node_downlaod_param(tovar_node_t* node){
    if(node->node.id!=0){
         char buffer[1000];
         strcpy(buffer,"SELECT * FROM tovar WHERE id_tovar=");
-        int length=strlen(buffer);
-        char buffint[12];
-        sprintf(buffint, "%d", node->node.id);
-        strcpy(&buffer[length],buffint);
+        StringAddInt(buffer,node->node.id);
         MYSQL_RES* res=database_query(node->node.db,buffer,true);
         MYSQL_ROW row=mysql_fetch_row(res);
         tovar_node_rowdb_to_param(node,row);
@@ -274,32 +264,18 @@ void tovar_node_upload_param(tovar_node_t* node){
         char wog_code[12];
         sprintf(wog_code, "%d",node->wog_code);
         char buffer[1000];
-        int length=0;
-        strcpy(&buffer[length],"UPDATE tovar SET name = '");
-        length=strlen(buffer);
-        strcpy(&buffer[length],node->name);
-        length=strlen(buffer);
-        strcpy(&buffer[length],"', name_p = '");
-        length=strlen(buffer);
-        strcpy(&buffer[length],node->name_p);
-        length=strlen(buffer);
-        strcpy(&buffer[length],"', name_p_f = '");
-        length=strlen(buffer);
-        strcpy(&buffer[length],node->name_p_f);
-        length=strlen(buffer);
-        strcpy(&buffer[length],"', nd_code = ");
-        length=strlen(buffer);
-        strcpy(&buffer[length],nd_code);
-        length=strlen(buffer);
-        strcpy(&buffer[length],", wog_code = ");
-        length=strlen(buffer);
-        strcpy(&buffer[length],wog_code);
-        length=strlen(buffer);
-        strcpy(&buffer[length]," WHERE id_tovar = ");
-        length=strlen(buffer);
-        char buffint[12];
-        sprintf(buffint, "%d", node->node.id);
-        strcpy(&buffer[length],buffint);
+        strcpy(buffer,"UPDATE tovar SET name = '");
+        StringAddString(buffer,node->name);
+        StringAddString(buffer,"', name_p = '");
+        StringAddString(buffer,node->name_p);
+        StringAddString(buffer,"', name_p_f = '");
+        StringAddString(buffer,node->name_p_f);
+        StringAddString(buffer,"', nd_code = ");
+        StringAddInt(buffer,nd_code);
+        StringAddString(buffer,", wog_code = ");
+        StringAddInt(buffer,wog_code);
+        StringAddString(buffer," WHERE id_tovar = ");
+        StringAddInt(buffer,node->node.id);
         database_query(node->node.db,buffer,false);
 
           
@@ -311,53 +287,24 @@ void tovar_node_show(tovar_node_t* node){
     printf("TOVAR: ID: %d NAME: %s NAME_P: %s NAME_P_F: %s ND_CODE: %d WOG_CODE: %d\n",node->node.id,node->name,node->name_p,node->name_p_f,node->nd_code,node->wog_code);
 }
 char* tovar_node_get_string(tovar_node_t* node){
-    char id[12];
-    sprintf(id, "%d", node->node.id);
-    char wog_code[12];
-    sprintf(wog_code, "%d", node->wog_code);
-    char nd_code[12];
-    sprintf(nd_code, "%d", node->nd_code);
-    int lenparam=strlen(id)+strlen(node->name)+strlen(node->name_p)+strlen(node->name_p_f)+strlen(wog_code)+strlen(nd_code);
+    int lenparam=GetLengthInt(node->node.id)+strlen(node->name)+strlen(node->name_p)+strlen(node->name_p_f)+GetLengthInt(node->wog_code)+GetLengthInt(node->nd_code);
     int lengtharg=strlen("id:")+1+strlen("name:")+1+strlen("name_p:")+1+strlen("name_p_f:")+1+strlen("nd_code:")+1+strlen("wog_code:")+1;
     char* tovarstr=malloc(lenparam+lengtharg+1);
     int index=0;
-    strcpy(&tovarstr[index],"id:");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],id);
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"\r");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"name:");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],node->name);
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"\r");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"name_p:");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],node->name_p);
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"\r");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"name_p_f:");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],node->name_p_f);
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"\r");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"nd_code:");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],nd_code);
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"\r");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"wog_code:");
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],wog_code);
-    index=strlen(tovarstr);
-    strcpy(&tovarstr[index],"\r");
-    index=strlen(tovarstr);
-    tovarstr[lenparam+lengtharg]='\0';
+    tovarstr[0]='\0';
+    StringAddString(tovarstr,"id:");
+    StringAddInt(tovarstr,node->node.id);
+    StringAddString(tovarstr,"\rname:");
+    StringAddString(tovarstr,node->name);
+    StringAddString(tovarstr,"\rname_p:");
+    StringAddString(tovarstr,node->name_p);
+    StringAddString(tovarstr,"\rname_p_f:");
+    StringAddString(tovarstr,node->name_p_f);
+    StringAddString(tovarstr,"\rnd_code:");
+    StringAddInt(tovarstr,node->nd_code);
+    StringAddString(tovarstr,"\rwog_code:");
+    StringAddInt(tovarstr,node->wog_code);
+    StringAddString(tovarstr,"\r");
     return tovarstr;
 
 }

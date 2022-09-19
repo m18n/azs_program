@@ -2,7 +2,8 @@
 VServClient::VServClient() {
 	create_local_database(&loc_db);
 	conf=conf_table_getconfig(&loc_db);
-	printf("CONFIGURE: %s %s %s\n",conf.host,conf.name,conf.password);
+	
+	//printf("CONFIGURE: %s %s %s\n",conf.host,conf.name,conf.password);
 	create_database(&db);
 	database_connect(&db,conf.host,conf.name,conf.password);
 	 
@@ -22,7 +23,7 @@ void VServClient::SetWin(RefPtr<Window> win) {
 	this->win = win;
 	win->SetTitle(title.c_str());
 	ov = Overlay::Create(*win, win->width(), win->height(), 0, 0);
-	ov->view()->LoadURL("file:///index.html");
+	LoadSite("/login");
 	ov->view()->set_view_listener(this);
 	ov->view()->set_load_listener(this);
    

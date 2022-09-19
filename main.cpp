@@ -8,17 +8,17 @@ VServClient vs;
 
 void InitSites(){
     funjs::SetView(&vs);
-    vs.AddSite("/index","index.html",funjs::LoadSiteIndex);
-    vs.AddSite("/service","services.html",NULL);
-    vs.AddSite("/admin","admin.html",funjs::LoadSiteAdmin);
-    vs.AddSite("/admin/service","servicesadmin.html",funjs::LoadSiteAdmin);
-    vs.AddSite("/admin/service/configure","configurationazs.html",NULL);    
-    vs.AddSite("/admin/service/configure/azs","settingsazs.html",funjs::LoadSiteSettingsAzs);    
-    vs.AddSite("/admin/service/configure/tank","confnode.html",funjs::LoadSiteTypeGas);
-    vs.AddSite("/admin/service/configure/tank/settings","settingstovar.html",funjs::LoadSiteSettingsTovar);
-    vs.AddSite("/admin/service/configure/tovar","confnode.html",funjs::LoadSiteTypeGas);
-    vs.AddSite("/admin/service/configure/colon","confnode.html",funjs::LoadSiteTypeGas);
-    vs.AddSite("/admin/service/configure/operr","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/login","login.html",funjs::LoadSiteLogin);
+    //vs.AddSite("/service","services.html",NULL);
+    vs.AddSite("/serv","serv.html",funjs::LoadSiteAdmin);
+    vs.AddSite("/serv/service","services_serv.html",funjs::LoadSiteAdmin);
+    vs.AddSite("/serv/service/configure","configurationazs.html",NULL);    
+    vs.AddSite("/serv/service/configure/azs","settingsazs.html",funjs::LoadSiteSettingsAzs);    
+    vs.AddSite("/serv/service/configure/tank","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/serv/service/configure/tank/settings","settingstovar.html",funjs::LoadSiteSettingsTovar);
+    vs.AddSite("/serv/service/configure/tovar","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/serv/service/configure/colon","confnode.html",funjs::LoadSiteTypeGas);
+    vs.AddSite("/serv/service/configure/operr","confnode.html",funjs::LoadSiteTypeGas);
 
     funjs::RegistrAllSites();
 }

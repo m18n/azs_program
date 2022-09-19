@@ -46,7 +46,7 @@ CORE_API void conf_table_setconfig(local_database_t* loc,conf_table_t* conf);
 void CORE_API GetDT();
 typedef struct CORE_API database{
     MYSQL* con;
-    
+    bool isconnect;
 }database_t;
 CORE_API MYSQL_RES* database_query(database_t* db,const char* query,bool res);
 void CORE_API create_database(database_t* database);

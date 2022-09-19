@@ -7,27 +7,26 @@
     <title>Service</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/service.css">
+    <link rel="stylesheet" href="css/serviceadmin.css">
 </head>
 <body>
     <div class="heads">
-        <a href="index.html"><img src="img/arr.png" class="back" alt=""></a>
+       <img onclick="LoadSite('/serv','');" style="cursor: pointer;" src="img/arr.png" class="back" alt="">
     <h1 class="h t_f">СЕРВІСИ</h1>
 </div>
     <div class="container_r">
         <div class="services">
-            <div class="admin" onclick="OpenMenuAdmin();">
-                <h1 class="h t_namediv">Адмін</h1>
-            </div>
+           
             
+            
+            
+            <div class="contenier" onclick="LoadSite('/serv/service/configure','');">
+                <h1 class="h  t_namediv">Конфігурації AZS</h1>
+            </div>
+        
         </div>
     </div>
-    <div class="fon none" onclick="CloseMenuAdmin();"></div>
-    <div class="admin_menu none">
-       
-        <input type="password" placeholder="password" id="password">
-        <p id="status" class="t_white">STATUS: </p>
-        <button class="btn_login" onclick="Auth();">LOGIN</button>
-    </div>
+   
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/admin.js"></script>
    
