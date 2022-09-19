@@ -118,6 +118,24 @@ JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
         
 return JSValueMakeNull(ctx);
                     }
+JSValueRef LoginAZS(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception){
+        std::string name=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+        std::string password=funjs::viewsc->ArgumentToStr(ctx,arguments[1],exception);
+        if(name=="service"){
+            if(password=="123"){
+                if(funjs::viewsc->conf.id==-1){
+                    funjs::viewsc->LoadSite("/serv/service/configure/azs");
+                }
+            }else{
+                funjs::viewsc->CallFunctionJs("ErrorAUTH", "ERROR PASSWORD");
+            }
+        }else{
+            funjs::viewsc->CallFunctionJs("ErrorAUTH", "ERROR USER");
+        }
+        return JSValueMakeNull(ctx);
+}
 void funjs::LoadBaseSite(){
    // RegistrAllFunction(viewsc->GetLocal());
 }
@@ -183,6 +201,9 @@ void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
     index=strlen(buffer);
     funjs::viewsc->CallFunctionJs("LoadSettingAzs",buffer);
 }
+void funjs::LoadSiteLogin(std::vector<std::string>*data){
+    std::cout<<"LOGIN\n";
+}
 void funjs::LoadSiteSettingsTovar(std::vector<std::string>*data){
     std::cout<<"SettingsTovar\n";
     if(data->size()!=0){
@@ -224,6 +245,7 @@ void funjs::RegistrAllFunction(site*s){
     viewsc->RegistrFunctionJs(s,"LoadSite",LoadSite);
     viewsc->RegistrFunctionJs(s,"SaveTovar",SaveTovar);
     viewsc->RegistrFunctionJs(s,"SaveAZS",SaveAZS);
+    viewsc->RegistrFunctionJs(s,"LoginAZS",LoginAZS);
     viewsc->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
 }
 void funjs::RegistrAllSites(){

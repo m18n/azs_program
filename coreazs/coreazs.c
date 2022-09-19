@@ -138,6 +138,7 @@ void create_database(database_t* database){
     database->con=mysql_init(NULL);
      if (database->con == NULL)
     {
+
         fprintf(stderr, "%s\n", mysql_error(database->con));
         exit(1);
     }
@@ -147,8 +148,10 @@ int database_connect(database_t* db,const char* host,const char* username,const 
     if (mysql_real_connect(db->con, host,username,password,
           NULL, 0, NULL, 0) == NULL)
   {
+       
       fprintf(stderr, "%s\n", mysql_error(db->con));
       mysql_close(db->con);
+       db->con=NULL;
       return -1;
   }
   database_query(db,"USE azs;",false);
