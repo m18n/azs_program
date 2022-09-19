@@ -104,10 +104,11 @@ void GetDT(){
     printf("MySQL client version: %s\n", mysql_get_client_info());
 }
 MYSQL_RES* database_query(database_t* db,const char* query,bool res){
+    if(db->isconnect){
     if (mysql_query(db->con, query))
     {
             fprintf(stderr, "%s\n", mysql_error(db->con));
-            mysql_close(db->con);
+            destroy_database(db);
             return NULL;
     }
     MYSQL_RES *result = mysql_store_result(db->con);
@@ -116,6 +117,9 @@ MYSQL_RES* database_query(database_t* db,const char* query,bool res){
         result=NULL;
     }
     return result;
+    }else{
+        return NULL;
+    }
 }
 void create_database(database_t* database){
     database->con=mysql_init(NULL);
