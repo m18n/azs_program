@@ -274,10 +274,6 @@ void tovar_node_downlaod_param(tovar_node_t* node){
 }
 void tovar_node_upload_param(tovar_node_t* node){
     if(node->node.id!=0){
-        char nd_code[12];
-        sprintf(nd_code, "%d",node->nd_code);
-        char wog_code[12];
-        sprintf(wog_code, "%d",node->wog_code);
         char buffer[1000];
         strcpy(buffer,"UPDATE tovar SET name = '");
         StringAddString(buffer,node->name);
@@ -286,9 +282,9 @@ void tovar_node_upload_param(tovar_node_t* node){
         StringAddString(buffer,"', name_p_f = '");
         StringAddString(buffer,node->name_p_f);
         StringAddString(buffer,"', nd_code = ");
-        StringAddInt(buffer,nd_code);
+        StringAddInt(buffer,node->nd_code);
         StringAddString(buffer,", wog_code = ");
-        StringAddInt(buffer,wog_code);
+        StringAddInt(buffer,node->wog_code);
         StringAddString(buffer," WHERE id_tovar = ");
         StringAddInt(buffer,node->node.id);
         database_query(node->node.db,buffer,false);
@@ -358,11 +354,92 @@ void create_tovar_node(tovar_node_t* node){
 }
 void init_tovar_node(tovar_node_t* node,database_t* db){
     create_tovar_node(node);
-    init_db_node(&node->node,db);
-    node->node.download_param=tovar_node_downlaod_param;
-    node->node.upload_param=tovar_node_upload_param;
-    node->node.rowdb_to_param=tovar_node_rowdb_to_param;
-    node->node.show=tovar_node_show;
-    node->node.get_string=tovar_node_get_string;
-    node->node.string_to_param=tovar_node_string_to_param;
+    node->node.db=db;
+}
+void tank_node_show(tank_node_t* node){
+    
+    printf("TANK Id:%d,NN:%d,id_tovar:%d,color:%d\n",node->node.id,node->nn,node->id_tovar,node->color);
+}
+void  tank_node_rowdb_to_param(tank_node_t* node,char** row){
+    node->nn=atoi(row[0]);
+    node->node.id=atoi(row[2]);
+    node->id_tovar=atoi(row[4]);
+    node->color=atoi(row[7]);
+}
+void  tank_node_string_to_param(tank_node_t* node,char* string,int size){
+    int sizeres=0;
+    char* temp=NULL;
+    temp=GetValueParam(string,size,"id",&sizeres);
+    node->node.id=atoi(temp);
+    free(temp);
+    temp=GetValueParam(string,size,"nn",&sizeres);
+    node->nn=atoi(temp);
+    free(temp);
+    temp=GetValueParam(string,size,"id_tovar",&sizeres);
+    node->id_tovar=atoi(temp);
+    free(temp);
+    temp=GetValueParam(string,size,"color",&sizeres);
+    node->color=atoi(temp);
+    free(temp);
+    
+}
+void  tank_node_downlaod_param(tank_node_t* node){
+    if(node->node.id!=0){
+        char buffer[1000];
+        strcpy(buffer,"SELECT * FROM tank WHERE id_tank=");
+        StringAddInt(buffer,node->node.id);
+        MYSQL_RES* res=database_query(node->node.db,buffer,true);
+        MYSQL_ROW row=mysql_fetch_row(res);
+        tovar_node_rowdb_to_param(node,row);
+        mysql_free_result(res);   
+   }else{
+        printf("ERROR NOT ID\n");
+   }
+}
+void  tank_node_upload_param(tank_node_t* node){
+    if(node->node.id!=0){
+        char buffer[1000];
+        strcpy(buffer,"UPDATE tovar SET nn = '");
+        StringAddInt(buffer,node->nn);
+        StringAddString(buffer,"', id_tovar = '");
+        StringAddInt(buffer,node->id_tovar);
+        StringAddString(buffer,"', color = '");
+        StringAddInt(buffer,node->color);
+        StringAddString(buffer," WHERE id_tank = ");
+        StringAddInt(buffer,node->node.id);
+        database_query(node->node.db,buffer,false);          
+   }else{
+    printf("ERROR NOT ID\n");
+   }
+}
+ char*  tank_node_get_string(tank_node_t* node){
+    int lenparam=GetLengthInt(node->node.id)+GetLengthInt(node->nn)+GetLengthInt(node->id_tovar)+GetLengthInt(node->color);
+    int lengtharg=strlen("id:")+1+strlen("nn:")+1+strlen("id_tovar:")+1+strlen("color:")+1;
+    char* tovarstr=malloc(lenparam+lengtharg+1);
+    int index=0;
+    tovarstr[0]='\0';
+    StringAddString(tovarstr,"id:");
+    StringAddInt(tovarstr,node->node.id);
+    StringAddString(tovarstr,"\rnn:");
+    StringAddInt(tovarstr,node->nn);
+    StringAddString(tovarstr,"\rid_tovar:");
+    StringAddInt(tovarstr,node->id_tovar);
+    StringAddString(tovarstr,"\rcolor:");
+    StringAddInt(tovarstr,node->color);
+    StringAddString(tovarstr,"\r");
+    return tovarstr;
+ }
+
+void  create_tank_node(tank_node_t* node){
+    create_db_node(node);
+    node->node.download_param=tank_node_downlaod_param;
+    node->node.get_string=tank_node_get_string;
+    node->node.rowdb_to_param=tank_node_rowdb_to_param;
+    node->node.string_to_param=tank_node_string_to_param;
+    node->node.show=tank_node_show;
+    node->node.upload_param=tank_node_upload_param;
+}
+void  init_tank_node(tank_node_t* node,database_t* db){
+    create_tank_node(node);
+    node->node.db=db;
 }

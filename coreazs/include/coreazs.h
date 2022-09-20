@@ -97,7 +97,22 @@ CORE_API char*  tovar_node_get_string(tovar_node_t* node);
 
 void CORE_API create_tovar_node(tovar_node_t* node);
 void CORE_API init_tovar_node(tovar_node_t* node,database_t* db);
+typedef struct CORE_API tank_node{
+    db_node_t node;
+    int nn;
+    int id_tovar;
+    int color;
+    
+}tank_node_t;
+void CORE_API tank_node_show(tank_node_t* node);
+void CORE_API tank_node_rowdb_to_param(tank_node_t* node,char** row);
+void CORE_API tank_node_string_to_param(tank_node_t* node,char* string,int size);
+void CORE_API tank_node_downlaod_param(tank_node_t* node);
+void CORE_API tank_node_upload_param(tank_node_t* node);
+CORE_API char*  tank_node_get_string(tank_node_t* node);
 
+void CORE_API create_tank_node(tank_node_t* node);
+void CORE_API init_tank_node(tank_node_t* node,database_t* db);
 #ifdef __cplusplus
 }
 #endif
