@@ -11,23 +11,29 @@
 </head>
 <body>
     <div class="heads">
-        <img onclick="LoadSite('/admin/service/configure','');" style="cursor: pointer;" src="img/arr.png" class="back" alt="">
+        <img onclick="LoadSite('/serv/service/configure','');" style="cursor: pointer;" src="img/arr.png" class="back" alt="">
         <h1 class="h t_f">Налаштування AZS</h1>
     </div>
     <div class="settings_azs" id="sett_azs">
         <div>
-        <span>host: </span><input type="text" placeholder="host" id="host">
+            <span>host: </span><input type="text" placeholder="host" id="host">
         </div>
         <div>
-        <span>user: </span><input type="text" placeholder="user" id="user">
+            <span>user: </span><input type="text" placeholder="user" id="user">
+        </div>
+
+        <div>
+            <span>password: </span><input type="text" placeholder="password" id="pass">
         </div>
         <div>
-        <span>password: </span><input type="text" placeholder="password" id="pass">
+            <span>database: </span><input type="text" placeholder="database" id="database">
         </div>
+        <span id="stat_con">STATUS CONNECT:</span>
         <button onclick="SaveAzs();">Зберегти</button>
     </div>
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/status.js"></script>
     <script src="js/loadfunction.js"></script>
     <script src="js/savefunction.js"></script>
 </body>

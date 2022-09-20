@@ -119,6 +119,8 @@ JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
         free(temp);
         conf_table_setconfig(&funjs::viewsc->loc_db,&funjs::viewsc->conf);
         funjs::viewsc->CallFunctionJs("ConnectStatus", "PROCESS");
+        
+        printf("SLEEEP\n");
         int res=database_connect(&funjs::viewsc->db,funjs::viewsc->conf.host,funjs::viewsc->conf.name,funjs::viewsc->conf.password,funjs::viewsc->conf.database);
         if(funjs::viewsc->db.isconnect==true){
              funjs::viewsc->CallFunctionJs("ConnectStatus", "CONNECT");

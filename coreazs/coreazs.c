@@ -154,9 +154,9 @@ int database_connect(database_t* db,const char* host,const char* username,const 
   db->isconnect=true;
   char use[100];
   use[0]='\0';
-  StringAddString(use,"USE ");
+  StringAddString(use,"USE `");
   StringAddString(use,database);
-  StringAddString(use,";");
+  StringAddString(use,"`;");
   database_query(db,use,false);
   database_query(db,"SET NAMES 'utf8'",false);
   database_query(db,"SET CHARACTER SET utf8",false);

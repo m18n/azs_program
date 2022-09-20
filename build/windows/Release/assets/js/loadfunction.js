@@ -19,7 +19,7 @@ function LoadConteiner(str){
     obj.removeClass("none");
     $(obj).find(".h").text(unis[1].value);
     obj.appendTo(".services");
-    obj.attr('onClick', 'LoadSite("/admin/service/configure/tank/settings","'+unis[0].value+'");');
+    obj.attr('onClick', 'LoadSite("/serv/service/configure/tank/settings","'+unis[0].value+'");');
     
     
 }
@@ -40,4 +40,5 @@ function LoadSettingAzs(str){
     sett.find("#host").val(azs[0].value);
     sett.find("#user").val(azs[1].value);
     sett.find("#pass").val(azs[2].value);
+    sett.find("#database").val(azs[3].value);
 }
