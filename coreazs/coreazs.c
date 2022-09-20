@@ -14,12 +14,13 @@ void create_conf_table(conf_table_t* loc){
     loc->id=-1;
     strcpy(loc->host,"");
     strcpy(loc->name,"");
-    strcpy(loc->password,"");   
+    strcpy(loc->password,"");  
+    strcpy(loc->database,""); 
 }
 
 conf_table_t conf_table_getconfig(local_database_t* loc){
      char sql[300];
-    strcpy(sql,"CREATE TABLE IF NOT EXISTS config_db (id INTEGER,host TEXT,name TEXT,password TEXT,PRIMARY KEY(id AUTOINCREMENT));");
+    strcpy(sql,"CREATE TABLE IF NOT EXISTS config_db (id INTEGER,host TEXT,name TEXT,password TEXT,database TEXT,PRIMARY KEY(id AUTOINCREMENT));");
     
     local_database_query(loc,sql,false);
     strcpy(sql,"SELECT * FROM config_db");
@@ -32,6 +33,7 @@ conf_table_t conf_table_getconfig(local_database_t* loc){
         strcpy(conf.host,sqlite3_column_text(res,1));
         strcpy(conf.name,sqlite3_column_text(res,2));
         strcpy(conf.password,sqlite3_column_text(res,3));
+        strcpy(conf.database,sqlite3_column_text(res,4));
     }
     sqlite3_finalize(res);
     return conf;
@@ -41,12 +43,14 @@ void conf_table_setconfig(local_database_t* loc,conf_table_t* conf){
     char sql[300];
     sql[0]='\0';
     if(conf->id==-1){
-        StringAddString(sql,"INSERT INTO config_db (host,name,password) VALUES ('");
+        StringAddString(sql,"INSERT INTO config_db (host,name,password,database) VALUES ('");
         StringAddString(sql,conf->host);
         StringAddString(sql,"','");
         StringAddString(sql,conf->name);
         StringAddString(sql,"','");
         StringAddString(sql,conf->password);
+        StringAddString(sql,"','");
+        StringAddString(sql,conf->database);
         StringAddString(sql,"');");
         local_database_query(loc,sql,false);
         *conf=conf_table_getconfig(loc);
@@ -57,6 +61,8 @@ void conf_table_setconfig(local_database_t* loc,conf_table_t* conf){
         StringAddString(sql,conf->name);
         StringAddString(sql,"', password='");
         StringAddString(sql,conf->password);
+        StringAddString(sql,"', database='");
+        StringAddString(sql,conf->database);
         StringAddString(sql,"' WHERE id=");
         StringAddInt(sql,conf->id);
         StringAddString(sql,";");
@@ -132,7 +138,7 @@ void create_database(database_t* database){
     }
    
 }
-int database_connect(database_t* db,const char* host,const char* username,const char* password){
+int database_connect(database_t* db,const char* host,const char* username,const char* password,const char*database){
     destroy_database(db);
     create_database(db);
     if (mysql_real_connect(db->con, host,username,password,
@@ -146,7 +152,12 @@ int database_connect(database_t* db,const char* host,const char* username,const 
       return -1;
   }
   db->isconnect=true;
-  database_query(db,"USE azs;",false);
+  char use[100];
+  use[0]='\0';
+  StringAddString(use,"USE ");
+  StringAddString(use,database);
+  StringAddString(use,";");
+  database_query(db,use,false);
   database_query(db,"SET NAMES 'utf8'",false);
   database_query(db,"SET CHARACTER SET utf8",false);
   database_query(db,"SET SESSION collation_connection = 'utf8_unicode_ci'",false);

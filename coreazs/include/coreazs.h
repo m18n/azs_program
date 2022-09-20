@@ -39,6 +39,7 @@ typedef struct CORE_API conf_table{
     char host[300];
     char name[100];
     char password[100];
+    char database[100];
 }conf_table_t;
 CORE_API void create_conf_table(conf_table_t* loc);
 CORE_API conf_table_t conf_table_getconfig(local_database_t* loc);
@@ -50,7 +51,7 @@ typedef struct CORE_API database{
 }database_t;
 CORE_API MYSQL_RES* database_query(database_t* db,const char* query,bool res);
 void CORE_API create_database(database_t* database);
-int CORE_API  database_connect(database_t* db,const char* host,const char* username,const char* password);
+int CORE_API  database_connect(database_t* db,const char* host,const char* username,const char* password,const char* database);
 void CORE_API destroy_database(database_t* db);
 typedef struct CORE_API db_node{
     database_t* db;

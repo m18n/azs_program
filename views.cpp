@@ -5,7 +5,7 @@ VServClient::VServClient() {
 	
 	//printf("CONFIGURE: %s %s %s\n",conf.host,conf.name,conf.password);
 	create_database(&db);
-	database_connect(&db,conf.host,conf.name,conf.password);
+	database_connect(&db,conf.host,conf.name,conf.password,conf.database);
 	 
 	init_db_table(&tb_tovar,&db,"tovar");
 	tovars=NULL;

@@ -40,4 +40,5 @@ function LoadSettingAzs(str){
     sett.find("#host").val(azs[0].value);
     sett.find("#user").val(azs[1].value);
     sett.find("#pass").val(azs[2].value);
+    sett.find("#database").val(azs[3].value);
 }

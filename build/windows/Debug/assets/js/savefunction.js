@@ -13,7 +13,8 @@ function SaveAzs(){
     let sett=$("#sett_azs");
     let host=sett.find("#host").val();
     let user=sett.find("#user").val();
+    let database=sett.find("#database").val();
     let password=sett.find("#pass").val();
-    let stringsave="host:"+host+"\r"+"user:"+user+"\r"+"password:"+password+"\r";
+    let stringsave="host:"+host+"\r"+"user:"+user+"\r"+"password:"+password+"\r"+"database:"+database+"\r";
     SaveAZS(stringsave);
 }

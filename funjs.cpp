@@ -114,10 +114,13 @@ JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
         temp=funjs::GetValueParam(azsstr,azs.size(),"password",&sizeres);
         memcpy(funjs::viewsc->conf.password,temp,sizeres);
         free(temp);
+        temp=funjs::GetValueParam(azsstr,azs.size(),"database",&sizeres);
+        memcpy(funjs::viewsc->conf.database,temp,sizeres);
+        free(temp);
         conf_table_setconfig(&funjs::viewsc->loc_db,&funjs::viewsc->conf);
         funjs::viewsc->CallFunctionJs("ConnectStatus", "PROCESS");
-        int res=database_connect(&funjs::viewsc->db,funjs::viewsc->conf.host,funjs::viewsc->conf.name,funjs::viewsc->conf.password);
-        if(res==0){
+        int res=database_connect(&funjs::viewsc->db,funjs::viewsc->conf.host,funjs::viewsc->conf.name,funjs::viewsc->conf.password,funjs::viewsc->conf.database);
+        if(funjs::viewsc->db.isconnect==true){
              funjs::viewsc->CallFunctionJs("ConnectStatus", "CONNECT");
              funjs::viewsc->LoadSite("/serv/service/configure");
         }else{
@@ -194,6 +197,7 @@ void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
     std::cout<<"SettingsAZS\n";
     char buffer[400];
     int index=0;
+
     strcpy(&buffer[index],"host:");
     index=strlen(buffer);
      strcpy(&buffer[index],funjs::viewsc->conf.host);
@@ -209,6 +213,12 @@ void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
     strcpy(&buffer[index],"password:");
     index=strlen(buffer);
     strcpy(&buffer[index],funjs::viewsc->conf.password);
+    index=strlen(buffer);
+    strcpy(&buffer[index],"\r");
+    index=strlen(buffer);
+    strcpy(&buffer[index],"database:");
+    index=strlen(buffer);
+    strcpy(&buffer[index],funjs::viewsc->conf.database);
     index=strlen(buffer);
     strcpy(&buffer[index],"\r");
     index=strlen(buffer);
