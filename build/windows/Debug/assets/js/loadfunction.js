@@ -12,14 +12,15 @@ function GetVar(data){
     }
     return arr;
 }
-function LoadConteiner(str){
+function LoadConteiner(str,indexlable,link){
     // id:value|name:value|link:value|
     let unis=GetVar(str);
     let obj=$("#shab").clone();
     obj.removeClass("none");
-    $(obj).find(".h").text(unis[1].value);
+    
+    $(obj).find(".h").text(unis[parseInt(indexlable)].value);
     obj.appendTo(".services");
-    obj.attr('onClick', 'LoadSite("/serv/service/configure/tank/settings","'+unis[0].value+'");');
+    obj.attr('onClick', 'LoadSite("'+link+'","'+unis[0].value+'");');
     
     
 }

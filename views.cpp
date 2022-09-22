@@ -11,6 +11,7 @@ VServClient::VServClient() {
 	database_connect(&db,conf.host,conf.name,conf.password,conf.database);
 	 
 	init_db_table(&tb_tovar,&db,"tovar");
+	init_db_table(&tb_tank,&db,"tank");
 	tovars=NULL;
 }
 VServClient::~VServClient() {
@@ -26,6 +27,7 @@ void VServClient::SetWin(RefPtr<Window> win) {
 	this->win = win;
 	win->SetTitle(title.c_str());
 	ov = Overlay::Create(*win, win->width(), win->height(), 0, 0);
+	localurl="/login";
 	LoadSite("/login");
 	ov->view()->set_view_listener(this);
 	ov->view()->set_load_listener(this);
@@ -46,6 +48,7 @@ void VServClient::LoadSite(std::string url){
 		ov->view()->LoadURL(("file:///"+sites[index].namefile).c_str());
 }
 void VServClient::LoadSite(std::string url,std::vector<std::string>arg){
+	this->localurl=url;
 	this->lastargument=std::move(arg);
 	int index=-1;
 	for(int i=0;i<sites.size();i++){
@@ -66,7 +69,7 @@ void VServClient::OnDOMReady(View* caller,
 	Ref<JSContext> context = caller->LockJSContext();
 	std::string strurl=url.utf8().data()+8;
 	
-	SetCtx(context.get(),strurl);
+	SetCtx(context.get(),localurl);
 	std::cout<<"URL: "<<url.utf8().data()<<"\n";
 }
 void VServClient::OnClose() {}

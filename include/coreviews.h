@@ -27,14 +27,14 @@ public:
     }
     void RegistrFunctionJs(site* s,std::string namefunction, JSObjectCallAsFunctionCallback fun);
     void CallFunctionJs(std::string namefunction, std::string val);
+    void CallFunctionJs(std::string namefunction,std::vector<std::string>args);
     void CallFunctionJs(std::string namefunction, double val);
     std::string ArgumentToStr(JSContextRef ctx ,JSValueRef arg,JSValueRef* exception);
-    void SetCtx(JSContextRef ctx,std::string newsite) {
-        this->localsite=newsite;
+    void SetCtx(JSContextRef ctx,std::string url) {
         this->ctx = ctx;
         int index=-1;
         for (int i = 0; i < sites.size(); i++) {
-            if(sites[i].namefile==newsite){
+            if(sites[i].url==url){
                 
                 index=i;
                 break;
@@ -64,7 +64,6 @@ public:
         return &sites;
     }
 protected:
-    std::string localsite;
     site* local;
     std::vector<site>sites;
     std::vector<std::string>lastargument;

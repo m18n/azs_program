@@ -43,6 +43,5 @@ namespace funjs {
     void LoadSiteSettingsTovar(std::vector<std::string>*data);
     void LoadSiteSettingsAzs(std::vector<std::string>*data);
     void LoadSiteLogin(std::vector<std::string>*data);
-    //int SearchStringInArray(char* array,int size,int startindex,const char* search,int count);
-   // char* GetValueParam(char* string,int sizestring,const char* name_param,int*sizeres);
+    void LoadSiteTank(std::vector<std::string>*data);
 }
