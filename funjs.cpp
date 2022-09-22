@@ -180,10 +180,15 @@ void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
     init_tovar_node(&tovar,&viewsc->db);
     int size=0;
     tovar_node_t* tovars=(tovar_node_t*)db_table_get_all(&viewsc->tb_tovar,(db_node_t*)&tovar,sizeof(tovar_node_t),&size);
+     std::vector<std::string>args;
+     args.resize(3);
     for(int i=0;i<size;i++){
         char* str=tovars[i].node.get_string(&tovars[i].node);
+        args[0]=str;
+        args[1]="1";
+        args[2]="/serv/service/configure/tovar/settings";
         printf("STRING: %s\n",str);
-        funjs::viewsc->CallFunctionJs("LoadConteiner",str);
+        funjs::viewsc->CallFunctionJs("LoadConteiner",args);
         free(str);
     }
     if(viewsc->tovars!=NULL)
@@ -192,6 +197,28 @@ void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
     
     
     
+}
+void funjs::LoadSiteTank(std::vector<std::string>*data){
+    printf("LOAD TANK\n");
+    tank_node_t tank;
+    init_tank_node(&tank,&viewsc->db);
+    int size=0;
+    tank_node_t* tanks=(tank_node_t*)db_table_get_all(&viewsc->tb_tank,(db_node_t*)&tank,sizeof(tank_node_t),&size);
+    std::vector<std::string>args;
+    args.resize(3);
+    for(int i=0;i<size;i++){
+        char* str=tanks[i].node.get_string(&tanks[i].node);
+        printf("STRING: %s\n",str);
+        args[0]=str;
+        args[1]="0";
+        args[2]="/serv/service/configure/tovar";
+        funjs::viewsc->CallFunctionJs("LoadConteiner",args);
+        free(str);
+    }
+    if(viewsc->tanks!=NULL)
+        free(viewsc->tanks);
+    viewsc->tanks=tanks;
+
 }
 void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
     std::cout<<"SettingsAZS\n";
@@ -244,6 +271,7 @@ void funjs::LoadSiteSettingsTovar(std::vector<std::string>*data){
         free(str);
     }
 }
+
  void funjs::SetView(VServClient* view){
      viewsc=view;
  }
@@ -282,54 +310,4 @@ void funjs::RegistrAllSites(){
         RegistrAllFunction(&(*sites)[i]);
     }
 }
-// int funjs::SearchStringInArray(char* array,int size,int startindex,const char* search,int count)
-// {
-//     int len = strlen(search);
-//     int c = 0;
-    
-   
-//         for (int i = startindex; i < size; i++)
-//         {
-//             for (int j = i; j < size; j++)
-//             {
-//                 if (array[j] == search[j - i])
-//                 {
-//                     if (j - i == len - 1)
-//                     {
-//                         c++;
-//                         if (c == count)
-//                             return i;
-//                     }
-//                 }
-//                 else
-//                 {
-//                     i += j - i;
-//                     break;
-//                 }
-//             }
-//         }
-//         return -1;
-    
-// }
-// char* funjs::GetValueParam(char* string,int sizestring,const char* name_param,int*sizeres){
-//     char param[100];
-//     strcpy(param,name_param);
-//     int length=strlen(param);
-//     strcpy(&param[length],":");
-//     int start=SearchStringInArray(string,sizestring,0,param,1);
-//     if(start==-1)
-//         return NULL;
-//     start=SearchStringInArray(string,sizestring,start,":",1);
-//     if(start==-1)
-//         return NULL;
-//     start++;
-//     int end=SearchStringInArray(string,sizestring,start,"\r",1);
-//     if(end==-1)
-//         return NULL;
-//     int sizearr=end-start+1;
-//     *sizeres=sizearr;
-//     char* arrstr=(char*)malloc(sizearr);
-//     memcpy(arrstr,&string[start],sizearr-1);
-//     arrstr[sizearr-1]='\0';
-//     return arrstr;
-// }
+

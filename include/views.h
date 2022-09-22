@@ -41,10 +41,13 @@ public:
 	database_t db;
 	local_database_t loc_db;
 	db_table_t tb_tovar;
+	db_table_t tb_tank;
 	tovar_node_t* tovars;
+	tank_node_t* tanks;
+	
 	conf_table_t conf;
 private:
-	
+	std::string localurl;
 	std::string title;
 	RefPtr<Window> win;
 	RefPtr<Overlay> ov;
