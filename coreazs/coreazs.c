@@ -119,7 +119,7 @@ MYSQL_RES* database_query(database_t* db,const char* query,bool res){
     }
     MYSQL_RES *result = mysql_store_result(db->con);
     if(res==false){
-        mysql_free_result(res);
+        mysql_free_result(result);
         result=NULL;
     }
     return result;

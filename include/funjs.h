@@ -1,5 +1,6 @@
 #pragma once
 #include"views.h"
+
 JSValueRef RestartProgram(JSContextRef ctx, JSObjectRef function,
   JSObjectRef thisObject, size_t argumentCount, 
   const JSValueRef arguments[], JSValueRef* exception);
@@ -42,6 +43,6 @@ namespace funjs {
     void LoadSiteSettingsTovar(std::vector<std::string>*data);
     void LoadSiteSettingsAzs(std::vector<std::string>*data);
     void LoadSiteLogin(std::vector<std::string>*data);
-    int SearchStringInArray(char* array,int size,int startindex,const char* search,int count);
-    char* GetValueParam(char* string,int sizestring,const char* name_param,int*sizeres);
+    //int SearchStringInArray(char* array,int size,int startindex,const char* search,int count);
+   // char* GetValueParam(char* string,int sizestring,const char* name_param,int*sizeres);
 }

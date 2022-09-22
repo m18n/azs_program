@@ -5,7 +5,8 @@ VServClient::VServClient() {
 	
 	//printf("CONFIGURE: %s %s %s\n",conf.host,conf.name,conf.password);
 	create_database(&db);
-
+	
+	
 	printf("CONNECT DATABASE:\n");
 	database_connect(&db,conf.host,conf.name,conf.password,conf.database);
 	 

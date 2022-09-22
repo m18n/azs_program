@@ -105,22 +105,20 @@ JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
         
         char* azsstr=&azs[0];
         int sizeres=0;
-        char* temp=funjs::GetValueParam(azsstr,azs.size(),"host",&sizeres);
+        char* temp=GetValueParam(azsstr,azs.size(),"host",&sizeres);
         memcpy(funjs::viewsc->conf.host,temp,sizeres);
         free(temp);
-        temp=funjs::GetValueParam(azsstr,azs.size(),"user",&sizeres);
+        temp=GetValueParam(azsstr,azs.size(),"user",&sizeres);
         memcpy(funjs::viewsc->conf.name,temp,sizeres);
         free(temp);
-        temp=funjs::GetValueParam(azsstr,azs.size(),"password",&sizeres);
+        temp=GetValueParam(azsstr,azs.size(),"password",&sizeres);
         memcpy(funjs::viewsc->conf.password,temp,sizeres);
         free(temp);
-        temp=funjs::GetValueParam(azsstr,azs.size(),"database",&sizeres);
+        temp=GetValueParam(azsstr,azs.size(),"database",&sizeres);
         memcpy(funjs::viewsc->conf.database,temp,sizeres);
         free(temp);
         conf_table_setconfig(&funjs::viewsc->loc_db,&funjs::viewsc->conf);
         funjs::viewsc->CallFunctionJs("ConnectStatus", "PROCESS");
-        
-        printf("SLEEEP\n");
         int res=database_connect(&funjs::viewsc->db,funjs::viewsc->conf.host,funjs::viewsc->conf.name,funjs::viewsc->conf.password,funjs::viewsc->conf.database);
         if(funjs::viewsc->db.isconnect==true){
              funjs::viewsc->CallFunctionJs("ConnectStatus", "CONNECT");
@@ -284,54 +282,54 @@ void funjs::RegistrAllSites(){
         RegistrAllFunction(&(*sites)[i]);
     }
 }
-int funjs::SearchStringInArray(char* array,int size,int startindex,const char* search,int count)
-{
-    int len = strlen(search);
-    int c = 0;
+// int funjs::SearchStringInArray(char* array,int size,int startindex,const char* search,int count)
+// {
+//     int len = strlen(search);
+//     int c = 0;
     
    
-        for (int i = startindex; i < size; i++)
-        {
-            for (int j = i; j < size; j++)
-            {
-                if (array[j] == search[j - i])
-                {
-                    if (j - i == len - 1)
-                    {
-                        c++;
-                        if (c == count)
-                            return i;
-                    }
-                }
-                else
-                {
-                    i += j - i;
-                    break;
-                }
-            }
-        }
-        return -1;
+//         for (int i = startindex; i < size; i++)
+//         {
+//             for (int j = i; j < size; j++)
+//             {
+//                 if (array[j] == search[j - i])
+//                 {
+//                     if (j - i == len - 1)
+//                     {
+//                         c++;
+//                         if (c == count)
+//                             return i;
+//                     }
+//                 }
+//                 else
+//                 {
+//                     i += j - i;
+//                     break;
+//                 }
+//             }
+//         }
+//         return -1;
     
-}
-char* funjs::GetValueParam(char* string,int sizestring,const char* name_param,int*sizeres){
-    char param[100];
-    strcpy(param,name_param);
-    int length=strlen(param);
-    strcpy(&param[length],":");
-    int start=SearchStringInArray(string,sizestring,0,param,1);
-    if(start==-1)
-        return NULL;
-    start=SearchStringInArray(string,sizestring,start,":",1);
-    if(start==-1)
-        return NULL;
-    start++;
-    int end=SearchStringInArray(string,sizestring,start,"\r",1);
-    if(end==-1)
-        return NULL;
-    int sizearr=end-start+1;
-    *sizeres=sizearr;
-    char* arrstr=(char*)malloc(sizearr);
-    memcpy(arrstr,&string[start],sizearr-1);
-    arrstr[sizearr-1]='\0';
-    return arrstr;
-}
+// }
+// char* funjs::GetValueParam(char* string,int sizestring,const char* name_param,int*sizeres){
+//     char param[100];
+//     strcpy(param,name_param);
+//     int length=strlen(param);
+//     strcpy(&param[length],":");
+//     int start=SearchStringInArray(string,sizestring,0,param,1);
+//     if(start==-1)
+//         return NULL;
+//     start=SearchStringInArray(string,sizestring,start,":",1);
+//     if(start==-1)
+//         return NULL;
+//     start++;
+//     int end=SearchStringInArray(string,sizestring,start,"\r",1);
+//     if(end==-1)
+//         return NULL;
+//     int sizearr=end-start+1;
+//     *sizeres=sizearr;
+//     char* arrstr=(char*)malloc(sizearr);
+//     memcpy(arrstr,&string[start],sizearr-1);
+//     arrstr[sizearr-1]='\0';
+//     return arrstr;
+// }
