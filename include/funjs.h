@@ -22,6 +22,9 @@ JSValueRef AuthAdmin(JSContextRef ctx, JSObjectRef function,
 JSValueRef SaveTovar(JSContextRef ctx, JSObjectRef function,
                     JSObjectRef thisObject, size_t argumentCount,
                     const JSValueRef arguments[], JSValueRef *exception);
+JSValueRef SaveTank(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception);
 JSValueRef SaveAZS(JSContextRef ctx, JSObjectRef function,
                     JSObjectRef thisObject, size_t argumentCount,
                     const JSValueRef arguments[], JSValueRef *exception);
@@ -41,6 +44,7 @@ namespace funjs {
     void LoadSiteAdmin(std::vector<std::string>*data);
     void LoadSiteTypeGas(std::vector<std::string>*data);
     void LoadSiteSettingsTovar(std::vector<std::string>*data);
+    void LoadSiteSettingsTank(std::vector<std::string>*data);
     void LoadSiteSettingsAzs(std::vector<std::string>*data);
     void LoadSiteLogin(std::vector<std::string>*data);
     void LoadSiteTank(std::vector<std::string>*data);

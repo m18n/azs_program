@@ -35,6 +35,26 @@ function LoadSettingTovar(str){
     sett.find("#wog_code").val(tovar[5].value);
 
 }
+function LoadSettingTank(str,ids){
+    let arr=ids.split('\r');
+    
+
+    let tovar=GetVar(str);
+    let sett=$(".settings_tank");
+    sett.attr("id",tovar[0].value);
+    sett.find("#nn").val(tovar[1].value);
+    for(let i=0;i<arr.length-1;i++){
+        if(arr[i]===tovar[2].value){
+            LOG("I");
+            sett.find("#id_tovar").append('<option selected>'+arr[i]+'</option>');
+        }else{
+            sett.find("#id_tovar").append('<option>'+arr[i]+'</option>');
+        }
+    }
+    
+    sett.find("#color").val(tovar[3].value);
+
+}
 function LoadSettingAzs(str){
     let azs=GetVar(str);
     let sett=$("#sett_azs");

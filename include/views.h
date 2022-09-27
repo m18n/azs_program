@@ -40,8 +40,7 @@ public:
 	~VServClient();
 	database_t db;
 	local_database_t loc_db;
-	db_table_t tb_tovar;
-	db_table_t tb_tank;
+	
 	tovar_node_t* tovars;
 	tank_node_t* tanks;
 	

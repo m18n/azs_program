@@ -10,8 +10,7 @@ VServClient::VServClient() {
 	printf("CONNECT DATABASE:\n");
 	database_connect(&db,conf.host,conf.name,conf.password,conf.database);
 	 
-	init_db_table(&tb_tovar,&db,"tovar");
-	init_db_table(&tb_tank,&db,"tank");
+	
 	tovars=NULL;
 }
 VServClient::~VServClient() {

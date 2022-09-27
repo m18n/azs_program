@@ -92,7 +92,7 @@ JSValueRef SaveTovar(JSContextRef ctx, JSObjectRef function,
           
     std::string tovar=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
     tovar_node_t t;
-    init_tovar_node(&t,&funjs::viewsc->db);
+    init_tovar_node(&t,&funjs::viewsc->db,"tovar");
     char* data=&tovar[0];
     t.node.string_to_param(&t.node,data,tovar.size());
     t.node.upload_param(&t.node);
@@ -152,6 +152,17 @@ JSValueRef LoginAZS(JSContextRef ctx, JSObjectRef function,
         }
         return JSValueMakeNull(ctx);
 }
+JSValueRef SaveTank(JSContextRef ctx, JSObjectRef function,
+                    JSObjectRef thisObject, size_t argumentCount,
+                    const JSValueRef arguments[], JSValueRef *exception){
+             std::string tank=funjs::viewsc->ArgumentToStr(ctx,arguments[0],exception);
+             tank_node_t t;
+            init_tank_node(&t,&funjs::viewsc->db,"tank");
+            char* data=&tank[0];
+            t.node.string_to_param(&t.node,data,tank.size());
+            t.node.upload_param(&t.node);
+            return JSValueMakeNull(ctx);
+}
 void funjs::LoadBaseSite(){
    // RegistrAllFunction(viewsc->GetLocal());
 }
@@ -170,55 +181,6 @@ void funjs::LoadSiteAdmin(std::vector<std::string>*data){
     
  std::cout<<"LOAD ADMIN\n";
    LoadSiteIndex(data);
-}
-void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
-    LoadBaseSite();
-    std::cout<<"LOAD TYPE GAS\n";
-    
-    
-    tovar_node_t tovar;
-    init_tovar_node(&tovar,&viewsc->db);
-    int size=0;
-    tovar_node_t* tovars=(tovar_node_t*)db_table_get_all(&viewsc->tb_tovar,(db_node_t*)&tovar,sizeof(tovar_node_t),&size);
-     std::vector<std::string>args;
-     args.resize(3);
-    for(int i=0;i<size;i++){
-        char* str=tovars[i].node.get_string(&tovars[i].node);
-        args[0]=str;
-        args[1]="1";
-        args[2]="/serv/service/configure/tovar/settings";
-        printf("STRING: %s\n",str);
-        funjs::viewsc->CallFunctionJs("LoadConteiner",args);
-        free(str);
-    }
-    if(viewsc->tovars!=NULL)
-        free(viewsc->tovars);
-    viewsc->tovars=tovars;
-    
-    
-    
-}
-void funjs::LoadSiteTank(std::vector<std::string>*data){
-    printf("LOAD TANK\n");
-    tank_node_t tank;
-    init_tank_node(&tank,&viewsc->db);
-    int size=0;
-    tank_node_t* tanks=(tank_node_t*)db_table_get_all(&viewsc->tb_tank,(db_node_t*)&tank,sizeof(tank_node_t),&size);
-    std::vector<std::string>args;
-    args.resize(3);
-    for(int i=0;i<size;i++){
-        char* str=tanks[i].node.get_string(&tanks[i].node);
-        printf("STRING: %s\n",str);
-        args[0]=str;
-        args[1]="0";
-        args[2]="/serv/service/configure/tovar";
-        funjs::viewsc->CallFunctionJs("LoadConteiner",args);
-        free(str);
-    }
-    if(viewsc->tanks!=NULL)
-        free(viewsc->tanks);
-    viewsc->tanks=tanks;
-
 }
 void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
     std::cout<<"SettingsAZS\n";
@@ -256,6 +218,78 @@ void funjs::LoadSiteSettingsAzs(std::vector<std::string>*data){
         funjs::viewsc->CallFunctionJs("ConnectStatus", "ERORR CONNECT");
     }
 }
+void funjs::LoadSiteTypeGas(std::vector<std::string>*data){
+    LoadBaseSite();
+    std::cout<<"LOAD TYPE GAS\n";
+    
+    
+    tovar_node_t tovar;
+    init_tovar_node(&tovar,&viewsc->db,"tovar");
+    int size=0;
+    tovar_node_t* tovars=(tovar_node_t*)db_table_get_all((db_node_t*)&tovar,sizeof(tovar_node_t),&size);
+     std::vector<std::string>args;
+     args.resize(3);
+    for(int i=0;i<size;i++){
+        char* str=tovars[i].node.get_string(&tovars[i].node);
+        args[0]=str;
+        args[1]="1";
+        args[2]="/serv/service/configure/tovar/settings";
+        printf("STRING: %s\n",str);
+        funjs::viewsc->CallFunctionJs("LoadConteiner",args);
+        free(str);
+    }
+    if(viewsc->tovars!=NULL)
+        free(viewsc->tovars);
+    viewsc->tovars=tovars;
+    
+    
+    
+}
+void funjs::LoadSiteTank(std::vector<std::string>*data){
+    printf("LOAD TANK\n");
+    tank_node_t tank;
+    init_tank_node(&tank,&viewsc->db,"tank");
+    int size=0;
+    tank_node_t* tanks=(tank_node_t*)db_table_get_all((db_node_t*)&tank,sizeof(tank_node_t),&size);
+    std::vector<std::string>args;
+    args.resize(3);
+    for(int i=0;i<size;i++){
+        char* str=tanks[i].node.get_string(&tanks[i].node);
+        printf("STRING: %s\n",str);
+        args[0]=str;
+        args[1]="0";
+        args[2]="/serv/service/configure/tank/settings";
+        funjs::viewsc->CallFunctionJs("LoadConteiner",args);
+        free(str);
+    }
+    if(viewsc->tanks!=NULL)
+        free(viewsc->tanks);
+    viewsc->tanks=tanks;
+
+}
+void funjs::LoadSiteSettingsTank(std::vector<std::string>*data){
+    std::cout<<"SettingsTank\n";
+     if(data->size()!=0){
+        int size=0;
+        tovar_node_t tovar;
+        init_tovar_node(&tovar,&viewsc->db,"tovar");
+        char* ids=db_table_get_allid((db_node_t*)&tovar,sizeof(tovar_node_t),&size);
+
+        tank_node_t tank;
+        init_tank_node(&tank,&viewsc->db,"tank");
+        tank.node.id=atoi((*data)[0].c_str());
+        tank.node.download_param(&tank.node);
+        char* str=tank.node.get_string(&tank.node);
+        std::vector<std::string>arg;
+        arg.resize(2);
+        arg[0]=str;
+        arg[1]=ids;
+        free(ids);
+        funjs::viewsc->CallFunctionJs("LoadSettingTank",arg);
+        free(str);
+    }
+}
+
 void funjs::LoadSiteLogin(std::vector<std::string>*data){
     std::cout<<"LOGIN\n";
 }
@@ -263,7 +297,7 @@ void funjs::LoadSiteSettingsTovar(std::vector<std::string>*data){
     std::cout<<"SettingsTovar\n";
     if(data->size()!=0){
         tovar_node_t tovar;
-        init_tovar_node(&tovar,&viewsc->db);
+        init_tovar_node(&tovar,&viewsc->db,"tovar");
         tovar.node.id=atoi((*data)[0].c_str());
         tovar.node.download_param(&tovar.node);
         char* str=tovar.node.get_string(&tovar.node);
@@ -301,8 +335,10 @@ void funjs::RegistrAllFunction(site*s){
     viewsc->RegistrFunctionJs(s,"LoadSite",LoadSite);
     viewsc->RegistrFunctionJs(s,"SaveTovar",SaveTovar);
     viewsc->RegistrFunctionJs(s,"SaveAZS",SaveAZS);
+    viewsc->RegistrFunctionJs(s,"SaveTank",SaveTank);
     viewsc->RegistrFunctionJs(s,"LoginAZS",LoginAZS);
     viewsc->RegistrFunctionJs(s,"RestartProgram", RestartProgram);
+    viewsc->RegistrFunctionJs(s,"LOG", LOG);
 }
 void funjs::RegistrAllSites(){
     std::vector<site>* sites=viewsc->GetAllSite();
