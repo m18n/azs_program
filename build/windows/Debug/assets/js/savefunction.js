@@ -22,7 +22,7 @@ function SaveTanke(){
     let sett=$(".settings_tank");
     let id=sett.attr("id");
     let nn=sett.find("#nn").val();
-    let id_tovar=sett.find("#id_tovar option:selected").text();
+    let id_tovar=sett.find("#id_tovar option:selected").val();
     LOG("ID TOVAR: "+id_tovar);
     let color=sett.find("#color").val();
     let str="id:"+id+"\r"+"nn:"+nn+"\r"+"id_tovar:"+id_tovar+"\r"+"color:"+color+"\r";

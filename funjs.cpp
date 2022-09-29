@@ -254,10 +254,11 @@ void funjs::LoadSiteTank(std::vector<std::string>*data){
     std::vector<std::string>args;
     args.resize(3);
     for(int i=0;i<size;i++){
+        tank_node_t* t=&tanks[i];
         char* str=tanks[i].node.get_string(&tanks[i].node);
         printf("STRING: %s\n",str);
         args[0]=str;
-        args[1]="0";
+        args[1]="2";
         args[2]="/serv/service/configure/tank/settings";
         funjs::viewsc->CallFunctionJs("LoadConteiner",args);
         free(str);
@@ -273,18 +274,25 @@ void funjs::LoadSiteSettingsTank(std::vector<std::string>*data){
         int size=0;
         tovar_node_t tovar;
         init_tovar_node(&tovar,&viewsc->db,"tovar");
-        char* ids=db_table_get_allid((db_node_t*)&tovar,sizeof(tovar_node_t),&size);
-
+        tovar_node_t* tovars=(tovar_node_t*)db_table_get_all((db_node_t*)&tovar,sizeof(tovar_node_t),&size);
+        char** strtovars=(char**)malloc(sizeof(char*)*size);
+        for(int i=0;i<size;i++){
+            strtovars[i]=tovars[i].node.get_string(&tovars[i].node);
+        }
         tank_node_t tank;
         init_tank_node(&tank,&viewsc->db,"tank");
         tank.node.id=atoi((*data)[0].c_str());
         tank.node.download_param(&tank.node);
         char* str=tank.node.get_string(&tank.node);
         std::vector<std::string>arg;
-        arg.resize(2);
+        arg.resize(size+1);
         arg[0]=str;
-        arg[1]=ids;
-        free(ids);
+
+        for(int i=0;i<size;i++){
+            arg[i+1]=strtovars[i];
+            free(strtovars[i]);
+        }
+        free(strtovars);
         funjs::viewsc->CallFunctionJs("LoadSettingTank",arg);
         free(str);
     }
