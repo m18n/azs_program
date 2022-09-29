@@ -24,7 +24,9 @@ function SaveTanke(){
     let nn=sett.find("#nn").val();
     let id_tovar=sett.find("#id_tovar option:selected").val();
     LOG("ID TOVAR: "+id_tovar);
-    let color=sett.find("#color").val();
-    let str="id:"+id+"\r"+"nn:"+nn+"\r"+"id_tovar:"+id_tovar+"\r"+"color:"+color+"\r";
+    let color=sett.find("#color option:selected").val();
+    color=color.slice(1);
+    LOG("COLOR: "+color+" PARSE: "+parseInt(color, 16));
+    let str="id:"+id+"\r"+"nn:"+nn+"\r"+"id_tovar:"+id_tovar+"\r"+"color:"+parseInt(color, 16)+"\r";
     SaveTank(str);
 }
