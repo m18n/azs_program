@@ -15,6 +15,7 @@ void InitSites(){
     vs.AddSite("/serv/service/configure","configurationazs.html",NULL);    
     vs.AddSite("/serv/service/configure/azs","settingsazs.html",funjs::LoadSiteSettingsAzs);    
     vs.AddSite("/serv/service/configure/tovar/settings","settingstovar.html",funjs::LoadSiteSettingsTovar);
+    vs.AddSite("/serv/service/configure/tank/settings","settingstank.html",funjs::LoadSiteSettingsTank);
     vs.AddSite("/serv/service/configure/tovar","confnode.html",funjs::LoadSiteTypeGas);
     vs.AddSite("/serv/service/configure/tank","confnode.html",funjs::LoadSiteTank);
     vs.AddSite("/serv/service/configure/colon","confnode.html",funjs::LoadSiteTypeGas);

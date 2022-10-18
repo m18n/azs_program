@@ -184,6 +184,7 @@ char* db_node_get_string(db_node_t* node){
 void create_db_node(db_node_t* node){
     node->id=0;
     node->db=NULL;
+    node->nametable[0]='\0';
     node->download_param=db_node_downlaod_param;
     node->upload_param=db_node_upload_param;
     node->rowdb_to_param=db_node_rowdb_to_param;
@@ -195,28 +196,29 @@ void destroy_database(database_t* db){
     db->isconnect=false;
     if(db->con!=NULL){
         db->isconnect=false;
-        mysql_close(db->con);
+        mysql_close(db->con); 
         db->con=NULL;
     }
 }
-void init_db_node(db_node_t* node,database_t* db){
+void init_db_node(db_node_t* node,database_t* db,const char nametable[100]){
     create_db_node(node);
     node->db=db;
+    strcpy(node->nametable,nametable);
 }
-int db_table_get_count(db_table_t* table){
+int db_table_get_count(db_node_t* node){
     char buffersql[1000];
     buffersql[0]='\0';
     int length=0;
     StringAddString(buffersql,"SELECT COUNT(*) FROM ");
-    StringAddString(buffersql,table->nametable);
-    MYSQL_RES* res=database_query(table->db,buffersql,true);
+    StringAddString(buffersql,node->nametable);
+    MYSQL_RES* res=database_query(node->db,buffersql,true);
     MYSQL_ROW row=mysql_fetch_row(res);
     int count=atoi(row[0]);
     mysql_free_result(res);
     return count;
 }
-db_node_t* db_table_get_all(db_table_t* table,db_node_t* node,int sizenode,int* sizenodes){
-    int row_size=db_table_get_count(table);
+db_node_t* db_table_get_all(db_node_t* node,int sizenode,int* sizenodes){
+    int row_size=db_table_get_count(node);
     *sizenodes=row_size;
     
     char* nodes=malloc(sizenode*row_size);
@@ -225,8 +227,8 @@ db_node_t* db_table_get_all(db_table_t* table,db_node_t* node,int sizenode,int* 
     buffersql[0]='\0';
     int length=0;
     StringAddString(buffersql,"SELECT * FROM ");
-    StringAddString(buffersql,table->nametable);
-    MYSQL_RES* res=database_query(table->db,buffersql,true);
+    StringAddString(buffersql,node->nametable);
+    MYSQL_RES* res=database_query(node->db,buffersql,true);
     
     int numcolum=mysql_num_fields(res);
     int index=0;
@@ -241,14 +243,27 @@ db_node_t* db_table_get_all(db_table_t* table,db_node_t* node,int sizenode,int* 
     mysql_free_result(res);
     return (db_node_t*)start;
 }
-void create_db_table(db_table_t* table){
-    table->db=NULL;
- 
-}
-void init_db_table(db_table_t* table,database_t* db,const char nametable[50]){
-    create_db_table(table);
-    table->db=db;
-    strcpy(table->nametable,nametable);    
+CORE_API char* db_table_get_allid(db_node_t* node,int sizenode,int* sizenodes){
+    char* nodes=db_table_get_all(node,sizenode,sizenodes);
+    char* start=nodes;
+    int sizeids=0;
+    for(int i=0;i<*sizenodes;i++){
+        db_node_t* n=(db_node_t*)nodes;
+        sizeids+=GetLengthInt(n->id)+1;
+        nodes+=sizenode;
+    }
+    nodes=start;
+    char* ids=malloc(sizeids+1);
+    ids[0]='\0';
+    for(int i=0;i<*sizenodes;i++){
+        db_node_t* n=(db_node_t*)nodes;
+        StringAddInt(ids,n->id);
+        StringAddString(ids,"\r");
+        nodes+=sizenode;
+    }
+    nodes=start;
+    free(nodes);
+    return ids;
 }
 void tovar_node_rowdb_to_param(tovar_node_t* node,char** row){
     strcpy(node->name,row[5]);
@@ -262,7 +277,10 @@ void tovar_node_downlaod_param(tovar_node_t* node){
     
    if(node->node.id!=0){
         char buffer[1000];
-        strcpy(buffer,"SELECT * FROM tovar WHERE id_tovar=");
+        buffer[0]='\0';
+        StringAddString(buffer,"SELECT * FROM ");
+        StringAddString(buffer,node->node.nametable);
+        StringAddString(buffer," WHERE id_tovar=");
         StringAddInt(buffer,node->node.id);
         MYSQL_RES* res=database_query(node->node.db,buffer,true);
         MYSQL_ROW row=mysql_fetch_row(res);
@@ -275,7 +293,10 @@ void tovar_node_downlaod_param(tovar_node_t* node){
 void tovar_node_upload_param(tovar_node_t* node){
     if(node->node.id!=0){
         char buffer[1000];
-        strcpy(buffer,"UPDATE tovar SET name = '");
+        buffer[0]='\0';
+        StringAddString(buffer,"UPDATE ");
+        StringAddString(buffer,node->node.nametable);
+        StringAddString(buffer," SET name = '");
         StringAddString(buffer,node->name);
         StringAddString(buffer,"', name_p = '");
         StringAddString(buffer,node->name_p);
@@ -352,9 +373,10 @@ void create_tovar_node(tovar_node_t* node){
     node->node.get_string=tovar_node_get_string;
     node->node.string_to_param=tovar_node_string_to_param;
 }
-void init_tovar_node(tovar_node_t* node,database_t* db){
+void init_tovar_node(tovar_node_t* node,database_t* db,const char nametable[100]){
     create_tovar_node(node);
     node->node.db=db;
+    strcpy(node->node.nametable,nametable);
 }
 void tank_node_show(tank_node_t* node){
     
@@ -386,11 +408,14 @@ void  tank_node_string_to_param(tank_node_t* node,char* string,int size){
 void  tank_node_downlaod_param(tank_node_t* node){
     if(node->node.id!=0){
         char buffer[1000];
-        strcpy(buffer,"SELECT * FROM tank WHERE id_tank=");
+        buffer[0]='\0';
+        StringAddString(buffer,"SELECT * FROM ");
+        StringAddString(buffer,node->node.nametable);
+        StringAddString(buffer," WHERE id_tank=");
         StringAddInt(buffer,node->node.id);
         MYSQL_RES* res=database_query(node->node.db,buffer,true);
         MYSQL_ROW row=mysql_fetch_row(res);
-        tovar_node_rowdb_to_param(node,row);
+        tank_node_rowdb_to_param(node,row);
         mysql_free_result(res);   
    }else{
         printf("ERROR NOT ID\n");
@@ -399,13 +424,16 @@ void  tank_node_downlaod_param(tank_node_t* node){
 void  tank_node_upload_param(tank_node_t* node){
     if(node->node.id!=0){
         char buffer[1000];
-        strcpy(buffer,"UPDATE tovar SET nn = '");
+        buffer[0]='\0';
+        StringAddString(buffer,"UPDATE ");
+        StringAddString(buffer,node->node.nametable);
+        StringAddString(buffer," SET nn = '");
         StringAddInt(buffer,node->nn);
         StringAddString(buffer,"', id_tovar = '");
         StringAddInt(buffer,node->id_tovar);
         StringAddString(buffer,"', color = '");
         StringAddInt(buffer,node->color);
-        StringAddString(buffer," WHERE id_tank = ");
+        StringAddString(buffer,"' WHERE id_tank = ");
         StringAddInt(buffer,node->node.id);
         database_query(node->node.db,buffer,false);          
    }else{
@@ -439,7 +467,8 @@ void  create_tank_node(tank_node_t* node){
     node->node.show=tank_node_show;
     node->node.upload_param=tank_node_upload_param;
 }
-void  init_tank_node(tank_node_t* node,database_t* db){
+void  init_tank_node(tank_node_t* node,database_t* db,const char nametable[100]){
     create_tank_node(node);
     node->node.db=db;
+    strcpy(node->node.nametable,nametable);
 }

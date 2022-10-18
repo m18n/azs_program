@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/service.css">
+    <link rel="stylesheet" href="css/serviceadmin.css">
+</head>
+<body>
+    <div class="heads">
+        <img onclick="LoadSite('/serv/service/configure/tank','');" style="cursor: pointer;" src="img/arr.png" class="back" alt="">
+        <h1 class="h t_f">Настройки Резервуари</h1>
+    </div>
+    <div class="settings_azs settings_tank div">
+        <div class="div"> 
+        <span>nn: </span><input type="text" placeholder="nn" id="nn">
+        </div>
+        <div class="div">
+            <span>id_tovar: </span><select name="" id="id_tovar">
+                
+            </select>
+
+        </div>
+        <div class="div">
+            <span>color: </span>
+            <select name="" id="color" class="sel"style="background-color: #ff0000;"   >
+                <option value="#ff0000" style="background-color: #ff0000;" >red</option>
+                <option value="#00ff44"  style="background-color: #00ff44;">green</option>
+                <option value="#fff200"  style="background-color: #fff200;color:black;">yellow</option>
+                <option value="#a3a3a3"  style="background-color: #a3a3a3;">grey</option>
+                <option value="#0088ff"  style="background-color: #0088ff;">blue</option>
+                <option value="#0d0d0d"  style="background-color: #0d0d0d;">black</option>
+            </select>
+            <!-- <div class="colors" onclick="Colors();">
+                <div class="chcolor">
+                    <div class="c_color">
+
+                    </div>
+                </div>
+                <div class="coisecolor none">
+                    <div class="chcl first" onclick="SelectColors(this);">
+                        <div class="c_color">
+            
+                        </div>
+                    </div>
+                    <div class="chcl" onclick="SelectColors(this);">
+                        <div class="c_color">
+            
+                        </div>
+                    </div>
+                    <div class="chcl" onclick="SelectColors(this);">
+                        <div class="c_color">
+            
+                        </div>
+                    </div>
+                    <div class="chcl" onclick="SelectColors(this);">
+                        <div class="c_color">
+            
+                        </div>
+                    </div>
+
+                </div>
+            </div> -->
+        </div>
+        
+        <button onclick="SaveTanke();">Зберегти</button>
+    </div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/loadfunction.js"></script>
+    <script src="js/savefunction.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
