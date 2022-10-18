@@ -1,5 +1,5 @@
 #include"include/coreviews.h"
-void  IFunctionJS::RegistrFunctionJs(std::string namefunction, JSObjectCallAsFunctionCallback fun)
+void  IFunctionJS::RegistrFunctionJs(site* s,std::string namefunction, JSObjectCallAsFunctionCallback fun)
 {
     if (ctx != NULL) {
         JSStringRef name = JSStringCreateWithUTF8CString(namefunction.c_str());
@@ -21,10 +21,11 @@ void  IFunctionJS::RegistrFunctionJs(std::string namefunction, JSObjectCallAsFun
         JSStringRelease(name);
     }
     else {
+        
         functionjs df;
         df.fun = fun;
         df.namefunction = namefunction;
-        js.push_back(df);
+        s->funs.push_back(df);
     }
 }
  std::string IFunctionJS::ArgumentToStr(JSContextRef ctx ,JSValueRef arg,JSValueRef* exception){
@@ -62,6 +63,7 @@ void  IFunctionJS::CallFunctionJs(std::string namefunction, std::string val)
             const JSValueRef args[] = { JSValueMakeString(ctx, msg.get()) };
 
             // Count the number of arguments in the array.
+            int d=sizeof(JSValueRef);
             size_t num_args = sizeof(args) / sizeof(JSValueRef*);
 
             // Create a place to store an exception, if any
@@ -84,6 +86,59 @@ void  IFunctionJS::CallFunctionJs(std::string namefunction, std::string val)
         }
     }
 }
+ void IFunctionJS::CallFunctionJs(std::string namefunction,std::vector<std::string>args){
+JSRetainPtr<JSStringRef> str = adopt(
+        JSStringCreateWithUTF8CString(namefunction.c_str()));
+
+    // Evaluate the string "ShowMessage"
+    JSValueRef func = JSEvaluateScript(ctx, str.get(), 0, 0, 0, 0);
+
+    // Check if 'func' is actually an Object and not null
+    if (JSValueIsObject(ctx, func))
+    {
+
+        // Cast 'func' to an Object, will return null if typecast failed.
+        JSObjectRef funcObj = JSValueToObject(ctx, func, 0);
+
+        // Check if 'funcObj' is a Function and not null
+        if (funcObj && JSObjectIsFunction(ctx, funcObj))
+        {
+
+            // Create a JS string from null-terminated UTF8 C-string, store it
+            // in a smart pointer to release it when it goes out of scope.
+            std::vector<JSRetainPtr<JSStringRef>>msgs;
+            msgs.resize(args.size());
+            for(int i=0;i<args.size();i++){
+                msgs[i]=adopt(JSStringCreateWithUTF8CString(args[i].c_str()));
+            }
+            std::vector<JSValueRef>arguments;
+            arguments.resize(args.size());
+            for(int i=0;i<arguments.size();i++){
+                arguments[i]=JSValueMakeString(ctx, msgs[i].get());
+            }
+            // Count the number of arguments in the array.
+            size_t num_args = arguments.size()*sizeof(JSValueRef) / sizeof(JSValueRef*);
+
+            // Create a place to store an exception, if any
+            JSValueRef exception = 0;
+
+            // Call the ShowMessage() function with our list of arguments.
+            JSValueRef result = JSObjectCallAsFunction(ctx, funcObj, 0,
+                num_args,&arguments[0],
+                &exception);
+
+            if (exception)
+            {
+                // Handle any exceptions thrown from function here.
+            }
+
+            if (result)
+            {
+                // Handle result (if any) here.
+            }
+        }
+    }
+ }
 void  IFunctionJS::CallFunctionJs(std::string namefunction, double val)
 {
     JSRetainPtr<JSStringRef> str = adopt(

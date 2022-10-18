@@ -122,34 +122,25 @@ std::string GetPwdProc(std::string path) {
 #endif
 std::vector<PID> FindProc(){
     char mypwd[300];
-    
+
      std::vector<PID> find;
 #ifdef _WIN32
-    //  GetModuleFileNameW(NULL, mypwd, MAX_PATH);
-    //  PROCESSENTRY32 entry;
-    //  entry.dwSize = sizeof(PROCESSENTRY32);
-
-    //  HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-
-    //  if (Process32First(snapshot, &entry) == TRUE)
-    //  {
-    //      while (Process32Next(snapshot, &entry) == TRUE)
-    //      {
-    //          if (wcscmp(entry.szExeFile, L"AZS.exe") == 0)
-    //          {
-    //              PID pid;
-    //              pid.pid = entry.th32ProcessID;
-    //              MODULEENTRY32 ModEntry = { 0 };
-    //              ModEntry.dwSize = sizeof(ModEntry);
-    //              Module32First(snapshot, &ModEntry);
-    //              pid.pwd = ModEntry.szExePath;
-    //              find.push_back(pid);
-    //              break;
-    //          }
-    //      }
-    //  }
-
-    //  CloseHandle(snapshot);
+   
+HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, NULL);
+    PROCESSENTRY32 pEntry;
+    pEntry.dwSize = sizeof (pEntry);
+    BOOL hRes = Process32First(hSnapShot, &pEntry);
+    while (hRes)
+    {
+        if (strcmp(pEntry.szExeFile, "AZS.exe") == 0)
+        {
+            PID p;
+            p.pid=pEntry.th32ProcessID;
+            find.push_back(p);
+        }
+        hRes = Process32Next(hSnapShot, &pEntry);
+    }
+    CloseHandle(hSnapShot);
 #else
      getcwd(mypwd, 300);
      std::vector<PID>pids = GetAllProc();
@@ -182,6 +173,13 @@ std::vector<PID> FindProc(){
 }
 void KillProc(int pid) {
 #ifdef _WIN32
+ HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, 0,
+                                          (DWORD) pid);
+            if (hProcess != NULL)
+            {
+                TerminateProcess(hProcess, 9);
+                CloseHandle(hProcess);
+            }
 #else
     kill(pid, 9);
 #endif
