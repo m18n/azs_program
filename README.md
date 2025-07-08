@@ -1,116 +1,141 @@
-# 🚗 Fuel Station Management System - Evolution Project
+# 🚗 Fuel Station Management System - C/Ultralight Version
 
 ![Status](https://img.shields.io/badge/status-archived-yellow)
-![Languages](https://img.shields.io/badge/languages-C%20%7C%20C++%20%7C%20Rust-blue)
+![Framework](https://img.shields.io/badge/framework-Ultralight-blue)
+![Language](https://img.shields.io/badge/language-C-green)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
 
-## 📋 Project Overview
+## 📋 Overview
 
-This repository documents the evolution of a Fuel Station Management System through three distinct technological iterations. The project was designed to provide software solutions for gas stations, supporting cashier and operator workflows with both local and networked components.
+This repository contains the original version of the Fuel Station Management System, developed in C using the Ultralight framework. This represents the first iteration of our solution - a desktop application that renders HTML/CSS/JavaScript content in a native window to create a modern user interface while maintaining tight integration with local hardware.
 
-## 🔄 Project Evolution Timeline
+## 🔄 Project Evolution
 
-### 1️⃣ Initial C Version with Ultralight (Desktop Application)
+This is the first part of a three-stage development journey:
 
-The project began as a desktop application built in C using the Ultralight framework to render HTML content in a native window.
+1. **Current C/Ultralight Version**: Desktop application with embedded HTML viewer
+2. **C++/Crow Version**: Evolution to a web server implementation using the Crow C++ framework
+3. **Final Rust Version**: Complete rewrite in Rust with improved architecture
 
-**Key Technical Components (Confirmed from CMakeLists.txt):**
-- Core Language: C
-- UI Framework: Ultralight, AppCore, WebCore
-- Key Files: main.cpp, funjs.cpp, views.cpp, coreviews.cpp
-- Custom Core Library: COREAZS
-- Database: SQLite integration
-- Cross-platform: Windows, Linux, macOS support
-- Restart Utility: Separate executable for application restart
+## 💡 Concept
 
-**Architecture:**
-- Desktop application with embedded HTML viewer
-- Direct local hardware integration
-- JavaScript-to-C bridging via funjs.cpp
-- Custom view system (views.cpp, coreviews.cpp)
+This project was designed as a desktop application that would:
+- Run directly on fuel station cashier and operator computers
+- Render HTML-based interfaces in a native window
+- Connect to proprietary fuel station hardware directly
+- Operate in a standalone mode with local database storage
 
-### 2️⃣ C++ Version with Crow Framework (Web Server)
+## 🛠️ Technology Stack
 
-The second iteration evolved to a web server approach using C++ and the Crow framework.
+- **C**: Core programming language
+- **Ultralight**: Lightweight HTML UI engine
+- **AppCore**: Windowing and application framework by Ultralight
+- **WebCore**: Web content rendering
+- **SQLite**: Embedded database (via COREAZS library)
+- **Custom COREAZS Library**: Core business logic for fuel station operations
 
-**Key Technical Components (Confirmed from CMakeLists.txt):**
-- Core Language: C++
-- Web Framework: Crow
-- Key Files: 
-  - controller.cpp, model.cpp, view.cpp
-  - core.cpp, local_data.cpp, azs.cpp
-  - web_tehnology.cpp, users_controller.cpp
-- Databases: SQLite and MySQL (via MySQL Connector/C++)
-- Security: OpenSSL, JWT authentication
-- Cross-platform: Windows and Linux support
-- Docker support for Linux deployment
+## 🖥️ Architecture
 
-**Architecture:**
-- Web server deployed on each gas station
-- MVC pattern implementation
-- RESTful API endpoints
-- Cross-platform compatibility
-- Database flexibility (SQLite/MySQL)
+The application uses a unique architecture that combines web technologies with native code:
 
-### 3️⃣ Rust Version (Current)
+- **HTML/CSS/JavaScript**: For the user interface
+- **C Backend**: For hardware integration and business logic
+- **Embedded UI Engine**: Ultralight renders web content in native windows
+- **JavaScript Bridge**: `funjs.cpp` provides JavaScript-to-C bindings
+- **View System**: `views.cpp` and `coreviews.cpp` manage UI components
 
-The final evolution is a complete rewrite in Rust, focusing on performance, safety, and modern web server capabilities.
+## 🔌 Key Components
 
-**Key Technical Notes:**
-- This was my first Rust project, used to explore the language's capabilities
-- Aimed to address limitations in previous C/C++ implementations
-- Focus on memory safety and concurrent processing
+Based on the CMakeLists.txt, the project consists of:
 
-## 💻 Building the Projects
+- **main.cpp**: Application entry point
+- **funjs.cpp**: JavaScript function bindings for interaction between UI and backend
+- **views.cpp**: View management and rendering
+- **coreviews.cpp**: Core view functionality
+- **coreazs/**: Custom library for fuel station business logic
+- **RESTART**: Utility application for restarting the main program
 
-### C/Ultralight Version Build
+## 💻 Building and Running
+
+### Prerequisites
+
+- C/C++ compiler
+- CMake 3.10+
+- Platform-specific dependencies:
+  - Windows: Visual Studio
+  - Linux: Required development libraries
+  - macOS: Xcode
+
+### Build Instructions - Windows
 
 ```bash
-# Prerequisites: CMake 3.10+, C compiler, platform-specific dependencies
+# Clone the repository
+git clone https://github.com/yourusername/AZS.git
 
-# Windows (Visual Studio)
+# Create a build directory
 mkdir build && cd build
+
+# Generate Visual Studio project files
 cmake ..
+
+# Build the project
 cmake --build . --config Debug
 
-# Linux/macOS
-mkdir build && cd build
-cmake ..
-cmake --build .
+# Run the application
+.\Debug\AZS.exe
 ```
 
-### C++/Crow Version Build
+### Build Instructions - Linux/macOS
 
 ```bash
-# Prerequisites: CMake 3.1+, C++ compiler, OpenSSL, MySQL Connector/C++
+# Clone the repository
+git clone https://github.com/yourusername/AZS.git
 
-# Windows
+# Create a build directory
 mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..  # or Release
-cmake --build . --config Debug  # or Release
 
-# Linux
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
+# Generate build files
+cmake ..
+
+# Build the project
 cmake --build .
 
-# Docker (Linux)
-cd build/bin
-docker build -t azs_local_server .
-docker run -p 8080:8080 azs_local_server
+# Run the application
+./AZS
 ```
+## 🌟 Features
 
-## 🧪 Project Context and Legacy
+- **Cross-Platform**: Supports Windows, Linux, and macOS
+- **Modern UI**: HTML/CSS/JavaScript interface with native performance
+- **Hardware Integration**: Direct access to fuel station equipment
+- **Database Storage**: Local data persistence using SQLite
+- **Restart Capability**: Includes a utility for application restart
 
-This repository documents my programming journey through three languages and architectural approaches. The project began as a real-world application intended for deployment at actual fuel stations, but wasn't completed for production use.
+## 🧪 Limitations That Led to Evolution
 
-Each iteration represents significant learning and evolution in approach:
+While this approach had several advantages, we eventually encountered limitations:
 
-1. **C/Ultralight**: Explored embedding web UI in native applications, with direct hardware access
-2. **C++/Crow**: Implemented proper web server architecture with database integration
-3. **Rust**: My first Rust project, focusing on memory safety and modern web server implementation
+1. **Scalability Challenges**: The desktop application model limited multi-user scenarios
+2. **Update Complexity**: Deploying updates to multiple stations was cumbersome
+3. **Integration Limitations**: Direct hardware access required specific driver configurations
+4. **Modern Web Features**: Some newer web technologies were not fully supported by the embedded engine
 
-While the project never reached production deployment, it served as an invaluable learning experience in cross-platform development, web technologies, and the evolution of a complex application across different programming paradigms.
+These limitations eventually led us to evolve the project into a web server-based approach using C++/Crow and ultimately Rust.
+
+## 🔮 Historical Context
+
+This project represents our initial approach to modernizing fuel station management systems. By embedding a web view into a native application, we aimed to combine the user-friendly nature of web interfaces with the hardware access capabilities of native code.
+
+The experience gained from this project was invaluable for understanding:
+- The balance between web and native technologies
+- Cross-platform development challenges
+- Integration with specialized hardware
+- User experience considerations for operational systems
+
+## 📝 Legacy and Evolution
+
+While this project has been superseded by newer iterations, it represents an important step in our development journey. Many of the core concepts and business logic developed here were carried forward into subsequent versions, albeit with improved architectures and technologies.
 
 ---
 
-*This repository captures a programming journey across three languages and architectural approaches, demonstrating the evolution of both the project and developer expertise.*
+*This project marks the beginning of our fuel station management system journey. Though we've since moved to more modern approaches, this initial version provided the foundation and insights that shaped all subsequent development.*
